@@ -1,9 +1,10 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # You need to install PIL to run this script
 # type "sudo apt-get install python-imaging-tk" in an terminal window to do this
 
 from io import StringIO
 import subprocess
+import socket
 import os
 import time
 from datetime import datetime
@@ -24,7 +25,7 @@ forceCapture = True
 forceCaptureTime = 60 * 60 # Once an hour
 filepath = "/home/pi/greti_videos/"
 filepathphotos = "/home/pi/greti_photos/"
-filenamePrefix = "P1_puzzle_"
+filenamePrefix = socket.gethostname()
 diskSpaceToReserve = 40 * 1024 * 1024 # Keep 40 mb free on disk
 cameraSettings = ""
 
