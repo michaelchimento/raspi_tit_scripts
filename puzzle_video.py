@@ -23,7 +23,8 @@ threshold = 10
 sensitivity = 250
 forceCapture = True
 forceCaptureTime = 60 * 60 # Once an hour
-filepath = "/home/pi/greti_videos/"
+filepath = "/home/pi/APAPORIS/CURRENT/"
+moved_path = "/home/pi/APAPORIS/MOVED/"
 filepathphotos = "/home/pi/greti_photos/"
 filenamePrefix = socket.gethostname()
 diskSpaceToReserve = 40 * 1024 * 1024 # Keep 40 mb free on disk
@@ -87,8 +88,8 @@ def make_video():
         camera.shutter_speed = (0)
         camera.awb_mode = 'tungsten' 
         camera.ISO = (0)
-        timest = (filenamePrefix + '_{:%Y-%m-%d_%H%M%S}'.format(datetime.now()))
-        filename = str(timest + '.h264')
+        timest = ('_{:%Y-%m-%d_%H%M%S}'.format(datetime.now()))
+        filename = str(filenamePrefix + timest + '.h264')
         camera.annotate_text_size = 15
         camera.start_recording(filepath + filename)
         start = datetime.now()
@@ -96,6 +97,7 @@ def make_video():
             camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H:%M:%S')        	
             camera.wait_recording(0.5)
         camera.stop_recording()
+    os.rename(filename, moved_path + timest + '.h264')
 
 # Get first image
 image1, buffer1 = captureTestImage(cameraSettings, testWidth, testHeight)
