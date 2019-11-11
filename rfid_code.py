@@ -74,7 +74,7 @@ class motorThread(threading.Thread):
             self.state = 0
         elif((IO.input(23)==True or IO.input(24)==True) and self.email_flag==0):
             user = 'greti.lab.updates@gmail.com'
-            password = '######'
+            password = 'greti2019'
             sent_from = 'greti.lab.updates@gmail.com'
             to = 'mchimento@ab.mpg.de'
             subject = 'critical failure in {}'.format(comp_name)
@@ -94,8 +94,6 @@ class motorThread(threading.Thread):
                 
             except:
                 print("no worky worky")
-        
-        
         else:
             self.state=2
             
@@ -194,10 +192,9 @@ def depart(ser, tag_present, id_tag):
 #set up serial and read operating frequency
 ser = serial.Serial('/dev/ttyS0', baudrate=9600,
                     parity=serial.PARITY_NONE,
-                    stopbits=serial.STOPBITS_ONE,
+                    stopbits=serial.STOPBITS_ONE,  
                     bytesize=serial.EIGHTBITS
                     )
-print(ser)
 mof_read(ser)
 
 
