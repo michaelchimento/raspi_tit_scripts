@@ -49,8 +49,6 @@ def captureTestImage(settings, width, height):
     command = "raspistill {} -w {} -h {} -t 200 -e bmp -n -o -".format(settings, width, height)
     imageData = StringIO()
     output = subprocess.check_output(command, shell=True)
-    #imageData.write(output)
-    #imageData.seek(0)
     im = Image.frombytes(mode="RGB",size=(width,height),data=output)
     buffer = im.load()
     imageData.close()
@@ -93,26 +91,24 @@ def make_video():
         camera.annotate_text_size = 15
         camera.start_recording(filepath + filename)
         start = datetime.now()
-        while (datetime.now()-start).seconds < 60:
+        while (datetime.now()-start).seconds < 30:
             camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H:%M:%S')        	
             camera.wait_recording(0.5)
         camera.stop_recording()
     os.rename(filepath + filename, moved_path + filename)
 
-# Get first image
-image1, buffer1 = captureTestImage(cameraSettings, testWidth, testHeight)
-
-# Reset last capture time
-lastCapture = time.time()
-
 while (True):
-
-    # Get comparison image
-    image2, buffer2 = captureTestImage(cameraSettings, testWidth, testHeight)
-
     # Count changed pixels
     changedPixels = 0
     takePicture = False
+    
+    # Get first image
+    image1, buffer1 = captureTestImage(cameraSettings, testWidth, testHeight)
+    # Reset last capture time
+    lastCapture = time.time()
+
+    # Get comparison image
+    image2, buffer2 = captureTestImage(cameraSettings, testWidth, testHeight)
 
     if (debugMode): # in debug mode, save a bitmap-file with marked changed pixels and with visible testarea-borders
         debugimage = Image.new("RGB",(testWidth, testHeight))
@@ -157,8 +153,3 @@ while (True):
         lastCapture = time.time()
         make_video()
         #saveImage(cameraSettings, saveWidth, saveHeight, saveQuality, diskSpaceToReserve)
-        
-        
-    # Swap comparison buffers
-    image1 = image2
-    buffer1 = buffer2
