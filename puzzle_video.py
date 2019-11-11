@@ -97,7 +97,7 @@ def make_video():
             camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H:%M:%S')        	
             camera.wait_recording(0.5)
         camera.stop_recording()
-    os.rename(filename, moved_path + timest + '.h264')
+    os.rename(filepath + filename, moved_path + filename)
 
 # Get first image
 image1, buffer1 = captureTestImage(cameraSettings, testWidth, testHeight)
