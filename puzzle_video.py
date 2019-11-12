@@ -21,11 +21,12 @@ import picamera
 # cameraSettings     - "" = no extra settings; "-hf" = Set horizontal flip of image; "-vf" = Set vertical flip; "-hf -vf" = both horizontal and vertical flip
 threshold = 10
 sensitivity = 250
-forceCapture = True
+forceCapture = False
 forceCaptureTime = 60 * 60 # Once an hour
 filepath = "/home/pi/APAPORIS/CURRENT/"
 moved_path = "/home/pi/APAPORIS/MOVED/"
-filepathphotos = "/home/pi/greti_photos/"
+video_duration = 30
+filepathphotos = "~/greti_photos/"
 filenamePrefix = socket.gethostname()
 diskSpaceToReserve = 40 * 1024 * 1024 # Keep 40 mb free on disk
 cameraSettings = ""
@@ -79,6 +80,8 @@ def getFreeSpace():
     return du
 
 def make_video():
+    global filepath
+    global moved_path
     with picamera.PiCamera() as camera:
         camera.rotation = 0
         camera.resolution = (1280,720)
@@ -91,11 +94,12 @@ def make_video():
         camera.annotate_text_size = 15
         camera.start_recording(filepath + filename)
         start = datetime.now()
-        while (datetime.now()-start).seconds < 30:
+        while (datetime.now()-start).seconds < video_duration:
             camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H:%M:%S')        	
             camera.wait_recording(0.5)
         camera.stop_recording()
-    os.rename(filepath + filename, moved_path + filename)
+        
+        os.rename(filepath + filename, moved_path + filename)
 
 while (True):
     # Count changed pixels
@@ -104,8 +108,8 @@ while (True):
     
     # Get first image
     image1, buffer1 = captureTestImage(cameraSettings, testWidth, testHeight)
-    # Reset last capture time
-    lastCapture = time.time()
+    
+    time.sleep(.1)
 
     # Get comparison image
     image2, buffer2 = captureTestImage(cameraSettings, testWidth, testHeight)
@@ -139,10 +143,8 @@ while (True):
             break  # break the z loop
 
     if (debugMode):
-        debugimage.save(filepath + "/debug.bmp") # save debug image as bmp
+        debugimage.save(filepath + "debug.bmp") # save debug image as bmp
         print("debug.bmp saved, %s changed pixel" % changedPixels)
-    # else:
-    #     print "%s changed pixel" % changedPixels
 
     # Check force capture
     if forceCapture:
@@ -152,4 +154,4 @@ while (True):
     if takePicture:
         lastCapture = time.time()
         make_video()
-        #saveImage(cameraSettings, saveWidth, saveHeight, saveQuality, diskSpaceToReserve)
+        
