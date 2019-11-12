@@ -30,7 +30,7 @@ class motorThread(threading.Thread):
         self.name = name
         self.email_flag = 0
         self.state = 0
-        self.steps = 450
+        self.steps = 400
         self.pull_style = stepper.MICROSTEP
         self.kit = MotorKit()
 
@@ -190,7 +190,7 @@ def depart(ser, tag_present, id_tag):
     return tag_present, id_tag
 
 #set up serial and read operating frequency
-ser = serial.Serial('/dev/ttyS0', baudrate=9600,
+ser = serial.Serial('/dev/ttyAMA0', baudrate=9600,
                     parity=serial.PARITY_NONE,
                     stopbits=serial.STOPBITS_ONE,  
                     bytesize=serial.EIGHTBITS
