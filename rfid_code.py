@@ -9,6 +9,7 @@ import threading
 import RPi.GPIO as IO
 from adafruit_motorkit import MotorKit
 from adafruit_motor import stepper
+from rpi_info import name
 IO.setwarnings(False)
 IO.setmode (IO.BCM)
 IO.setup(23,IO.IN)
@@ -21,7 +22,7 @@ tag_present=0
 global scrounge_count
 scrounge_count=0
 global comp_name
-comp_name = socket.gethostname()
+comp_name = name
 
 class motorThread(threading.Thread):
     def __init__(self, threadID, name):
