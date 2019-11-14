@@ -10,6 +10,7 @@ import time
 from datetime import datetime
 from PIL import Image
 import picamera
+from rpi_info import name
 
 # Motion detection settings:
 # Threshold          - how much a pixel has to change by to be marked as "changed"
@@ -27,7 +28,7 @@ filepath = "/home/pi/APAPORIS/CURRENT/"
 moved_path = "/home/pi/APAPORIS/MOVED/"
 video_duration = 30
 filepathphotos = "~/greti_photos/"
-filenamePrefix = socket.gethostname()
+filenamePrefix = name
 diskSpaceToReserve = 40 * 1024 * 1024 # Keep 40 mb free on disk
 cameraSettings = ""
 
