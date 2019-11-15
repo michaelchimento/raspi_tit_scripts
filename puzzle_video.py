@@ -87,11 +87,11 @@ def make_video():
         camera.rotation = 0
         camera.resolution = (1280,720)
         camera.brightness = 50
-        camera.shutter_speed = (0)
+        camera.shutter_speed = 0
         camera.awb_mode = 'tungsten' 
         camera.ISO = (0)
         timest = ('_{:%Y-%m-%d_%H%M%S}'.format(datetime.now()))
-        filename = str(filenamePrefix + timest + '.h264')
+        filename = "{}_{}.h264".format(filenamePrefix,datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
         camera.annotate_text_size = 15
         camera.start_recording(filepath + filename)
         start = datetime.now()
@@ -156,3 +156,4 @@ while (True):
         lastCapture = time.time()
         make_video()
         
+
