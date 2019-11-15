@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import smtplib
 import socket
 from email.mime.multipart import MIMEMultipart
@@ -5,14 +7,15 @@ from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email.utils import COMMASPACE, formatdate
 from email import encoders
+from rpi_info import name
 
-comp_name = socket.gethostname()
+comp_name = name
 
 user = 'greti.lab.updates@gmail.com'
 password = 'greti2019'
 to = 'mchimento@ab.mpg.de'
 subject = 'Daily data {}'.format(comp_name)
-data_attachment_path = "/home/pi/Desktop/puzzle_code_pi/data/{}_RFID.csv".format(comp_name)
+data_attachment_path = "data/{}_RFID.csv".format(comp_name)
 
 msg = MIMEMultipart()
 msg['Subject'] = subject
@@ -32,7 +35,7 @@ try:
     server.login(user,password)
     server.sendmail(user, to, msg.as_string())
     server.close()
-    print("Email Sent!")
+    #print("Email Sent!")
     
 except:
-    print("no worky worky")
+    print("Email failed")
