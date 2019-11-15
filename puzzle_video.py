@@ -74,7 +74,7 @@ def make_video():
 
 while True:
     hour = datetime.now().hour
-    while hour >= 6 and now().hour < 19:
+    while hour >= 6 and hour < 19:
         # Count changed pixels
         changedPixels = 0
         takePicture = False
