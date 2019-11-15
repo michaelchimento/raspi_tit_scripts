@@ -23,8 +23,6 @@ pi_dict = dict(pi_data_table)
 ipaddress = get_ip()
 name = [key  for (key, value) in pi_dict.items() if value == ipaddress][0]
 
-
-
 ###############    ###############
 #Puzzle_P1_C1      #Puzzle_Px_C2
 #                  #
@@ -85,11 +83,3 @@ name = [key  for (key, value) in pi_dict.items() if value == ipaddress][0]
 #Wormpt_P5_C9      #Wormpt_Px_C10
 #                  #
 ###############    ###############
-
-
-
-
-
-
-name = "Wormpt_P5_C9"
-ipaddress = "10.76.0.115"
