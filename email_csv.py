@@ -22,11 +22,15 @@ msg['Subject'] = subject
 msg['From'] = user
 msg['To'] = ', '.join(to)
 
-part = MIMEBase('application', "octet-stream")
-part.set_payload(open(data_attachment_path, "rb").read())
-encoders.encode_base64(part)
-part.add_header('Content-Disposition', 'attachment; filename={}'.format(data_attachment_path))
-msg.attach(part)
+try:
+    part = MIMEBase('application', "octet-stream")
+    part.set_payload(open(data_attachment_path, "rb").read())
+    encoders.encode_base64(part)
+    part.add_header('Content-Disposition', 'attachment; filename={}'.format(data_attachment_path))
+    msg.attach(part)
+except Exception as e:
+    print("Attachment failed")
+    print(e)
 
 try:
     server = smtplib.SMTP('smtp.gmail.com',587)
