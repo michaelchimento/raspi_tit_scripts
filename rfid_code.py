@@ -200,13 +200,20 @@ mof_read(ser)
 
 
 #set up csv
+if not os.path.exists("data/"):
+        os.makedirs("data/")
 global file_name
-file_name = "/home/pi/Desktop/puzzle_code_pi/data/{}_RFID.csv".format(comp_name)
-header = "ID, Event, YMD, Timestamp\n"
+file_name = "data/{}_RFID.csv".format(comp_name)
 time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-savefile = open(file_name, "a") # open data file in write mode
-savefile.write("#{} start time: {} \n".format(comp_name,time_stamp))
-savefile.write(header)
+if !os.path.isfile(filename):
+    header = "ID, Event, YMD, Timestamp\n"
+    savefile = open(file_name, "a") # open data file in write mode
+    savefile.write("#{} start time: {} \n".format(comp_name,time_stamp))
+    savefile.write(header)
+else:
+    savefile = open(file_name, "a") # open data file in write mode
+    savefile.write("#{} start time: {} \n".format(comp_name,time_stamp))
+    
 savefile.close()
 
 motor_thread = motorThread(1, "Motor-Thread")
