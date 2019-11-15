@@ -28,7 +28,7 @@ forceCaptureTime = 60 * 60 # Once an hour
 filenamePrefix = name
 filepath = "/home/pi/APAPORIS/CURRENT/"
 moved_path = "/home/pi/APAPORIS/MOVED/"
-video_duration = 30
+video_duration = 180
 diskSpaceToReserve = 40 * 1024 * 1024 # Keep 40 mb free on disk
 cameraSettings = ""
 
@@ -74,7 +74,7 @@ def make_video():
 
 while True:
     hour = datetime.now().hour
-    while hour >= 6 and now().hour < 19:
+    while hour >= 11 and now().hour < 16:
         # Count changed pixels
         changedPixels = 0
         takePicture = False
