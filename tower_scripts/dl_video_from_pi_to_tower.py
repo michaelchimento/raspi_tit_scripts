@@ -80,16 +80,3 @@ for pi in pi_data_table:  #use this for more than one pi
 
     except Exception as e:
          print(e)
-         
-
-
-
-
-
-
-
-
-    
-
-
-
