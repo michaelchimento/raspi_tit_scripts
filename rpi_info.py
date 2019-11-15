@@ -21,7 +21,7 @@ pi_dict = dict(pi_data_table)
 
 #get ip_address and cross reference in dictionary
 ipaddress = get_ip()
-name = [key  for (key, value) in pi_dict.items() if value == pi_IP][0]
+name = [key  for (key, value) in pi_dict.items() if value == ipaddress][0]
 
 
 
