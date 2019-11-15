@@ -38,7 +38,7 @@ def make_photos():
         camera.shutter_speed = camera_shutter_speed
         camera.awb_mode = camera_awb_mode 
         camera.ISO = camera_ISO
-        time_stamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        time_stamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
         dir_name = '{}{}_{}'.format(filepath,filenamePrefix,time_stamp)
         os.mkdir(dir_name)
         camera.annotate_text_size = 15
