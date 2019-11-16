@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 import subprocess
 import csv
 import datetime as dt
@@ -33,7 +32,7 @@ for pi in pi_data_table:  #use this for more than one pi
                 print("no files to move")
                 pass
             else:
-                print("Moving files: {}".format(file_count_copy_from))
+                print("Moving {} files or folders".format(file_count_MOVED))
                 #move files from "moved" to "to_transfer"
                 command = 'ssh pi@{} mv {}* {}'.format(pi[1], copy_from, copy_to)
                 terminal(command)
@@ -61,8 +60,9 @@ for pi in pi_data_table:  #use this for more than one pi
                 print("no files to transfer to tower")
                 pass
             else:
-                command= "mkdir -v {}".format(copy_to)
-                terminal(command)
+                if not os.path.isdir(copy_to):
+                    command= "mkdir -v {}".format(copy_to)
+                    terminal(command)
             
                 #copy files from pi
                 if "Puzzle" in pi[0] or "Social" in pi[0]:
@@ -81,6 +81,8 @@ for pi in pi_data_table:  #use this for more than one pi
                     command = 'ssh pi@{} rm -rf {}*'.format(pi[1],copy_from)
                     terminal(command)
                     print('All files transferred Successfully')
+                else:
+                    print("mismatch between file counts of pi and tower")
                       
         else:
             print("{} interrupted during transfer. Not responding to pings".format(pi[0]))
