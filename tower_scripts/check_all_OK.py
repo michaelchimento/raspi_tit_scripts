@@ -29,13 +29,13 @@ for pi in pi_data_table:
 			command = "ssh pi@{} pgrep -af python".format(pi[1])
 			py_processes = terminal(command)
 			if "Puzzle" in pi[0] and len(py_processes.split("\n")) == 3:
-				print("rfid and video running")
+				print("Puzzle rfid and video running")
 			elif "Observ" in pi[0] and len(py_processes.split("\n")) == 2:
-			    print("observation network photos running")
+			    print("Observation network photos running")
 			elif "Feeder" in pi[0] and len(py_processes.split("\n")) == 2:
 			    print("Feeder network photos running")
 			elif "Social" in pi[0] and len(py_processes.split("\n")) == 2:
-			    print("Socoial network photos running")
+			    print("Social network photos running")
 			else:
 				print("processes running in {}:\n{}".format(pi[0],py_processes))
 				print("problem with one or more processes")
