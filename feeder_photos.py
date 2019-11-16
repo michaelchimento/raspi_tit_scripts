@@ -50,6 +50,8 @@ def make_photos():
 
 while (True):
     hour = datetime.now().hour
-    while hour >= 7 and hour < 19:
+    if hour >= 7 and hour < 19:
         dir_name = make_photos()
         shutil.move(dir_name,moved_path)
+    else:
+        pass
