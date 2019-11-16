@@ -14,8 +14,13 @@ def get_ip():
         s.close()
     return IP
 
+def decomment(csvfile):
+    for row in csvfile:
+        raw = row.split('#')[0].strip()
+        if raw: yield raw
+
 with open('List_of_Cameras.csv') as csvfile:
-    data = csv.reader(csvfile, delimiter=',')
+    data = csv.reader(decomment(csvfile), delimiter=',')
     pi_data_table = [row for row in data]
 pi_dict = dict(pi_data_table)
 
