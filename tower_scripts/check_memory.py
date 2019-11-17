@@ -10,21 +10,23 @@ from ipsandnames import pi_data_table
 #print(pi_data_table)
 
 def terminal(command):
-    term_output = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
-    return term_output.decode()
+    try:
+        term_output = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
+    except subprocess.CalledProcessError as e:
+        print("Oops, something's wrong:")
+        print("{}: {}".format(e.cmd,e.output.decode()))
+    else:
+        return term_output.decode()
 
 for pi in pi_data_table:
 	print("Checking python processes in {}".format(pi))
-	try:
-		command = "ping -c2 {}".format(pi[1])
-		response = terminal(command)
-		if "2 received, 0% packet loss" in response:
-			#check to see that 2 python programs are running
-			command = "ssh pi@{} df -h".format(pi[1])
-			mem_info = terminal(command)
-			print(mem_info)
-		else:
-			print("{} not responding to pings".format(pi[0]))
+	command = "ping -c2 {}".format(pi[1])
+	response = terminal(command)
+	if response:
+		#reads %used line from df cmd
+		command = "ssh pi@{} df | awk ".format(pi[1]) + "'/\/dev\/root/{print $5}'"
+		mem_info = terminal(command)
+		print("{} has {} of memory full.".format(pi[0],mem_info.rstrip()))
+	else:
+		print("{} not responding to pings".format(pi[0]))
 
-	except Exception as e:
-		print(e)
