@@ -8,8 +8,9 @@ clone repo to home directory
 set chmod +x for files in "launchers" directory
 
 run crontab and add:
+```bash
 @reboot sh /home/pi/raspi_tit_scripts/launchers/CORRECTVERSION_launcher.sh >/home/pi/raspi_tit_scripts/logs 2>&1
-
+```
 reboot and profit
 
 For installation on main towers:
