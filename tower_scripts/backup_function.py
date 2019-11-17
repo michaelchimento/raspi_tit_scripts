@@ -22,4 +22,5 @@ files_to_bup = np.setdiff1d(files_from, files_bup)
 for video in files_to_bup:
     command = 'mv {}{} {}'.format(copy_from,video,copy_to)
     terminal(command)
+print("All files backed up")
 
