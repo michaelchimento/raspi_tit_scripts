@@ -13,9 +13,6 @@ for pi in pi_data_table:
 	if not reachable:
 	    pass
 	else:
-	    delete_git(pi[1])
-	    
-	    install_git(pi[1])
 	    
 	    #stop all python scripts running
 	    kill_python(pi[1])
