@@ -7,19 +7,13 @@ from term_utils import ping_pi, terminal, kill_python, git_pull, reboot, delete_
 #print(pi_data_table)
 
 for pi in pi_data_table:
-	print("Updating scripts from Github in {}".format(pi))
-	reachable = ping_pi(pi[1])
-	
-	if not reachable:
-	    pass
-	else:
-	    
-	    #stop all python scripts running
-	    kill_python(pi[1])
-	    
-	    #pull latest commit from github
+    print("Updating scripts from Github in {}".format(pi))
+    reachable = ping_pi(pi[1])
+    if not reachable:
+        pass
+    else:
+        kill_python(pi[1])
         git_pull(pi[1])
-	    
-	    reboot(pi[1])
+        reboot(pi[1])
 		
 
