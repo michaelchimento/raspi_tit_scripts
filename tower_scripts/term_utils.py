@@ -77,7 +77,7 @@ def git_pull(ipaddress):
         response = terminal(command)
     except Exception as e:
         print(e)
-        print("Oops, something's wrong. See previous output for details.")
+        print("Oops, git is already up to date.")
     else:
         print(response)
         

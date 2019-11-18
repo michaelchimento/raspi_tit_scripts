@@ -18,7 +18,7 @@ for pi in pi_data_table:
 	    kill_python(pi[1])
 	    
 	    #pull latest commit from github
-	    git_pull(pi[1])
+        git_pull(pi[1])
 	    
 	    reboot(pi[1])
 		
