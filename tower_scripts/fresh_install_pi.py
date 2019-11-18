@@ -13,14 +13,14 @@ for pi in pi_data_table:
 	if not reachable:
 	    pass
 	else:
-	    kill_python(pi[1])
+        kill_python(pi[1])
 
         clear_apaporis(pi[1])
 	    
-	    delete_git(pi[1])
+        delete_git(pi[1])
 	    
-	    install_git(pi[1])
+        install_git(pi[1])
 	    
-	    chmod_launchers(pi[1],pi[0])
+        chmod_launchers(pi[1],pi[0])
 	    
-	    reboot(pi[1])
+        reboot(pi[1])
