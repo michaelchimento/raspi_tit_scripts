@@ -3,14 +3,17 @@
 import subprocess
 import os
 import numpy as np
+from term_utils import terminal
 
-def terminal(command):
-    response = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
-    return response.decode()
 
 #replace this with appropriate local & remote paths for backup
 copy_from = "/home/michael/TITS/VIDEOS/"
-copy_to = "/run/user/1000/gvfs/smb-share:server=r-zfssvr01.top.orn.mpg.de,share=grplucy/Videos_GRETI/field_season_winter_2020/"
+copy_to = "/mnt/Videos_GRETI/field_season_winter_2020/"
+
+if not os.path.exists(copy_to):
+    print("mounting drive")
+    command = "sudo mount -a"
+    terminal(command)
 
 #Get a list of files in original folder
 files_from = os.listdir(copy_from)
@@ -19,6 +22,7 @@ files_bup = os.listdir(copy_to)
 files_to_bup = np.setdiff1d(files_from, files_bup)
 
 #Copy Video files
+print("backing up {} files".format(len(files_to_bup)))
 for video in files_to_bup:
     command = 'mv {}{} {}'.format(copy_from,video,copy_to)
     terminal(command)

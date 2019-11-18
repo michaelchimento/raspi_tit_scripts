@@ -7,6 +7,7 @@ import serial
 import datetime as dt
 import threading
 import RPi.GPIO as IO
+import os
 from adafruit_motorkit import MotorKit
 from adafruit_motor import stepper
 from rpi_info import name
