@@ -8,7 +8,7 @@ def terminal(command):
     except subprocess.CalledProcessError as e:
         #uncomment line below for more detailed debugging
         #print("{}: {}".format(e.cmd,e.output.decode()))
-        raise
+        raise e
     else:
         return term_output.decode()
         
@@ -32,10 +32,11 @@ def kill_python(ipaddress):
 	
 def git_pull(ipaddress):
     #update pi's with most recent commit
-    command = "ssh pi@{} cd raspi_tit_scripts/; git pull".format(ipaddress)
+    command = "ssh pi@{} \"cd raspi_tit_scripts/ && git pull\"".format(ipaddress)
     try:
         response = terminal(command)
-    except Exception:
+    except Exception as e:
+        print(e)
         print("Oops, something's wrong. See previous output for details.")
     else:
         print(response)
@@ -45,8 +46,9 @@ def reboot(ipaddress):
     command = "ssh pi@{} sudo reboot".format(ipaddress)
     try:
         response = terminal(command)
-    except Exception:
-        print("Oops, something's wrong. Uncomment debug line in terminal() for more info")
+    except Exception as e:
+        print("Oops, something's wrong.")
+        print(e)
     else:
         print(response)
 	
@@ -54,7 +56,7 @@ def current_py_processes(ipaddress):
     command = "ssh pi@{} pgrep -af python".format(ipaddress)
     try:
         response = terminal(command)
-    except Exception:
+    except Exception as e:
         print("Oops, something's wrong. No processes running.")
     else:
         return response
