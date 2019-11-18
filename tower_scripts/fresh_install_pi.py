@@ -14,6 +14,8 @@ for pi in pi_data_table:
 	    pass
 	else:
 	    kill_python(pi[1])
+
+        clear_apaporis(pi[1])
 	    
 	    delete_git(pi[1])
 	    

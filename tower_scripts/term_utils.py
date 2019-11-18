@@ -54,6 +54,18 @@ def delete_git(ipaddress):
     else:
         print(response)
 
+#clears out all files in apaporis directory
+def clear_apaporis(ipaddress):
+    command = "ssh pi@{} \"rm -rf APAPORIS/ && mkdir -p APAPORIS/{CURRENT,MOVED,TO_TRANSFER}\"".format(ipaddress)
+    try:
+        response = terminal(command)
+    except Exception as e:
+        print(e)
+        print("Oops, something's wrong. Issue deleting apaporis.")
+    else:
+        print("rebuilt apaporis")       
+        print(response)
+
 #does a fresh install of repository from github
 def install_git(ipaddress):
     

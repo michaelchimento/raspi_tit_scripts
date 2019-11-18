@@ -206,7 +206,7 @@ if not os.path.exists("data/"):
 global file_name
 file_name = "data/{}_RFID.csv".format(comp_name)
 time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-if not os.path.isfile(filename):
+if not os.path.isfile(file_name):
     header = "ID, Event, YMD, Timestamp\n"
     savefile = open(file_name, "a") # open data file in write mode
     savefile.write("#{} start time: {} \n".format(comp_name,time_stamp))
