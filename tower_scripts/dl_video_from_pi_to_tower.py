@@ -26,7 +26,6 @@ for pi in pi_data_table:  #use this for more than one pi
         
         if int(file_count_MOVED)==0:
             print("no files to move")
-            pass
         else:
             print("Moving {} files or folders".format(file_count_MOVED))
             #move files from "moved" to "to_transfer"
@@ -48,11 +47,12 @@ for pi in pi_data_table:  #use this for more than one pi
     else:
         print("Transferring videos from Pi {} to Desktop".format(pi))
         file_count_TO_TRANSFER = terminal("ssh pi@{} ls {} | wc -l".format(pi[1],copy_from))
-        #make folder on this computer
-        if int(file_count_TO_TRANSFER) ==0:
+        
+        
+        if int(file_count_TO_TRANSFER) == 0:
             print("no files to transfer to tower")
-            pass
         else:
+            #make folder on this computer if doesn't exist
             if not os.path.isdir(copy_to):
                 print("creating folder {}".format(copy_to))
                 command= "mkdir -v {}".format(copy_to)

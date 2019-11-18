@@ -2,6 +2,7 @@
 
 import subprocess
 
+#general function that sends a command to the terminal, returns str of stout, or raises error
 def terminal(command):
     try:
         term_output = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
@@ -11,7 +12,8 @@ def terminal(command):
         raise e
     else:
         return term_output.decode()
-        
+
+#pings the pi's to ensure they are reachable by ssh. returns boolean
 def ping_pi(ipaddress):
     command = "ping -c2 {}".format(ipaddress)
     try:
@@ -21,7 +23,18 @@ def ping_pi(ipaddress):
         return False
     else:
         return True
-        
+
+#returns the currently running python processes
+def current_py_processes(ipaddress):
+    command = "ssh pi@{} pgrep -af python".format(ipaddress)
+    try:
+        response = terminal(command)
+    except Exception as e:
+        print("Oops, something's wrong. No processes running.")
+    else:
+        return response
+
+#if running, terminates all python scripts
 def kill_python(ipaddress):
     #kill all python processes
 	command = "ssh pi@{} sudo pkill python".format(ipaddress)
@@ -29,7 +42,8 @@ def kill_python(ipaddress):
 	    response = terminal(command)
 	except Exception:
 	    print("0 python scripts running")
-	    
+
+#deletes cloned github repository on pi
 def delete_git(ipaddress):
     command = "ssh pi@{} sudo rm -rf raspi_tit_scripts/".format(ipaddress)
     try:
@@ -40,6 +54,7 @@ def delete_git(ipaddress):
     else:
         print(response)
 
+#does a fresh install of repository from github
 def install_git(ipaddress):
     
     command = "ssh pi@{} git clone https://github.com/michaelchimento/raspi_tit_scripts.git".format(ipaddress)
@@ -50,7 +65,8 @@ def install_git(ipaddress):
         print("Oops, something's wrong. See previous output for details.")
     else:
         print(response)
-        
+
+#essential to run if a fresh install. make sure launchers are executable
 def chmod_launchers(ipaddress,name):
     if "Puzzle" in name:
         launchername = "puzzle_launcher.sh"
@@ -69,7 +85,8 @@ def chmod_launchers(ipaddress,name):
         print("Oops, something's wrong. See previous output for details.")
     else:
         print(response)
-	
+
+#pulls most recent commit, updating repository on pi
 def git_pull(ipaddress):
     #update pi's with most recent commit
     command = "ssh pi@{} \"cd raspi_tit_scripts/ && git pull\"".format(ipaddress)
@@ -80,7 +97,8 @@ def git_pull(ipaddress):
         print("Oops, git is already up to date.")
     else:
         print(response)
-        
+
+#schedules shutdown of pi's with 1 min delay. Essential if python processes are killed
 def reboot(ipaddress):
     #update pi's with most recent commit
     command = "ssh pi@{} sudo shutdown -r 1".format(ipaddress)
@@ -91,13 +109,5 @@ def reboot(ipaddress):
         print(e)
     else:
         print(response)
-	
-def current_py_processes(ipaddress):
-    command = "ssh pi@{} pgrep -af python".format(ipaddress)
-    try:
-        response = terminal(command)
-    except Exception as e:
-        print("Oops, something's wrong. No processes running.")
-    else:
-        return response
+
     
