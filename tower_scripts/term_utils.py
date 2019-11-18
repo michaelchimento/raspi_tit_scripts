@@ -56,7 +56,7 @@ def delete_git(ipaddress):
 
 #clears out all files in apaporis directory
 def clear_apaporis(ipaddress):
-    command = "ssh pi@{}".format(ipaddress) + "\"rm -rf APAPORIS/ && mkdir -p APAPORIS/{CURRENT,MOVED,TO_TRANSFER}\""
+    command = "ssh pi@{}".format(ipaddress) + " \"rm -rf APAPORIS/ && mkdir -p APAPORIS/{CURRENT,MOVED,TO_TRANSFER}\""
     try:
         response = terminal(command)
     except Exception as e:

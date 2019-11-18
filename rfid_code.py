@@ -32,7 +32,7 @@ class motorThread(threading.Thread):
         self.name = name
         self.email_flag = 0
         self.state = 0
-        self.steps = 400
+        self.steps = 350
         self.pull_style = stepper.MICROSTEP
         self.kit = MotorKit()
 
