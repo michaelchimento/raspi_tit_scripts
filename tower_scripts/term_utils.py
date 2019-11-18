@@ -29,6 +29,65 @@ def kill_python(ipaddress):
 	    response = terminal(command)
 	except Exception:
 	    print("0 python scripts running")
+	    
+def delete_git(ipaddress):
+    command = "ssh pi@{} sudo rm -rf raspi_tit_scripts/".format(ipaddress)
+    try:
+        response = terminal(command)
+    except Exception as e:
+        print(e)
+        print("Oops, something's wrong. See previous output for details.")
+    else:
+        print(response)
+
+def install_git(ipaddress):
+    command = "ssh pi@{} sudo rm -rf raspi_tit_scripts/".format(ipaddress)
+    try:
+        response = terminal(command)
+    except Exception as e:
+        print(e)
+        print("Oops, something's wrong. See previous output for details.")
+    else:
+        print(response)
+    
+    command = "ssh pi@{} git clone https://github.com/michaelchimento/raspi_tit_scripts.git".format(ipaddress)
+    try:
+        response = terminal(command)
+    except Exception as e:
+        print(e)
+        print("Oops, something's wrong. See previous output for details.")
+    else:
+        print(response)
+        
+def chmod_launchers(ipaddress,name):
+    if "Puzzle" in name:
+        launchername = "puzzle_launcher.sh"
+    elif "Social" in name:
+    
+    elif "Observ" in name:
+    
+    elif "Feeder" in name:
+    
+    command = "ssh pi@{} sudo rm -rf raspi_tit_scripts/".format(ipaddress)
+    try:
+        response = terminal(command)
+    except Exception as e:
+        print(e)
+        print("Oops, something's wrong. See previous output for details.")
+    else:
+        print(response)
+    
+    
+    if "Puzzle" in name:
+    
+    elif "Social" in name:
+    
+    elif "Observ" in name:
+    
+    elif "Feeder" in name:
+    
+    
+    
 	
 def git_pull(ipaddress):
     #update pi's with most recent commit
