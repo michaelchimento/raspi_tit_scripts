@@ -7,7 +7,7 @@ from term_utils import terminal
 
 
 #replace this with appropriate local & remote paths for backup
-copy_from = "~/TITS/VIDEOS/"
+copy_from = "../../TITS/VIDEOS/"
 copy_to = "/mnt/Videos_GRETI/field_season_winter_2020/"
 
 if not os.path.exists(copy_to):
