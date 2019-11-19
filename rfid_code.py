@@ -36,7 +36,7 @@ class motorThread(threading.Thread):
         self.pull_style = stepper.MICROSTEP
         self.kit = MotorKit()
 
-    
+    #add line here
     def zero(self):
         global id_tag
         if(IO.input(23)==True):
