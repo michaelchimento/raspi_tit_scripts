@@ -22,7 +22,7 @@ from camera_settings import *
 # diskSpaceToReserve - Delete oldest images to avoid filling disk. How much byte to keep free on disk.
 # cameraSettings     - "" = no extra settings; "-hf" = Set horizontal flip of image; "-vf" = Set vertical flip; "-hf -vf" = both horizontal and vertical flip
 threshold = 10
-sensitivity = 250
+sensitivity = sensitivity_value
 forceCapture = False
 forceCaptureTime = 60 * 60 # Once an hour
 filenamePrefix = name
@@ -74,7 +74,7 @@ def make_video():
 
 while True:
     hour = datetime.now().hour
-    if hour >= 11 and hour < 16:
+    if hour >= social_start and hour < social_end:
         # Count changed pixels
         changedPixels = 0
         takePicture = False
