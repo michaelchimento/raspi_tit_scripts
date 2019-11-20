@@ -52,7 +52,7 @@ def mem_check(ipaddress):
     except Exception:
         print("error retrieving memory capacity")
     else:
-        print("{} has {} of memory full.".format(ipaddress,mem_info.rstrip()))
+        #print("{} has {} of memory full.".format(ipaddress,mem_info.rstrip()))
         return mem_info.rstrip().replace("%","")
 
 #deletes cloned github repository on pi
@@ -113,7 +113,7 @@ def chmod_launchers(ipaddress,name):
 #pulls most recent commit, updating repository on pi
 def git_pull(ipaddress):
     #update pi's with most recent commit
-    command = "ssh pi@{} \"cd raspi_tit_scripts/ && git pull\"".format(ipaddress)
+    command = "ssh pi@{} \"cd raspi_tit_scripts/ && git checkout logs && git pull\"".format(ipaddress)
     try:
         response = terminal(command)
     except Exception as e:
