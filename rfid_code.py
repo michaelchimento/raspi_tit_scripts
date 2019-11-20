@@ -36,7 +36,6 @@ class motorThread(threading.Thread):
         self.pull_style = stepper.MICROSTEP
         self.kit = MotorKit()
 
-    #add line here
     def zero(self):
         global id_tag
         if(IO.input(23)==True):
@@ -95,7 +94,7 @@ class motorThread(threading.Thread):
                 print("Email Sent!")
                 
             except:
-                print("no worky worky")
+                print("error with email")
         else:
             self.state=2
             

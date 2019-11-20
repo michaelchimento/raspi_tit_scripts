@@ -43,6 +43,18 @@ def kill_python(ipaddress):
 	except Exception:
 	    print("0 python scripts running")
 
+def mem_check(ipaddress):
+    #reads %used line from df cmd
+    command = "ssh pi@{} df | awk ".format(ipaddress) + "'/\/dev\/root/{print $5}'"
+       
+    try:
+        mem_info = terminal(command)
+    except Exception:
+        print("error retrieving memory capacity")
+    else:
+        print("{} has {} of memory full.".format(ipaddress,mem_info.rstrip()))
+        return mem_info.rstrip().replace("%","")
+
 #deletes cloned github repository on pi
 def delete_git(ipaddress):
     command = "ssh pi@{} sudo rm -rf raspi_tit_scripts/".format(ipaddress)
@@ -52,7 +64,7 @@ def delete_git(ipaddress):
         print(e)
         print("Oops, something's wrong. See previous output for details.")
     else:
-        print(response)
+        print("Deleted old git repository")
 
 #clears out all files in apaporis directory
 def clear_apaporis(ipaddress):

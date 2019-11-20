@@ -61,7 +61,7 @@ def depart(ser, tag_present, id_tag):
             
     return tag_present, id_tag
 
-ser = serial.Serial('/dev/ttyS0', baudrate=9600,
+ser = serial.Serial('/dev/ttyAMA0', baudrate=9600,
                     parity=serial.PARITY_NONE,
                     stopbits=serial.STOPBITS_ONE,
                     bytesize=serial.EIGHTBITS
