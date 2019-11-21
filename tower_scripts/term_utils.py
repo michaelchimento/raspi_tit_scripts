@@ -3,6 +3,18 @@
 import subprocess
 
 #general function that sends a command to the terminal, returns str of stout, or raises error
+
+
+def upgrade_python_package(ipaddress, package):
+    command = "ssh pi@{} sudo pip3 install {} --upgrade".format(ipaddress,package)
+    try:
+        response = terminal(command)
+    except Exception as e:
+        print("Oops, something's wrong. Couldn't upgrade picamera.")
+    else:
+        print("updated {}".format(package))        
+        return response
+
 def terminal(command):
     try:
         term_output = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
