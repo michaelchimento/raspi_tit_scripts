@@ -80,15 +80,12 @@ with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
     camera.awb_mode = camera_awb_mode
     camera.iso = camera_ISO
     output = StreamingOutput()
-    camera.annotate_text("{}".format("hello"))
+    camera.annotate_text("{}".format(name))
     camera.start_recording(output, format='mjpeg')
     try:
         address = ('', 8000)
         server = StreamingServer(address, StreamingHandler)
         server.serve_forever()
-        while True:
-            camera.annotate_text("{}".format("hello"))
-            camera.wait_recording(1)
     except KeyboardInterrupt:
         pass
     finally:
