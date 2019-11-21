@@ -2,7 +2,7 @@
 
 camera_rotation = 0
 camera_resolution = (1280,720)
-camera_brightness = 35
+camera_brightness = 40
 camera_shutter_speed = 3500
 camera_framerate = 30
 camera_awb_mode = 'tungsten'
