@@ -67,9 +67,13 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.send_error(404)
             self.end_headers()
 
-class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
+class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer, camera):
     allow_reuse_address = True
     daemon_threads = True
+    
+    def service_actions(self, camera):
+        camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        camera.wait_recording(0.5)
 
 with picamera.PiCamera() as camera:
     camera.rotation = camera_rotation
@@ -84,14 +88,10 @@ with picamera.PiCamera() as camera:
     camera.start_recording(output, format='mjpeg')
     try:
         address = ('', 8000)
-        server = StreamingServer(address, StreamingHandler)
+        server = StreamingServer(address, StreamingHandler, camera)
         server.serve_forever()
     except KeyboardInterrupt:
         pass
-    else:
-        while True:
-            camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            camera.wait_recording(0.5)
-    
+
     finally:
         camera.stop_recording()
