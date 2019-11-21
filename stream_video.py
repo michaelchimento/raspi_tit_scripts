@@ -71,7 +71,8 @@ class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
     allow_reuse_address = True
     daemon_threads = True
     
-    def service_actions(self, camera):
+    def service_actions(self):
+        global camera
         camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         camera.wait_recording(0.5)
 
