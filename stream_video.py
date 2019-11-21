@@ -86,12 +86,13 @@ with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
         address = ('', 8000)
         server = StreamingServer(address, StreamingHandler)
         server.serve_forever()
+    except KeyboardInterrupt:
+        pass
     else:
         while True:
             print("in loop")
             camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             camera.wait_recording(0.5)
-    except KeyboardInterrupt:
-        pass
+    
     finally:
         camera.stop_recording()
