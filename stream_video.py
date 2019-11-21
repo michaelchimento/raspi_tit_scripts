@@ -1,45 +1,101 @@
 import io
-import socket
-import struct
-import time
 import picamera
+import logging
+import socketserver
+import datetime
+from threading import Condition
+from http import server
+from rpi_info import name
+from camera_settings import *
 
-# Connect a client socket to my_server:8000 (change my_server to the
-# hostname of your server)
-client_socket = socket.socket()
-client_socket.connect(('pop_os', 8000))
+PAGE="""\
+<html>
+<head>
+<title>Greti Live Stream</title>
+</head>
+<body>
+<h1>{}</h1>
+<img src="stream.mjpg" width="640" height="480" />
+</body>
+</html>
+"""
 
-# Make a file-like object out of the connection
-connection = client_socket.makefile('wb')
-try:
-    camera = picamera.PiCamera()
-    camera.resolution = (640, 480)
-    # Start a preview and let the camera warm up for 2 seconds
-    camera.start_preview()
-    time.sleep(2)
+class StreamingOutput(object):
+    def __init__(self):
+        self.frame = None
+        self.buffer = io.BytesIO()
+        self.condition = Condition()
 
-    # Note the start time and construct a stream to hold image data
-    # temporarily (we could write it directly to connection but in this
-    # case we want to find out the size of each capture first to keep
-    # our protocol simple)
-    start = time.time()
-    stream = io.BytesIO()
-    for foo in camera.capture_continuous(stream, 'jpeg'):
-        # Write the length of the capture to the stream and flush to
-        # ensure it actually gets sent
-        connection.write(struct.pack('<L', stream.tell()))
-        connection.flush()
-        # Rewind the stream and send the image data over the wire
-        stream.seek(0)
-        connection.write(stream.read())
-        # If we've been capturing for more than 30 seconds, quit
-        if time.time() - start > 30:
-            break
-        # Reset the stream for the next capture
-        stream.seek(0)
-        stream.truncate()
-    # Write a length of zero to the stream to signal we're done
-    connection.write(struct.pack('<L', 0))
-finally:
-    connection.close()
-    client_socket.close()
+    def write(self, buf):
+        if buf.startswith(b'\xff\xd8'):
+            # New frame, copy the existing buffer's content and notify all
+            # clients it's available
+            self.buffer.truncate()
+            with self.condition:
+                self.frame = self.buffer.getvalue()
+                self.condition.notify_all()
+            self.buffer.seek(0)
+        return self.buffer.write(buf)
+
+class StreamingHandler(server.BaseHTTPRequestHandler):
+    def do_GET(self):
+        if self.path == '/':
+            self.send_response(301)
+            self.send_header('Location', '/index.html')
+            self.end_headers()
+        elif self.path == '/index.html':
+            content = PAGE.encode('utf-8')
+            self.send_response(200)
+            self.send_header('Content-Type', 'text/html')
+            self.send_header('Content-Length', len(content))
+            self.end_headers()
+            self.wfile.write(content)
+        elif self.path == '/stream.mjpg':
+            self.send_response(200)
+            self.send_header('Age', 0)
+            self.send_header('Cache-Control', 'no-cache, private')
+            self.send_header('Pragma', 'no-cache')
+            self.send_header('Content-Type', 'multipart/x-mixed-replace; boundary=FRAME')
+            self.end_headers()
+            try:
+                while True:
+                    with output.condition:
+                        output.condition.wait()
+                        frame = output.frame
+                    self.wfile.write(b'--FRAME\r\n')
+                    self.send_header('Content-Type', 'image/jpeg')
+                    self.send_header('Content-Length', len(frame))
+                    self.end_headers()
+                    self.wfile.write(frame)
+                    self.wfile.write(b'\r\n')
+            except Exception as e:
+                logging.warning(
+                    'Removed streaming client %s: %s',
+                    self.client_address, str(e))
+        else:
+            self.send_error(404)
+            self.end_headers()
+
+class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
+    allow_reuse_address = True
+    daemon_threads = True
+
+with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
+    camera.rotation = camera_rotation
+    camera.contrast = camera_contrast
+    camera.resolution = camera_resolution
+    camera.brightness = camera_brightness
+    camera.framerate = camera_framerate
+    camera.awb_mode = camera_awb_mode 
+    camera.iso = camera_ISO    
+    output = StreamingOutput()
+    camera.start_recording(output, format='mjpeg')
+    while (datetime.now()-start).seconds < video_duration:
+            camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H:%M:%S')        	
+            camera.wait_recording(0.5)
+    try:
+        address = ('', 8000)
+        server = StreamingServer(address, StreamingHandler)
+        server.serve_forever()
+    finally:
+        camera.stop_recording()
