@@ -1,24 +1,15 @@
 import io
+import itertools
 import picamera
 import logging
 import socketserver
-import datetime
+from datetime import datetime
 from threading import Condition
 from http import server
 from rpi_info import name
 from camera_settings import *
 
-PAGE="""\
-<html>
-<head>
-<title>Greti Live Stream</title>
-</head>
-<body>
-<h1>{}</h1>
-<img src="stream.mjpg" width="640" height="480" />
-</body>
-</html>
-"""
+PAGE="<html><head><title>Greti Live Stream</title></head><body><h1>{}</h1><img src=\"stream.mjpg\" width=\"640\" height=\"480\" /></body></html>".format(name)
 
 class StreamingOutput(object):
     def __init__(self):
@@ -86,16 +77,18 @@ with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
     camera.resolution = camera_resolution
     camera.brightness = camera_brightness
     camera.framerate = camera_framerate
-    camera.awb_mode = camera_awb_mode 
-    camera.iso = camera_ISO    
+    camera.awb_mode = camera_awb_mode
+    camera.iso = camera_ISO
     output = StreamingOutput()
     camera.start_recording(output, format='mjpeg')
-    while (datetime.now()-start).seconds < video_duration:
-            camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H:%M:%S')        	
-            camera.wait_recording(0.5)
     try:
         address = ('', 8000)
         server = StreamingServer(address, StreamingHandler)
         server.serve_forever()
+        while True:
+            camera.annotate_text("{}".format("hello"))
+            camera.wait_recording(1)
+    except KeyboardInterrupt:
+        pass
     finally:
         camera.stop_recording()
