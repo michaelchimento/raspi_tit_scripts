@@ -56,11 +56,12 @@ def make_video():
     with picamera.PiCamera() as camera:
         #change these values in camera_settings on github and push to all pis for quick universal changes
         camera.rotation = camera_rotation
+        camera.contrast = camera_contrast
         camera.resolution = camera_resolution
         camera.brightness = camera_brightness
-        camera.shutter_speed = camera_shutter_speed
+        camera.framerate = camera_framerate
         camera.awb_mode = camera_awb_mode 
-        camera.ISO = camera_ISO
+        camera.iso = camera_ISO
         filename = "{}_{}.h264".format(filenamePrefix,datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
         camera.annotate_text_size = 15
         camera.start_recording(filepath + filename)

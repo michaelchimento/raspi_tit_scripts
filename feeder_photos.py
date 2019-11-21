@@ -37,7 +37,7 @@ def make_photos():
         camera.brightness = camera_brightness
         camera.shutter_speed = camera_shutter_speed
         camera.awb_mode = camera_awb_mode 
-        camera.ISO = camera_ISO
+        camera.iso = camera_ISO
         time_stamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
         dir_name = '{}{}_{}'.format(filepath,filenamePrefix,time_stamp)
         os.mkdir(dir_name)
