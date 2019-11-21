@@ -67,7 +67,7 @@ class StreamingHandler(server.BaseHTTPRequestHandler):
             self.send_error(404)
             self.end_headers()
 
-class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer, camera):
+class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
     allow_reuse_address = True
     daemon_threads = True
     
@@ -88,7 +88,7 @@ with picamera.PiCamera() as camera:
     camera.start_recording(output, format='mjpeg')
     try:
         address = ('', 8000)
-        server = StreamingServer(address, StreamingHandler, camera)
+        server = StreamingServer(address, StreamingHandler)
         server.serve_forever()
     except KeyboardInterrupt:
         pass
