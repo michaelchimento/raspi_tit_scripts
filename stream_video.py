@@ -80,7 +80,7 @@ with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
     camera.awb_mode = camera_awb_mode
     camera.iso = camera_ISO
     output = StreamingOutput()
-    camera.annotate_text("{}".format(name))
+    camera.annotate_text = "{}".format(name)
     camera.start_recording(output, format='mjpeg')
     try:
         address = ('', 8000)
