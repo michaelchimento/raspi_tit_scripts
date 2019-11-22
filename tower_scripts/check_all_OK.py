@@ -2,13 +2,13 @@
 
 
 from ipsandnames import pi_data_table
-from term_utils import terminal, ping_pi, current_py_processes, mem_check
+from term_utils import terminal, ping_pi, current_py_processes, mem_check, reboot
 import smtplib
 
 #pi_data_table format is [(pi name1, pi IP1), (pi name2, pi IP2),... etc]
 #print(pi_data_table)
 
-email_results = False
+email_results = True
 
 def python_process_check():
     processes = []
@@ -79,4 +79,7 @@ if email_results:
     except:
         print("error in check_ok email")
 
+for i in range(len(pi_data_table)):
+    if "Problem" in processes[i]:
+        reboot(pi_data_table[i][1])
 
