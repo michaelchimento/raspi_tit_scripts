@@ -35,8 +35,11 @@ def make_photos():
         camera.rotation = camera_rotation
         camera.resolution = camera_resolution
         camera.brightness = camera_brightness
+        camera.sharpness = camera_sharpness
+        camera.contrast = camera_contrast
         camera.shutter_speed = camera_shutter_speed
-        camera.awb_mode = camera_awb_mode 
+        camera.awb_mode = camera_awb_mode
+        camera.exposure_mode = camera_exposure_mode
         camera.iso = camera_ISO
         time_stamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
         dir_name = '{}{}_{}'.format(filepath,filenamePrefix,time_stamp)
@@ -49,6 +52,7 @@ def make_photos():
                 return dir_name
 
 while (True):
+    from camera_settings import *
     hour = datetime.now().hour
     if hour >= observ_start and hour < observ_end:
         dir_name = make_photos()
