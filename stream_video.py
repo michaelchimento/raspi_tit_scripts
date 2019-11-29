@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import io
 import itertools
 import picamera
@@ -78,11 +79,13 @@ class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
 
 with picamera.PiCamera() as camera:
     camera.rotation = camera_rotation
-    camera.contrast = camera_contrast
     camera.resolution = camera_resolution
     camera.brightness = camera_brightness
+    camera.sharpness = camera_sharpness
+    camera.contrast = camera_contrast
     camera.framerate = camera_framerate
     camera.awb_mode = camera_awb_mode
+    camera.exposure_mode = camera_exposure_mode
     camera.iso = camera_ISO
     output = StreamingOutput()
     camera.annotate_text = "{}".format(name)
