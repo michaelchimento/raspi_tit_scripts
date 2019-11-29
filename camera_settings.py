@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 
+from datetime import datetime
+
 camera_rotation = 0
-camera_resolution = (1920,1080)
+camera_resolution = "1080p"
 camera_ISO = 0
 camera_brightness = 50
 camera_shutter_speed = 3500
