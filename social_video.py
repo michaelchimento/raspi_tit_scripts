@@ -60,10 +60,10 @@ def make_video():
         camera.brightness = camera_brightness
         camera.sharpness = camera_sharpness
         camera.contrast = camera_contrast
-        camera.framerate = camera_framerate
         camera.awb_mode = camera_awb_mode
-        camera.exposure_mode = camera_exposure_mode
         camera.iso = camera_ISO
+        camera.exposure_mode, _shutter_speed = set_exposure_shutter(hour)
+        camera.framerate = camera_framerate
         filename = "{}_{}.h264".format(filenamePrefix,datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
         camera.annotate_text_size = 15
         camera.start_recording(filepath + filename)
@@ -76,7 +76,6 @@ def make_video():
         os.rename(filepath + filename, moved_path + filename)
 
 while True:
-    from camera_settings import *
     hour = datetime.now().hour
     if hour >= social_start and hour < social_end:
         # Count changed pixels

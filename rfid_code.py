@@ -118,9 +118,8 @@ class motorThread(threading.Thread):
         print("Exiting " + self.name)
 
 def write_csv(to_write_list,file_name):
-    savefile = open(file_name, "a")
-    savefile.write(to_write_list+"\n")
-    savefile.close()
+    with open(file_name, "a") as savefile:
+        savefile.write(to_write_list+"\n")
 
 def mof_read(ser):
     ser.write("MOF\r".encode())
@@ -202,21 +201,22 @@ mof_read(ser)
 #set up csv
 if not os.path.exists("data/"):
         os.makedirs("data/")
+
+#set file_name and timestamp for start of csv
 global file_name
 file_name = "data/{}_RFID.csv".format(comp_name)
 time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
 if not os.path.isfile(file_name):
-    header = "ID, Event, YMD, Timestamp\n"
-    savefile = open(file_name, "a") # open data file in write mode
-    savefile.write("#{} start time: {} \n".format(comp_name,time_stamp))
-    savefile.write(header)
+    with open(file_name, "a") as savefile:
+        header = "ID, Event, YMD, Timestamp\n"
+        savefile.write("#{} start time: {} \n".format(comp_name,time_stamp))
+        savefile.write(header)
 else:
-    savefile = open(file_name, "a") # open data file in write mode
-    savefile.write("#{} start time: {} \n".format(comp_name,time_stamp))
-    
-savefile.close()
+    with open(file_name, "a") as savefile: # open data file in write mode
+        savefile.write("#{} start time: {} \n".format(comp_name,time_stamp))
 
-
+#begin running motor threads
 motor_thread = motorThread(1, "Motor-Thread")
 motor_thread.start()
 

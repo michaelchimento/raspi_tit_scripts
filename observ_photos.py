@@ -28,7 +28,7 @@ moved_path = "/home/pi/APAPORIS/MOVED/"
 filenamePrefix = name
 
 
-def make_photos():
+def make_photos(hour):
     global filepath
     global moved_path
     with picamera.PiCamera() as camera:
@@ -37,10 +37,9 @@ def make_photos():
         camera.brightness = camera_brightness
         camera.sharpness = camera_sharpness
         camera.contrast = camera_contrast
-        camera.shutter_speed = camera_shutter_speed
         camera.awb_mode = camera_awb_mode
-        camera.exposure_mode = camera_exposure_mode
         camera.iso = camera_ISO
+        camera.exposure_mode, camera.shutter_speed = set_exposure_shutter(hour)
         time_stamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
         dir_name = '{}{}_{}'.format(filepath,filenamePrefix,time_stamp)
         os.mkdir(dir_name)
@@ -52,10 +51,9 @@ def make_photos():
                 return dir_name
 
 while (True):
-    from camera_settings import *
     hour = datetime.now().hour
     if hour >= observ_start and hour < observ_end:
-        dir_name = make_photos()
+        dir_name = make_photos(hour)
         shutil.move(dir_name,moved_path)
     else:
         pass
