@@ -47,7 +47,7 @@ def make_photos(hour):
         camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')
         for i, filename in enumerate(camera.capture_continuous("{}/{}_".format(dir_name,filenamePrefix)+"{timestamp:%Y-%m-%d-%H-%M-%S-%f}.jpg")):
             camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')
-            if i == 600:
+            if i == 599:
                 return dir_name
 
 while (True):
