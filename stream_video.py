@@ -10,7 +10,7 @@ from http import server
 from rpi_info import name
 from camera_settings import *
 
-PAGE="<html><head><title>Greti Live Stream</title></head><body><h1>{}</h1><img src=\"stream.mjpg\" width=\"1280\" height=\"720\" /></body></html>".format(name)
+PAGE="<html><head><title>Greti Live Stream</title></head><body><h1>{}</h1><img src=\"stream.mjpg\" width=\"1920\" height=\"1080\" /></body></html>".format(name)
 
 class StreamingOutput(object):
     def __init__(self):
@@ -79,7 +79,7 @@ class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
 
 with picamera.PiCamera() as camera:
     camera.rotation = camera_rotation
-    camera.resolution = "720p"
+    camera.resolution = "1080p"
     camera.brightness = camera_brightness
     camera.sharpness = camera_sharpness
     camera.contrast = camera_contrast
