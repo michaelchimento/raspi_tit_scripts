@@ -16,7 +16,7 @@ server_socket.bind(('0.0.0.0', 8000))
 
 
 # Accept a single connection and make a file-like object out of it
-while true:
+while True:
     server_socket.listen(0)
     with server_socket.accept()[0].makefile('wb') as connection:
 
