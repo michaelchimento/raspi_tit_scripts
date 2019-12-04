@@ -5,7 +5,7 @@ from datetime import datetime
 camera_rotation = 0
 camera_resolution = "720p"
 camera_ISO = 0
-camera_brightness = 50
+camera_brightness = 40
 camera_shutter_speed = 3500
 camera_framerate = 30
 camera_exposure_mode = 'auto'
