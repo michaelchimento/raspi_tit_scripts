@@ -18,15 +18,16 @@ server_socket.bind(('0.0.0.0', 8000))
 # Accept a single connection and make a file-like object out of it
 while True:
     server_socket.listen(0)
-    with server_socket.accept()[0].makefile('wb') as connection:
+    try:
+        with server_socket.accept()[0].makefile('wb') as connection:
 
-        try:
-            camera.start_recording(connection, format='h264')
-            camera.wait_recording(60)
-            camera.stop_recording()
-        except ConnectionResetError:
-            pass
-        finally:
-            camera.stop_recording()
-            connection.close()
-            server_socket.close()
+            try:
+                camera.start_recording(connection, format='h264')
+                camera.wait_recording(60)
+                camera.stop_recording()
+            finally:
+                camera.stop_recording()
+                connection.close()
+                server_socket.close()
+    except ConnectionResetError:
+        pass
