@@ -13,15 +13,20 @@ camera.awb_mode = camera_awb_mode
 camera.iso = camera_ISO
 server_socket = socket.socket()
 server_socket.bind(('0.0.0.0', 8000))
-server_socket.listen(0)
+
 
 # Accept a single connection and make a file-like object out of it
-connection = server_socket.accept()[0].makefile('wb')
-try:
-    camera.start_recording(connection, format='h264')
-    camera.wait_recording(60)
-    camera.stop_recording()
-finally:
-    camera.stop_recording()
-    connection.close()
-    server_socket.close()
+while true:
+    server_socket.listen(0)
+    with server_socket.accept()[0].makefile('wb') as connection:
+
+        try:
+            camera.start_recording(connection, format='h264')
+            camera.wait_recording(60)
+            camera.stop_recording()
+        except ConnectionResetError:
+            pass
+        finally:
+            camera.stop_recording()
+            connection.close()
+            server_socket.close()
