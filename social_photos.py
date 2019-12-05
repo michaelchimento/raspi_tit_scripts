@@ -22,34 +22,10 @@ from camera_settings import *
 # filenamePrefix     - string that prefixes the file name for easier identification of files.
 # diskSpaceToReserve - Delete oldest images to avoid filling disk. How much byte to keep free on disk.
 # cameraSettings     - "" = no extra settings; "-hf" = Set horizontal flip of image; "-vf" = Set vertical flip; "-hf -vf" = both horizontal and vertical flip
-threshold = 10
-sensitivity = sensitivity_value
-forceCapture = False
-forceCaptureTime = 60 * 60 # Once an hour
-filenamePrefix = name
+
 filepath = "/home/pi/APAPORIS/CURRENT/"
 moved_path = "/home/pi/APAPORIS/MOVED/"
-video_duration = 180
-diskSpaceToReserve = 40 * 1024 * 1024 # Keep 40 mb free on disk
-cameraSettings = ""
-
-# Test-Image settings
-testWidth = 200
-testHeight = 150
-
-# this is the default setting, if the whole image should be scanned for changed pixel
-testAreaCount = 1
-# [ [[start pixel on left side,end pixel on right side],[start pixel on top side,stop pixel on bottom side]] ]
-testBorders = [ [[1,testWidth],[1,testHeight]] ]
-debugMode = True
-
-# Capture a small test image (for motion detection)
-def captureTestImage(settings, width, height):
-    command = "raspistill {} -w {} -h {} -t 200 -e bmp -n -o -".format(settings, width, height)
-    output = subprocess.check_output(command, shell=True)
-    im = Image.frombytes(mode="RGB",size=(width,height),data=output)
-    buffer = im.load()
-    return im, buffer
+filenamePrefix = name
 
 def make_photos(hour):
     global filepath
