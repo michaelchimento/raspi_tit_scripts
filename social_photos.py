@@ -6,6 +6,7 @@ from io import StringIO
 import subprocess
 import socket
 import os
+import shutil
 import time
 from datetime import datetime
 from PIL import Image
