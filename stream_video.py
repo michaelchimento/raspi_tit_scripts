@@ -10,7 +10,6 @@ from http import server
 from rpi_info import name
 from camera_settings import *
 
-PAGE="<html><head><title>Greti Live Stream</title></head><body><h1>{}</h1><img src=\"stream.mjpg\" width=\"1920\" height=\"1080\" /></body></html>".format(name)
 
 class StreamingOutput(object):
     def __init__(self):
@@ -92,6 +91,9 @@ with picamera.PiCamera() as camera:
     camera.annotate_text = "{}".format(name)
     camera.start_recording(output, format='mjpeg')
     try:
+        frame_width = camera.resolution[0]
+        frame_height = camera.resolution[1]    
+        PAGE="<html><head><title>Greti Live Stream</title></head><body><h1>{}</h1><img src=\"stream.mjpg\" width=\"{}\" height=\"{}\" /></body></html>".format(name,frame_width, frame_height)
         address = ('', 8000)
         server = StreamingServer(address, StreamingHandler)
         server.serve_forever()
