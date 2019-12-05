@@ -33,6 +33,7 @@ def make_photos(hour):
     global moved_path
     with picamera.PiCamera() as camera:
         camera.rotation = camera_rotation
+        camera.zoom = observ_zoom
         camera.resolution = camera_resolution
         camera.brightness = camera_brightness
         camera.sharpness = camera_sharpness
