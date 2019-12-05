@@ -46,7 +46,8 @@ def make_photos(hour):
         os.mkdir(dir_name)
         camera.annotate_text_size = 15
         camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')
-        for i, filename in enumerate(camera.capture_continuous("{}/{}_".format(dir_name,filenamePrefix)+"{timestamp:%Y-%m-%d-%H-%M-%S-%f}.jpg")):
+        for i, filename in enumerate(camera.capture_continuous("{}/{}_".format(dir_name,filenamePrefix)+"{timestamp:%Y-%m-%d-%H-%M-%S-%f}.jpg"), 
+                                        resize=(resize_scale*camera.resolution[0],resize_scale*camera.resolution[1])):
             camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')
             if i == 599:
                 return dir_name

@@ -8,6 +8,7 @@ focus_zoom = (0.25, 0.25, 0.5, 0.5)
 feeder_zoom = (0.25, 0.25, 0.5, 0.5)
 observ_zoom = (0, 0.25, 1, 0.5)
 social_zoom = (0, 0.25, 1, 0.5)
+resize_scale = .5
 camera_ISO = 0
 camera_brightness = 40
 camera_shutter_speed = 3500
