@@ -78,7 +78,7 @@ class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
 
 with picamera.PiCamera() as camera:
     camera.rotation = camera_rotation
-    camera.resolution = "1080p"
+    camera.resolution = "720p"
     camera.zoom = focus_zoom
     camera.brightness = camera_brightness
     camera.sharpness = camera_sharpness
@@ -91,8 +91,8 @@ with picamera.PiCamera() as camera:
     camera.annotate_text = "{}".format(name)
     camera.start_recording(output, format='mjpeg')
     try:
-        frame_width = camera.resolution[0]
-        frame_height = camera.resolution[1]    
+        frame_width = camera.zoom[2]*camera.resolution[0]
+        frame_height = camera.zoom[3]*camera.resolution[1]    
         PAGE="<html><head><title>Greti Live Stream</title></head><body><h1>{}</h1><img src=\"stream.mjpg\" width=\"{}\" height=\"{}\" /></body></html>".format(name,frame_width, frame_height)
         address = ('', 8000)
         server = StreamingServer(address, StreamingHandler)
