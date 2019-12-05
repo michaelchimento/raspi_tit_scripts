@@ -3,7 +3,11 @@
 from datetime import datetime
 
 camera_rotation = 0
-camera_resolution = "720p"
+camera_resolution = "1080p"
+focus_zoom = (0.25, 0.25, 0.5, 0.5)
+feeder_zoom = (0.25, 0.25, 0.5, 0.5)
+observ_zoom = (0.25, 0.25, 0.5, 0.5)
+social_zoom = (0.25, 0.25, 0.5, 0.5)
 camera_ISO = 0
 camera_brightness = 40
 camera_shutter_speed = 3500

@@ -80,6 +80,7 @@ class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
 with picamera.PiCamera() as camera:
     camera.rotation = camera_rotation
     camera.resolution = "1080p"
+    camera.zoom = focus_zoom
     camera.brightness = camera_brightness
     camera.sharpness = camera_sharpness
     camera.contrast = camera_contrast
