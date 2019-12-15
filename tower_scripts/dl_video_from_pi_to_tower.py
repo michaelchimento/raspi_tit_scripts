@@ -46,8 +46,8 @@ for pi in pi_data_table:  #use this for more than one pi
         print("{} not responding to pings".format(pi[0]))
     else:
         print("Transferring videos from Pi {} to Desktop".format(pi))
-        file_count_TO_TRANSFER = terminal("ssh pi@{} ls {} | wc -l".format(pi[1],copy_from))
-        
+        command = "ssh pi@{} ls {} | wc -l".format(pi[1],copy_from)
+        file_count_TO_TRANSFER = terminal(command)
         
         if int(file_count_TO_TRANSFER) == 0:
             print("no files to transfer to tower")
@@ -59,7 +59,7 @@ for pi in pi_data_table:  #use this for more than one pi
                 terminal(command)
         
             #create commands to copy files from pi, feeder and observ pi's require recursive scp command
-            if "Puzzle" in pi[0] or "Social" in pi[0]:
+            if "Puzzle" in pi[0]:
                 print("Moving {} videos".format(file_count_TO_TRANSFER.rstrip()))
                 command = 'scp -p pi@{}:{}* {}'.format(pi[1],copy_from,copy_to)
             else:
@@ -70,7 +70,8 @@ for pi in pi_data_table:  #use this for more than one pi
             terminal(command)
             
             #count files which have been moved
-            file_count_TOWER = terminal("ls {} | wc -l".format(copy_to))
+            command = "ls {} | wc -l".format(copy_to)
+            file_count_TOWER = terminal(command)
 
             if  file_count_TO_TRANSFER == file_count_TOWER:
                 command = 'ssh pi@{} rm -rf {}*'.format(pi[1],copy_from)

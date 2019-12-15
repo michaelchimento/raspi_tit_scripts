@@ -134,10 +134,10 @@ def git_pull(ipaddress):
     else:
         print(response)
 
-#schedules shutdown of pi's with 1 min delay. Essential if python processes are killed
+#schedules shutdown of pi's . Essential if python processes are killed
 def reboot(ipaddress):
     #update pi's with most recent commit
-    command = "ssh pi@{} sudo shutdown -r 1".format(ipaddress)
+    command = "ssh pi@{} sudo shutdown -r now".format(ipaddress)
     try:
         response = terminal(command)
     except Exception as e:
