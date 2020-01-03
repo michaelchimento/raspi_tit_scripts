@@ -8,7 +8,9 @@ import smtplib
 #pi_data_table format is [(pi name1, pi IP1), (pi name2, pi IP2),... etc]
 #print(pi_data_table)
 
-email_results = True
+email_results = False
+
+print("####{} check_all_ok.py####".format(dt.datetime.now().strftime('%Y-%m-%d_%H_%M')))
 
 def python_process_check():
     processes = []

@@ -4,7 +4,9 @@ import subprocess
 import os
 import numpy as np
 from term_utils import terminal
+import datetime as dt
 
+print("####{} backup_function.py####".format(dt.datetime.now().strftime('%Y-%m-%d_%H_%M')))
 
 #replace this with appropriate local & remote paths for backup
 copy_from = "../../TITS/VIDEOS/"

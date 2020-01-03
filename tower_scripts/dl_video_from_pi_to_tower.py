@@ -8,7 +8,7 @@ from term_utils import terminal, ping_pi
 
 #reads from csv that has col1:names, col2:IP address (no user!)
 #pi_data_table format is [(pi name1, pi IP1), (pi name2, pi IP2),... etc]
-#print(pi_data_table)
+print("####{} dl_video_from_pi_to_tower.py####".format(dt.datetime.now().strftime('%Y-%m-%d_%H_%M')))
 
 ### MOVE VIDEOS TO TRANSFER FOLDER ON PI
 for pi in pi_data_table:  #use this for more than one pi
