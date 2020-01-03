@@ -141,7 +141,19 @@ def reboot(ipaddress):
     try:
         response = terminal(command)
     except Exception as e:
-        print("Oops, something's wrong.")
+        print("Oops, something went wrong while shutting down.")
+        print(e)
+    else:
+        print(response)
+
+#schedules shutdown of pi's . Essential if python processes are killed
+def take_test_img(ipaddress):
+    #update pi's with most recent commit
+    command = "ssh pi@{} raspistill -o test.jpg".format(ipaddress)
+    try:
+        response = terminal(command)
+    except Exception as e:
+        print("Oops, something went wrong while taking a photo.")
         print(e)
     else:
         print(response)
