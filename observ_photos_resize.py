@@ -17,6 +17,15 @@ from camera_settings import *
 filepath = "/home/pi/APAPORIS/CURRENT/"
 moved_path = "/home/pi/APAPORIS/MOVED/"
 filenamePrefix = name
+resize_tuple = (camera_resolution[0],int(.5*camera_resolution[1]))
+
+def resize_folder(directory):
+    for item in directory:
+        fullpath = filepath+item
+        if os.path.isfile(fullpath):
+            im = Image.open(fullpath)
+            imResize = im.resize(resize_tuple, Image.ANTIALIAS)
+            imResize.save(fullpath, 'JPEG', quality=90)
 
 def make_photos(hour):
     global filepath
@@ -36,8 +45,7 @@ def make_photos(hour):
         os.mkdir(dir_name)
         camera.annotate_text_size = 15
         camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')
-        resize_tuple = (camera.resolution[0],int(.5*camera.resolution[1]))
-        for i, filename in enumerate(camera.capture_continuous("{}/{}_".format(dir_name,filenamePrefix)+"{timestamp:%Y-%m-%d-%H-%M-%S-%f}.jpg", resize = resize_tuple)):
+        for i, filename in enumerate(camera.capture_continuous("{}/{}_".format(dir_name,filenamePrefix)+"{timestamp:%Y-%m-%d-%H-%M-%S-%f}.jpg")):
             camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')
             if i == 599:
                 return dir_name
@@ -46,6 +54,7 @@ while (True):
     hour = datetime.now().hour
     if hour >= observ_start and hour < observ_end:
         dir_name = make_photos(hour)
+        resize_folder(dir_name)
         shutil.move(dir_name,moved_path)
     else:
         pass
