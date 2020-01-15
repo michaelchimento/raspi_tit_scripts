@@ -4,6 +4,7 @@
 from ipsandnames import pi_data_table
 from term_utils import terminal, ping_pi, current_py_processes, mem_check, reboot
 import smtplib
+import datetime as dt
 
 #pi_data_table format is [(pi name1, pi IP1), (pi name2, pi IP2),... etc]
 #print(pi_data_table)
