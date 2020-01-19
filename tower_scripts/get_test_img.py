@@ -31,9 +31,13 @@ for pi in pi_data_table:
             most_recent_img = terminal(command).strip()
             print(most_recent_img)
             #copy to tower
-            command = 'scp pi@{}:{}/{}/{} {}/{}.jpg'.format(pi[1], copy_from,most_recent_folder,most_recent_img, copy_to,pi[0])
-            print(command)
-            terminal(command)
+            try:
+                command = 'scp pi@{}:{}/{}/{} {}/{}.jpg'.format(pi[1], copy_from,most_recent_folder,most_recent_img, copy_to,pi[0])
+                print(command)
+                terminal(command)
+            except:
+                print("nothing in MOVED folder to scp")                
+                pass
 
 
 
