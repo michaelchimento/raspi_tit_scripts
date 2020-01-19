@@ -13,7 +13,7 @@ from sys import argv
 
 #run "python3 stream_video.py 1" if you'd like to toggle on the focus zoom. Defaults to framing view.
 global focus
-focus = sys.argv[1] if len(sys.argv) > 1 else 0
+focus = argv[1] if len(argv) > 1 else 0
 
 class StreamingOutput(object):
     def __init__(self):
