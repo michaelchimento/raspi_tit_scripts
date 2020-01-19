@@ -9,9 +9,11 @@ from threading import Condition
 from http import server
 from rpi_info import name
 from camera_settings import *
+from sys import argv
 
+#run "python3 stream_video.py 1" if you'd like to toggle on the focus zoom. Defaults to framing view.
 global focus
-focus = False
+focus = argv[1] if len(argv) > 1 else 0
 
 class StreamingOutput(object):
     def __init__(self):
