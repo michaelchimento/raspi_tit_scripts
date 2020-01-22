@@ -15,6 +15,16 @@ def upgrade_python_package(ipaddress, package):
         print("updated {}".format(package))        
         return response
 
+def copy_ssh_id(ipaddress):
+    command = "ssh-copy-id pi@{}".format(ipaddress)
+    try:
+        response = terminal(command)
+    except Exception as e:
+        print("Oops, something's wrong. Couldn't copy id.")
+    else:
+        print("Successfully copied ssh key to {}".format(ipaddress))        
+        return response
+
 def terminal(command):
     try:
         term_output = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
