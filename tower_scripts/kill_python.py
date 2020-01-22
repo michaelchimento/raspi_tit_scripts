@@ -7,7 +7,7 @@ from term_utils import ping_pi, terminal, kill_python
 #print(pi_data_table)
 
 for pi in pi_data_table:
-    print("Updating scripts from Github in {}".format(pi))
+    print("Killing python processes in {}".format(pi))
     reachable = ping_pi(pi[1])
     if not reachable:
         pass
