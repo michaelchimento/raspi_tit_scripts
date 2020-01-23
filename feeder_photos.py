@@ -39,6 +39,7 @@ def make_photos(hour):
         camera.sharpness = camera_sharpness
         camera.contrast = camera_contrast
         camera.awb_mode = camera_awb_mode
+        camera.color_effects = camera_color_effects
         camera.iso = camera_ISO
         camera.exposure_mode, camera.shutter_speed = set_exposure_shutter(hour)
         time_stamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')

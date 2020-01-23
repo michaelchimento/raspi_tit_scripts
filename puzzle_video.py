@@ -55,7 +55,6 @@ def make_video():
     global moved_path
     with picamera.PiCamera() as camera:
         #change these values in camera_settings on github and push to all pis for quick universal changes
-
         camera.rotation = camera_rotation
         camera.resolution = camera_resolution
         camera.brightness = camera_brightness
@@ -63,6 +62,7 @@ def make_video():
         camera.contrast = camera_contrast
         camera.awb_mode = camera_awb_mode
         camera.iso = camera_ISO
+        camera.color_effects = camera_color_effects
         camera.framerate = camera_framerate
         camera.exposure_mode, _shutter_speed = set_exposure_shutter(hour)
         filename = "{}_{}.h264".format(filenamePrefix,datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
