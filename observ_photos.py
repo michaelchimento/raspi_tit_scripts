@@ -58,7 +58,7 @@ while (True):
     hour = datetime.now().hour
     if hour >= observ_start and hour < observ_end:
         dir_name = make_photos(hour)
-        resize_folder(dir_name)
+        crop_folder(dir_name)
         shutil.move(dir_name,moved_path)
     else:
         pass
