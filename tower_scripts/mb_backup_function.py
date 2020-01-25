@@ -10,7 +10,7 @@ print("####{} backup_function.py####".format(dt.datetime.now().strftime('%Y-%m-%
 
 #replace this with appropriate local & remote paths for backup
 copy_from = "../../TITS/VIDEOS/"
-copy_to = "/run/user/1001/gvfs/smb-share:server=r-zfssvr01,share=grplucy/Videos_GRETI"
+copy_to = "/run/user/1001/gvfs/smb-share:server=r-zfssvr01,share=grplucy/Videos_GRETI/field_season_winter_2020"
 
 
 #Get a list of files in original folder
