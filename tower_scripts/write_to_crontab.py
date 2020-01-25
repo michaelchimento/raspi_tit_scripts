@@ -19,5 +19,8 @@ for pi in pi_data_table:
             print(command)      
             response = terminal(command)
             print(response)
+            
         except:
             print("error writing to crontab")
+
+        reboot(pi[1])
