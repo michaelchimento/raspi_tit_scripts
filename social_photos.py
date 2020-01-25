@@ -27,6 +27,17 @@ filepath = "/home/pi/APAPORIS/CURRENT/"
 moved_path = "/home/pi/APAPORIS/MOVED/"
 filenamePrefix = name
 
+def crop_folder(directory):
+    for item in os.listdir(directory):
+        print(item)
+        fullpath = directory+"/"+item
+        print(fullpath)
+        if os.path.isfile(fullpath):
+            im = Image.open(fullpath)
+            imCrop = im.crop((0,1080/5,1920,1080/5*4))
+            print("cropped")
+            imCrop.save(fullpath, 'JPEG', quality=100)
+
 def make_photos(hour):
     global filepath
     global moved_path
@@ -56,6 +67,7 @@ while (True):
     hour = datetime.now().hour
     if hour >= social_start and hour < social_end:
         dir_name = make_photos(hour)
+        crop_folder(dir_name)
         shutil.move(dir_name,moved_path)
     else:
         pass
