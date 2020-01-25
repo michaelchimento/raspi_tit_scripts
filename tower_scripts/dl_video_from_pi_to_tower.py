@@ -21,16 +21,25 @@ for pi in pi_data_table:  #use this for more than one pi
         copy_to = "APAPORIS/TO_TRANSFER/"
 
         #count files
-        command = "ssh pi@{} ls {} | wc -l".format(pi[1],copy_from)
-        file_count_MOVED = terminal(command)
+        try:
+            command = "ssh pi@{} ls {} | wc -l".format(pi[1],copy_from)
+            file_count_MOVED = terminal(command)
+        except Exception as e:
+            print("Error counting number of files in moved")
+            file_count_MOVED = 0
+            print(e)
         
         if int(file_count_MOVED)==0:
             print("no files to move")
         else:
-            print("Moving {} files or folders".format(file_count_MOVED))
+            print("Attempting to move {} files or folders".format(file_count_MOVED))
             #move files from "moved" to "to_transfer"
-            command = 'ssh pi@{} mv {}* {}'.format(pi[1], copy_from, copy_to)
-            terminal(command)
+            try:
+                command = 'ssh pi@{} mv {}* {}'.format(pi[1], copy_from, copy_to)
+                terminal(command)
+            except Exception as e:
+                print("Unable to move files from MOVED to TO_TRANSFER")
+                print(e)
 
 print("***Finished moving files on pis, now moving from Pi to Tower***")
 
@@ -55,8 +64,11 @@ for pi in pi_data_table:  #use this for more than one pi
             #make folder on this computer if doesn't exist
             if not os.path.isdir(copy_to):
                 print("creating folder {}".format(copy_to))
-                command= "mkdir -v {}".format(copy_to)
-                terminal(command)
+                try:
+                    command= "mkdir -v {}".format(copy_to)
+                    terminal(command)
+                except:
+                    print("error making new directory on computer")
         
             #create commands to copy files from pi, feeder and observ pi's require recursive scp command
             if "Puzzle" in pi[0]:
@@ -67,7 +79,11 @@ for pi in pi_data_table:  #use this for more than one pi
                 command = 'scp -rp pi@{}:{}* {}'.format(pi[1],copy_from,copy_to)
             
             #execute move
-            terminal(command)
+            try:
+                terminal(command)
+            except Exception as e:
+                print("Unable to move video or folder")
+                print(e)
             
             #count files which have been moved
             command = "ls {} | wc -l".format(copy_to)
