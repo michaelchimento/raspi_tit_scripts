@@ -2,7 +2,7 @@
 import datetime as dt
 import os
 import sys
-from ipsandnames import pi_data_table
+from all_ipsandnames import pi_data_table
 from term_utils import ping_pi, terminal, kill_python, reboot, take_test_img
 
 print("####{} write_to_crontab.py####".format(dt.datetime.now().strftime('%Y-%m-%d_%H_%M')))

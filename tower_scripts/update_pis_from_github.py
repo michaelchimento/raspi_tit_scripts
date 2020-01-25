@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from ipsandnames import pi_data_table
+from all_ipsandnames import pi_data_table
 from term_utils import ping_pi, terminal, kill_python, git_pull, reboot, delete_git
 
 #pi_data_table format is [(pi name1, pi IP1), (pi name2, pi IP2),... etc]

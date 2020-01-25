@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 
-from ipsandnames import pi_data_table
+from all_ipsandnames import pi_data_table
 from term_utils import terminal, ping_pi, current_py_processes, mem_check, reboot
 import smtplib
 import datetime as dt
