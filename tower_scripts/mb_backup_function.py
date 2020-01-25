@@ -27,6 +27,7 @@ for video in files_to_bup:
         terminal(command)
     except Exception as e:
         print(e)
-        print("Error uploading {} to server".format(video)
-print("All files backed up")
+        print("Error uploading {} to server".format(video))
+    else:
+        print("All files backed up")
 
