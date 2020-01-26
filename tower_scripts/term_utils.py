@@ -100,6 +100,18 @@ def clear_apaporis(ipaddress):
         print("rebuilt apaporis")       
         print(response)
 
+def remove_pycache(ipaddress):
+#clears out all files in apaporis directory
+    command = "ssh pi@{}".format(ipaddress) + " rm -rf raspi_tit_scripts/__pycache__"
+    try:
+        response = terminal(command)
+    except Exception as e:
+        print(e)
+        print("Oops, something's wrong. Issue deleting pycache.")
+    else:
+        print("removed pycache")       
+        print(response)
+
 #does a fresh install of repository from github
 def install_git(ipaddress):
     

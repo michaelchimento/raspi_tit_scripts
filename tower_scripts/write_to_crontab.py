@@ -14,7 +14,7 @@ for pi in pi_data_table:
     if not reachable:
         pass
     else:
-        command = "echo \"@reboot sh /home/pi/raspi_tit_scripts/launchers/{}_launcher.sh > /home/pi/raspi_tit_scripts/logs 2>&1\n00 6 * * * sudo reboot\" | ssh pi@{} \"crontab -\"".format(pi[0][:6].lower(), pi[1])
+        command = "echo \"@reboot sh /home/pi/raspi_tit_scripts/launchers/{}_launcher.sh > /home/pi/raspi_tit_scripts/logs 2>&1\n#00 6 * * * sudo reboot\" | ssh pi@{} \"crontab -\"".format(pi[0][:6].lower(), pi[1])
         try:
             print(command)      
             response = terminal(command)
@@ -23,4 +23,4 @@ for pi in pi_data_table:
         except:
             print("error writing to crontab")
 
-        reboot(pi[1])
+        #reboot(pi[1])
