@@ -42,14 +42,14 @@ class motorThread(threading.Thread):
             time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
             to_write_list = "{},{},{},{}".format(id_tag,"efficient",time_stamp[0],time_stamp[1])
             write_csv(to_write_list,file_name)
-            print("solve right")
+            #print("solve efficient")
             self.state = 1
     
         elif(IO.input(24)==True):
             time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
             to_write_list = "{},{},{},{}".format(id_tag,"inefficient",time_stamp[0],time_stamp[1])
             write_csv(to_write_list,file_name)
-            print("solve left")
+            #print("solve inefficient")
             self.state = 1
 
     def one(self):
@@ -69,10 +69,12 @@ class motorThread(threading.Thread):
         for x in range(self.steps):
             self.kit.stepper1.onestep(direction=stepper.FORWARD, style=self.pull_style)
         self.kit.stepper1.release()
+        time.sleep(.5)
         
         if(IO.input(23)==False and IO.input(24)==False):
             self.email_flag=0
             self.state = 0
+        
         elif((IO.input(23)==True or IO.input(24)==True) and self.email_flag==0):
             user = 'greti.lab.updates@gmail.com'
             password = 'greti2019'
@@ -163,23 +165,23 @@ def depart(ser, tag_present, id_tag):
         if ser.inWaiting() > 0:
             data = ser.read_until("\r".encode())[0:-1]
             data = data.decode("latin-1")
-            print(data)
+            #print(data)
             if (data == "?1"):
                 tolerance_limit +=1
                 if tolerance_limit >= 3:
-                    print("{} left".format(id_tag))
+                    #print("{} left".format(id_tag))
                     tag_present=0
                     time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                     write_csv("{},{},{},{}".format(id_tag,"departed",time_stamp[0],time_stamp[1]),file_name)
                     id_tag=""
             
             elif(data[-10:] != id_tag and id_tag[-4:] not in data):
-                print("displacement")
+                #print("displacement")
                 time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                 write_csv("{},{},{},{}".format(id_tag,"departed",time_stamp[0],time_stamp[1]),file_name)
                 write_csv("{},{},{},{}".format(data[-10:],"displacement",time_stamp[0],time_stamp[1]),file_name)
                 if motor_thread.state == 1:
-                    print("scrounge attack!")
+                    #print("scrounge attack!")
                     write_csv("{},{},{},{}".format(data[-10:],"scrounge",time_stamp[0],time_stamp[1]),file_name)
                     scrounge_count +=1
                 id_tag = data
@@ -223,10 +225,10 @@ motor_thread.start()
 while True:
     
     if tag_present == 0:
-        print("tp: {}".format(tag_present))
+        #print("tp: {}".format(tag_present))
         tag_present, id_tag = arrival_check(ser, tag_present)
     elif tag_present == 1:
-        print("tp: {}".format(tag_present))
+        #print("tp: {}".format(tag_present))
         tag_present, id_tag = depart(ser, tag_present, id_tag)
         
 ser.close()
