@@ -5,12 +5,14 @@ import datetime as dt
 import os
 from ipsandnames import pi_data_table
 from term_utils import terminal, ping_pi
+from mb_backup_function import *
 
 #reads from csv that has col1:names, col2:IP address (no user!)
 #pi_data_table format is [(pi name1, pi IP1), (pi name2, pi IP2),... etc]
 print("####{} dl_video_from_pi_to_tower.py####".format(dt.datetime.now().strftime('%Y-%m-%d_%H_%M')))
 
 ### MOVE VIDEOS TO TRANSFER FOLDER ON PI
+
 for pi in pi_data_table:  #use this for more than one pi
     print("Transferring videos within Pi for {}".format(pi))
     reachable = ping_pi(pi[1])
@@ -43,6 +45,7 @@ for pi in pi_data_table:  #use this for more than one pi
 
 print("***Finished moving files on pis, now moving from Pi to Tower***")
 
+counter = 1
 ### COPY VIDEOS AND CSV TO TOWER/DELETE FROM PI
 for pi in pi_data_table:  #use this for more than one pi
     time_stamp = dt.datetime.now().strftime('%Y-%m-%d_%H')
@@ -95,4 +98,8 @@ for pi in pi_data_table:  #use this for more than one pi
                 print('All files transferred Successfully')
             else:
                 print("mismatch between file counts of pi and tower")
+
+            if counter % 3 == 0:
+                backup_to_server()
+            counter +=1
 
