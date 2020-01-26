@@ -25,6 +25,30 @@ scrounge_count=0
 global comp_name
 comp_name = name
 
+def send_email():
+    user = 'greti.lab.updates@gmail.com'
+    password = 'greti2019'
+    sent_from = 'greti.lab.updates@gmail.com'
+    to = 'mchimento@ab.mpg.de'
+    subject = 'door stuck in {}'.format(comp_name)
+    body = 'pls help'
+    email_text = 'From:{}\nTo:{}\nSubject:{}\n{}'.format(sent_from,to,subject,body)
+    print(email_text)
+
+    try:
+        server = smtplib.SMTP('smtp.gmail.com',587)
+        server.ehlo()
+        server.starttls()
+        server.login(user,password)
+        server.sendmail(sent_from, to, email_text)
+        server.close()
+        print("Email Sent!")
+        return 0,1
+        
+    except:
+        print("error with email")
+        return 0,0
+
 class motorThread(threading.Thread):
     def __init__(self, threadID, name):
         threading.Thread.__init__(self)
@@ -32,14 +56,17 @@ class motorThread(threading.Thread):
         self.name = name
         self.email_flag = 0
         self.state = 0
-        self.steps = 350
+        if "Puzzle_P10" in name:
+            self.steps = 450
+        else:
+            self.steps = 350
         self.pull_style = stepper.MICROSTEP
         self.kit = MotorKit()
 
     def zero(self):
         global id_tag
         if(IO.input(23)==True):
-            time.sleep(.1)
+            time.sleep(.2)
             if(IO.input(23)==True):
                 time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                 to_write_list = "{},{},{},{}".format(id_tag,"efficient",time_stamp[0],time_stamp[1])
@@ -48,7 +75,7 @@ class motorThread(threading.Thread):
                 self.state = 1
     
         elif(IO.input(24)==True):
-            time.sleep(.1)
+            time.sleep(.2)
             if(IO.input(24)==True):
                 time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                 to_write_list = "{},{},{},{}".format(id_tag,"inefficient",time_stamp[0],time_stamp[1])
@@ -82,30 +109,11 @@ class motorThread(threading.Thread):
             self.state = 0
         
         elif((IO.input(23)==True or IO.input(24)==True) and self.email_flag==0):
-            time.sleep(5)
+            time.sleep(.5)
             if((IO.input(23)==True or IO.input(24)==True)):
-                user = 'greti.lab.updates@gmail.com'
-                password = 'greti2019'
-                sent_from = 'greti.lab.updates@gmail.com'
-                to = 'mchimento@ab.mpg.de'
-                subject = 'door stuck in {}'.format(comp_name)
-                body = 'pls help'
-                email_text = 'From:{}\nTo:{}\nSubject:{}\n{}'.format(sent_from,to,subject,body)
-                print(email_text)
-
-                try:
-                    server = smtplib.SMTP('smtp.gmail.com',587)
-                    server.ehlo()
-                    server.starttls()
-                    server.login(user,password)
-                    server.sendmail(sent_from, to, email_text)
-                    server.close()
-                    self.email_flag=1
-                    print("Email Sent!")
-                    self.state = 0
-                    
-                except:
-                    print("error with email")
+                #self.state, self.email_flag = send_email()
+            else:
+                self.state = 0
         else:
             self.state=2
             
