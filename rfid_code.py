@@ -112,6 +112,7 @@ class motorThread(threading.Thread):
             time.sleep(.5)
             if((IO.input(23)==True or IO.input(24)==True)):
                 #self.state, self.email_flag = send_email()
+                pass
             else:
                 self.state = 0
         else:
