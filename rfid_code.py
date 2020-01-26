@@ -39,18 +39,24 @@ class motorThread(threading.Thread):
     def zero(self):
         global id_tag
         if(IO.input(23)==True):
-            time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
-            to_write_list = "{},{},{},{}".format(id_tag,"efficient",time_stamp[0],time_stamp[1])
-            write_csv(to_write_list,file_name)
-            #print("solve efficient")
-            self.state = 1
+            time.sleep(.1)
+            if(IO.input(23)==True):
+                time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
+                to_write_list = "{},{},{},{}".format(id_tag,"efficient",time_stamp[0],time_stamp[1])
+                write_csv(to_write_list,file_name)
+                #print("solve efficient")
+                self.state = 1
     
         elif(IO.input(24)==True):
-            time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
-            to_write_list = "{},{},{},{}".format(id_tag,"inefficient",time_stamp[0],time_stamp[1])
-            write_csv(to_write_list,file_name)
-            #print("solve inefficient")
-            self.state = 1
+            time.sleep(.1)
+            if(IO.input(24)==True):
+                time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
+                to_write_list = "{},{},{},{}".format(id_tag,"inefficient",time_stamp[0],time_stamp[1])
+                write_csv(to_write_list,file_name)
+                #print("solve inefficient")
+                self.state = 1
+        else:
+            self.state = 0
 
     def one(self):
         global tag_present
@@ -69,34 +75,37 @@ class motorThread(threading.Thread):
         for x in range(self.steps):
             self.kit.stepper1.onestep(direction=stepper.FORWARD, style=self.pull_style)
         self.kit.stepper1.release()
-        time.sleep(.5)
+        time.sleep(1)
         
         if(IO.input(23)==False and IO.input(24)==False):
             self.email_flag=0
             self.state = 0
         
         elif((IO.input(23)==True or IO.input(24)==True) and self.email_flag==0):
-            user = 'greti.lab.updates@gmail.com'
-            password = 'greti2019'
-            sent_from = 'greti.lab.updates@gmail.com'
-            to = 'mchimento@ab.mpg.de'
-            subject = 'critical failure in {}'.format(comp_name)
-            body = 'go check'
-            email_text = 'From:{}\nTo:{}\nSubject:{}\n{}'.format(sent_from,to,subject,body)
-            print(email_text)
+            time.sleep(5)
+            if((IO.input(23)==True or IO.input(24)==True)):
+                user = 'greti.lab.updates@gmail.com'
+                password = 'greti2019'
+                sent_from = 'greti.lab.updates@gmail.com'
+                to = 'mchimento@ab.mpg.de'
+                subject = 'door stuck in {}'.format(comp_name)
+                body = 'pls help'
+                email_text = 'From:{}\nTo:{}\nSubject:{}\n{}'.format(sent_from,to,subject,body)
+                print(email_text)
 
-            try:
-                server = smtplib.SMTP('smtp.gmail.com',587)
-                server.ehlo()
-                server.starttls()
-                server.login(user,password)
-                server.sendmail(sent_from, to, email_text)
-                server.close()
-                self.email_flag=1
-                print("Email Sent!")
-                
-            except:
-                print("error with email")
+                try:
+                    server = smtplib.SMTP('smtp.gmail.com',587)
+                    server.ehlo()
+                    server.starttls()
+                    server.login(user,password)
+                    server.sendmail(sent_from, to, email_text)
+                    server.close()
+                    self.email_flag=1
+                    print("Email Sent!")
+                    self.state = 0
+                    
+                except:
+                    print("error with email")
         else:
             self.state=2
             
