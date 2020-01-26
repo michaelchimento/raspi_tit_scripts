@@ -82,7 +82,7 @@ if email_results:
     except:
         print("error in check_ok email")
 
-for i in range(len(pi_data_table)):
-    if "Problem" in processes[i]:
-        reboot(pi_data_table[i][1])
+#for i in range(len(pi_data_table)):
+    #if "Problem" in processes[i]:
+        #reboot(pi_data_table[i][1])
 
