@@ -200,7 +200,7 @@ def arrival_check(ser):
             data = ser.read_until("\r".encode())[0:-1]
             data = data.decode("latin-1")
             if len(data)==10:
-                id_tag == data
+                id_tag = data
                 time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                 print("{} arrived".format(id_tag[-10:]))
                 write_csv("{},{},{},{}".format(id_tag,"arrived",time_stamp[0],time_stamp[1]),file_name)
