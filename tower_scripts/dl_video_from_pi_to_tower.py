@@ -5,7 +5,7 @@ import datetime as dt
 import os
 from ipsandnames import pi_data_table
 from term_utils import terminal, ping_pi
-from backup_function import *
+from mb_backup_function import *
 
 #reads from csv that has col1:names, col2:IP address (no user!)
 #pi_data_table format is [(pi name1, pi IP1), (pi name2, pi IP2),... etc]
@@ -58,9 +58,13 @@ for pi in pi_data_table:  #use this for more than one pi
         print("{} not responding to pings".format(pi[0]))
     else:
         print("Transferring videos from Pi {} to Desktop".format(pi))
-                
-        command = "ssh pi@{} ls {} | wc -l".format(pi[1],copy_from)
-        file_count_TO_TRANSFER = terminal(command)
+
+        try:        
+            command = "ssh pi@{} ls {} | wc -l".format(pi[1],copy_from)
+            file_count_TO_TRANSFER = terminal(command)
+        except:
+            print("error counting files")
+            file_count_TO_TRANSFER = 1
         
         if int(file_count_TO_TRANSFER) == 0:
             print("no files to transfer to tower")
@@ -94,7 +98,9 @@ for pi in pi_data_table:  #use this for more than one pi
                 terminal(command)
             except:
                 print("error deleting files")
-            print('All files transferred Successfully')
+
+            else:    
+                print('All files transferred Successfully')
             
 
             if counter % 4 == 0:
