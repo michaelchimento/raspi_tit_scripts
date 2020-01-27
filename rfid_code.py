@@ -151,7 +151,7 @@ class motorThread(threading.Thread):
         switcher = {
             0:self.zero,
             1:self.one,
-            2:self.two
+            2:self.two,
             3:self.three
             }
         func=switcher.get(i, lambda:"Invalid")
