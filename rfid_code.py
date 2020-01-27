@@ -165,7 +165,7 @@ def write_csv(to_write_list,file_name):
 def sd0_send(ser):
     ser.write("SD0\r".encode())
     print("SD0")
-    time.sleep(2)
+    time.sleep(2.5)
     while True:
         if ser.inWaiting() > 0:
             data = ser.read_until("\r".encode())[0:-1]
@@ -175,7 +175,7 @@ def sd0_send(ser):
 def mof_read(ser):
     ser.write("MOF\r".encode())
     print("MOF")
-    time.sleep(2)
+    time.sleep(2.5)
     while True:
         if ser.inWaiting() > 0:
             data = ser.read_until("\r".encode())[0:-1]
