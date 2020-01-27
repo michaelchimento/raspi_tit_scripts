@@ -142,7 +142,7 @@ class motorThread(threading.Thread):
             self.state=2
             
     def three(self):
-        #this state sets the timer for scrounging, set at 1 second
+        #this state sets the timer for scrounging, set at 3 seconds
         print("set time to wait for scroungers")        
         self.end_time = time.time() + 3
         self.state = 1
@@ -263,7 +263,7 @@ if not os.path.exists("data/"):
 
 #set file_name and timestamp for start of csv
 global file_name
-file_name = "data/{}_RFID.csv".format(comp_name)
+file_name = "data/{}_RFID_clean.csv".format(comp_name)
 time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 if not os.path.isfile(file_name):
