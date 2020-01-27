@@ -144,7 +144,7 @@ class motorThread(threading.Thread):
     def three(self):
         #this state sets the timer for scrounging, set at 1 second
         print("set time to wait for scroungers")        
-        self.end_time = time.time() + 4
+        self.end_time = time.time() + 3
         self.state = 1
         
     
@@ -226,7 +226,7 @@ def depart(ser):
             ##print(data)
             if (data == "?1"):
                 tolerance_limit +=1
-                if tolerance_limit >= 4:
+                if tolerance_limit >= 5:
                     print("{} left".format(id_tag))
                     tag_present=0
                     time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
