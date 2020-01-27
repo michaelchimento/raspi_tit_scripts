@@ -72,7 +72,7 @@ class motorThread(threading.Thread):
                     time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                     to_write_list = "{},{},{},{}".format(id_tag,"efficient",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
-                    print("solve efficient by {}".format(id_tag)
+                    print("solve efficient by {}".format(id_tag))
                     self.state = 1
         
             elif(IO.input(24)==True):
@@ -81,7 +81,7 @@ class motorThread(threading.Thread):
                     time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                     to_write_list = "{},{},{},{}".format(id_tag,"inefficient",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
-                    print("solve inefficient by {}".format(id_tag)
+                    print("solve inefficient by {}".format(id_tag))
                     self.state = 1
         elif not tag_present:
             if(IO.input(23)==True):
@@ -90,7 +90,7 @@ class motorThread(threading.Thread):
                     time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                     to_write_list = "{},{},{},{}".format(id_tag,"efficient",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
-                    print("solve efficient by {}".format(id_tag)
+                    print("solve efficient by {}".format(id_tag))
                     self.state = 1
         
             elif(IO.input(24)==True):
@@ -99,7 +99,7 @@ class motorThread(threading.Thread):
                     time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                     to_write_list = "{},{},{},{}".format(id_tag,"inefficient",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
-                    print("solve inefficient by {}".format(id_tag)
+                    print("solve inefficient by {}".format(id_tag))
                     self.state = 1
             
         else:
