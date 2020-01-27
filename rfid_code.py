@@ -64,8 +64,6 @@ class motorThread(threading.Thread):
         self.kit = MotorKit()
 
     def zero(self):
-        global tag_present
-        global id_tag
         if tag_present:
             if(IO.input(23)==True):
                 time.sleep(.2)
@@ -107,7 +105,6 @@ class motorThread(threading.Thread):
             self.state = 0
 
     def one(self):
-        global tag_present
         global scrounge_count
         #print("waiting for scroungers")
         if tag_present==0 or scrounge_count==2:
@@ -182,8 +179,10 @@ def mof_read(ser):
             print(data)
             return
 
-def arrival_check(ser, tag_present):
+def arrival_check(ser):
     global scrounge_count
+    global id_tag
+    global tag_present
     while tag_present==0:
         if ser.inWaiting() > 0:
             id_tag = ser.read_until("\r".encode())[0:-1]
@@ -202,11 +201,10 @@ def arrival_check(ser, tag_present):
             else: 
                 #print("watever")
                 pass
-                    
-    return tag_present, id_tag
 
-def depart(ser, tag_present, id_tag):
-    
+def depart(ser):
+    global id_tag
+    global tag_present
     global scrounge_count
     tolerance_limit = 0
     
@@ -239,8 +237,6 @@ def depart(ser, tag_present, id_tag):
             
             else:
                 tolerance_limit = 0
-            
-    return tag_present, id_tag
 
 #set up serial and read operating frequency
 ser = serial.Serial('/dev/ttyAMA0', baudrate=9600,
@@ -248,8 +244,10 @@ ser = serial.Serial('/dev/ttyAMA0', baudrate=9600,
                     stopbits=serial.STOPBITS_ONE,  
                     bytesize=serial.EIGHTBITS
                     )
-mof_read(ser)
 sd0_send(ser)
+
+mof_read(ser)
+
 
 #set up csv
 if not os.path.exists("data/"):
@@ -277,9 +275,9 @@ while True:
     
     if tag_present == 0:
         ##print("tp: {}".format(tag_present))
-        tag_present, id_tag = arrival_check(ser, tag_present)
+        arrival_check(ser)
     elif tag_present == 1:
         ##print("tp: {}".format(tag_present))
-        tag_present, id_tag = depart(ser, tag_present, id_tag)
+        depart(ser)
         
 ser.close()
