@@ -108,7 +108,7 @@ class motorThread(threading.Thread):
 
     def one(self):
         if time.time() < self.end_time:
-            print("waiting for scroungers")
+            #print("waiting for scroungers")
             pass
         else:
             print("scrounge stage complete")
