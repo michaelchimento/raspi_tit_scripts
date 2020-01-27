@@ -31,7 +31,12 @@ def backup_to_server():
             terminal(command)
         except Exception as e:
             print(e)
-            print("Error uploading {} to server".format(video))
+            print("Error uploading {} to server. Uploading to overflow folder to avoid merge error.".format(video))
+            try:            
+                command = 'mv {}{} {}overflow/'.format(copy_from,video,copy_to)
+                terminal(command)
+            except Exception as e:
+                print("A further error has occurred. Manually remove files to save data.")
         else:
             print("All files backed up")
 

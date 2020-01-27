@@ -97,7 +97,9 @@ for pi in pi_data_table:  #use this for more than one pi
             print('All files transferred Successfully')
             
 
-            if counter % 3 == 0:
+            if counter % 4 == 0:
                 backup_to_server()
             counter +=1
+
+backup_to_server()
 

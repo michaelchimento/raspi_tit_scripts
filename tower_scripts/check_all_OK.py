@@ -68,7 +68,6 @@ if email_results:
     subject = 'global pi report'
     body = status
     email_text = 'From:{}\nTo:{}\nSubject:{}\n{}'.format(sent_from,to,subject,body)
-    print(email_text)
 
     try:
         server = smtplib.SMTP('smtp.gmail.com',587)
