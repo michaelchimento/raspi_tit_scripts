@@ -106,14 +106,15 @@ class motorThread(threading.Thread):
             self.state = 0
 
     def one(self):
-        global scrounge_count
-        print("waiting for scroungers")
+        #print("waiting for scroungers")
         if tag_present==0 or scrounge_count==2:
             print("no scroungers, or scrounge count reached")
             self.state = 2
-            scrounge_count=0
+            
     
     def two(self):
+        global scrounge_count
+        scrounge_count=0
         print("motors moving")
         time.sleep(1)
         for x in range(self.steps):
@@ -196,7 +197,7 @@ def arrival_check(ser):
                 time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                 print("{} arrived".format(id_tag[-10:]))
                 write_csv("{},{},{},{}".format(id_tag,"arrived",time_stamp[0],time_stamp[1]),file_name)
-                if motor_thread.state == 2:
+                if motor_thread.state == 2 and scrounge_count < 2:
                     print("scrounge attack!")
                     write_csv("{},{},{},{}".format(id_tag,"scrounge",time_stamp[0],time_stamp[1]),file_name)
                     scrounge_count +=1
@@ -232,7 +233,7 @@ def depart(ser):
                 time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                 write_csv("{},{},{},{}".format(id_tag,"departed",time_stamp[0],time_stamp[1]),file_name)
                 write_csv("{},{},{},{}".format(data[-10:],"displacement",time_stamp[0],time_stamp[1]),file_name)
-                if motor_thread.state == 1:
+                if motor_thread.state == 1 and scrounge_count < 2:
                     print("scrounge attack!")
                     write_csv("{},{},{},{}".format(data[-10:],"scrounge",time_stamp[0],time_stamp[1]),file_name)
                     scrounge_count +=1
