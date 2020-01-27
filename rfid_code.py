@@ -70,7 +70,6 @@ class motorThread(threading.Thread):
             if(IO.input(23)==True):
                 time.sleep(.2)
                 if(IO.input(23)==True):
-                    global id_tag
                     time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                     to_write_list = "{},{},{},{}".format(id_tag,"efficient",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
@@ -80,7 +79,6 @@ class motorThread(threading.Thread):
             elif(IO.input(24)==True):
                 time.sleep(.2)
                 if(IO.input(24)==True):
-                    global id_tag
                     time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                     to_write_list = "{},{},{},{}".format(id_tag,"inefficient",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
@@ -90,7 +88,6 @@ class motorThread(threading.Thread):
             if(IO.input(23)==True):
                 time.sleep(.5)
                 if(IO.input(23)==True):
-                    global id_tag
                     time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                     to_write_list = "{},{},{},{}".format(id_tag,"efficient",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
@@ -100,7 +97,6 @@ class motorThread(threading.Thread):
             elif(IO.input(24)==True):
                 time.sleep(.5)
                 if(IO.input(24)==True):
-                    global id_tag
                     time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                     to_write_list = "{},{},{},{}".format(id_tag,"inefficient",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
