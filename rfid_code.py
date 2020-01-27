@@ -61,7 +61,7 @@ class motorThread(threading.Thread):
             self.steps = 400
         self.pull_style = stepper.MICROSTEP
         self.kit = MotorKit()
-        self.end_time = time()
+        self.end_time = time.time()
 
     def zero(self):
         if tag_present:
@@ -107,7 +107,7 @@ class motorThread(threading.Thread):
             self.state = 0
 
     def one(self):
-        if time() < self.end_time:
+        if time.time() < self.end_time:
             #print("waiting for scroungers")
             pass
         else:
@@ -143,7 +143,7 @@ class motorThread(threading.Thread):
     def three(self):
         #this state sets the timer for scrounging, set at 1 second
         print("set time to wait for scroungers")        
-        self.end_time = time() + 2
+        self.end_time = time.time() + 2
         self.state = 1
         
     
