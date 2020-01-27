@@ -54,7 +54,7 @@ class motorThread(threading.Thread):
         self.name = name
         self.email_flag = 0
         self.state = 0
-        if "P10" in name or "P3" in name:
+        if ("P10" or "P3" or "P9") in comp_name:
             print("long steps assigned")
             self.steps = 500
         else:
@@ -282,10 +282,10 @@ motor_thread.start()
 while True:
     
     if tag_present == 0:
-        print("tp: {}".format(tag_present))
+        #print("tp: {}".format(tag_present))
         arrival_check(ser)
     elif tag_present == 1:
-        print("tp: {}".format(tag_present))
+        #print("tp: {}".format(tag_present))
         depart(ser)
         
 ser.close()
