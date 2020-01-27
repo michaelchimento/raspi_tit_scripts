@@ -33,7 +33,7 @@ def send_email():
     subject = 'door stuck in {}'.format(comp_name)
     body = 'pls help'
     email_text = 'From:{}\nTo:{}\nSubject:{}\n{}'.format(sent_from,to,subject,body)
-    print(email_text)
+    #print(email_text)
 
     try:
         server = smtplib.SMTP('smtp.gmail.com',587)
@@ -42,11 +42,11 @@ def send_email():
         server.login(user,password)
         server.sendmail(sent_from, to, email_text)
         server.close()
-        print("Email Sent!")
+        #print("Email Sent!")
         return 0,1
         
     except:
-        print("error with email")
+        #print("error with email")
         return 0,0
 
 class motorThread(threading.Thread):
@@ -65,11 +65,11 @@ class motorThread(threading.Thread):
 
     def zero(self):
         global tag_present        
-        global id_tag
         if tag_present:
             if(IO.input(23)==True):
                 time.sleep(.2)
                 if(IO.input(23)==True):
+                    global id_tag
                     time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                     to_write_list = "{},{},{},{}".format(id_tag,"efficient",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
@@ -79,6 +79,7 @@ class motorThread(threading.Thread):
             elif(IO.input(24)==True):
                 time.sleep(.2)
                 if(IO.input(24)==True):
+                    global id_tag
                     time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                     to_write_list = "{},{},{},{}".format(id_tag,"inefficient",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
@@ -88,6 +89,7 @@ class motorThread(threading.Thread):
             if(IO.input(23)==True):
                 time.sleep(.5)
                 if(IO.input(23)==True):
+                    global id_tag
                     time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                     to_write_list = "{},{},{},{}".format(id_tag,"efficient",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
@@ -97,6 +99,7 @@ class motorThread(threading.Thread):
             elif(IO.input(24)==True):
                 time.sleep(.5)
                 if(IO.input(24)==True):
+                    global id_tag
                     time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                     to_write_list = "{},{},{},{}".format(id_tag,"inefficient",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
@@ -153,19 +156,29 @@ class motorThread(threading.Thread):
         self.state_switcher(self.state)
 
     def run(self):
-        print("Starting " + self.name)
+        #print("Starting " + self.name)
         while 1:
             self.thread_action()
-        print("Exiting " + self.name)
+        #print("Exiting " + self.name)
 
 def write_csv(to_write_list,file_name):
     with open(file_name, "a") as savefile:
         savefile.write(to_write_list+"\n")
 
+def sd0_send(ser):
+    ser.write("SD0\r".encode())
+    print("SD0")
+    time.sleep(2)
+    while True:
+        if ser.inWaiting() > 0:
+            data = ser.read_until("\r".encode())[0:-1]
+            print(data)
+            return
+
 def mof_read(ser):
     ser.write("MOF\r".encode())
     print("MOF")
-    time.sleep(2.5)
+    time.sleep(2)
     while True:
         if ser.inWaiting() > 0:
             data = ser.read_until("\r".encode())[0:-1]
@@ -182,14 +195,16 @@ def arrival_check(ser, tag_present):
             #print (len(id_tag))
             if len(id_tag)==10:
                 time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
-                print("{} arrived".format(id_tag[-10:]))
+                #print("{} arrived".format(id_tag[-10:]))
                 write_csv("{},{},{},{}".format(id_tag,"arrived",time_stamp[0],time_stamp[1]),file_name)
                 if motor_thread.state == 2:
-                    print("scrounge attack!")
+                    #print("scrounge attack!")
                     write_csv("{},{},{},{}".format(id_tag,"scrounge",time_stamp[0],time_stamp[1]),file_name)
                     scrounge_count +=1
                 tag_present = 1
-            else: print("watever")
+            else: 
+                #print("watever")
+                pass
                     
     return tag_present, id_tag
 
@@ -204,23 +219,23 @@ def depart(ser, tag_present, id_tag):
         if ser.inWaiting() > 0:
             data = ser.read_until("\r".encode())[0:-1]
             data = data.decode("latin-1")
-            #print(data)
+            ##print(data)
             if (data == "?1"):
                 tolerance_limit +=1
                 if tolerance_limit >= 3:
-                    #print("{} left".format(id_tag))
+                    ##print("{} left".format(id_tag))
                     tag_present=0
                     time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                     write_csv("{},{},{},{}".format(id_tag,"departed",time_stamp[0],time_stamp[1]),file_name)
                     id_tag=""
             
             elif(data[-10:] != id_tag and id_tag[-4:] not in data):
-                #print("displacement")
+                ##print("displacement")
                 time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                 write_csv("{},{},{},{}".format(id_tag,"departed",time_stamp[0],time_stamp[1]),file_name)
                 write_csv("{},{},{},{}".format(data[-10:],"displacement",time_stamp[0],time_stamp[1]),file_name)
                 if motor_thread.state == 1:
-                    #print("scrounge attack!")
+                    ##print("scrounge attack!")
                     write_csv("{},{},{},{}".format(data[-10:],"scrounge",time_stamp[0],time_stamp[1]),file_name)
                     scrounge_count +=1
                 id_tag = data
@@ -264,10 +279,10 @@ motor_thread.start()
 while True:
     
     if tag_present == 0:
-        #print("tp: {}".format(tag_present))
+        ##print("tp: {}".format(tag_present))
         tag_present, id_tag = arrival_check(ser, tag_present)
     elif tag_present == 1:
-        #print("tp: {}".format(tag_present))
+        ##print("tp: {}".format(tag_present))
         tag_present, id_tag = depart(ser, tag_present, id_tag)
         
 ser.close()
