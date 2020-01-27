@@ -20,8 +20,6 @@ global id_tag
 id_tag = ""
 global tag_present
 tag_present=0
-global scrounge_count
-scrounge_count=0
 global comp_name
 comp_name = name
 
@@ -63,6 +61,7 @@ class motorThread(threading.Thread):
             self.steps = 400
         self.pull_style = stepper.MICROSTEP
         self.kit = MotorKit()
+        self.end_time = time()
 
     def zero(self):
         if tag_present:
@@ -83,6 +82,7 @@ class motorThread(threading.Thread):
                     write_csv(to_write_list,file_name)
                     print("solve inefficient by {}".format(id_tag))
                     self.state = 1
+
         elif not tag_present:
             if(IO.input(23)==True):
                 time.sleep(.5)
@@ -101,22 +101,22 @@ class motorThread(threading.Thread):
                     write_csv(to_write_list,file_name)
                     print("solve inefficient by {}".format(id_tag))
                     self.state = 1
+                    
             
         else:
             self.state = 0
 
     def one(self):
-        #print("waiting for scroungers")
-        if tag_present==0 or scrounge_count==2:
-            print("no scroungers, or scrounge count reached")
+        if time() < self.end_time:
+            #print("waiting for scroungers")
+            pass
+        else:
+            print("scrounge stage complete")
             self.state = 2
             
     
     def two(self):
-        global scrounge_count
-        scrounge_count=0
         print("motors moving")
-        time.sleep(1)
         for x in range(self.steps):
             self.kit.stepper1.onestep(direction=stepper.BACKWARD, style=self.pull_style)
         self.kit.stepper1.release()
@@ -140,12 +140,19 @@ class motorThread(threading.Thread):
         else:
             self.state=2
             
+    def three(self):
+        #this state sets the timer for scrounging, set at 1 second
+        print("set time to wait for scroungers")        
+        self.end_time = time() + 2
+        self.state = 1
+        
     
     def state_switcher(self, i):
         switcher = {
             0:self.zero,
             1:self.one,
             2:self.two
+            3:self.three
             }
         func=switcher.get(i, lambda:"Invalid")
         return func()
@@ -184,23 +191,20 @@ def mof_read(ser):
             return
 
 def arrival_check(ser):
-    global scrounge_count
+ 
     global id_tag
     global tag_present
     while tag_present==0:
         if ser.inWaiting() > 0:
             id_tag = ser.read_until("\r".encode())[0:-1]
             id_tag = id_tag.decode("latin-1")
-            #print(id_tag)
-            #print (len(id_tag))
             if len(id_tag)==10:
                 time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                 print("{} arrived".format(id_tag[-10:]))
                 write_csv("{},{},{},{}".format(id_tag,"arrived",time_stamp[0],time_stamp[1]),file_name)
-                if motor_thread.state == 2 and scrounge_count < 2:
-                    print("scrounge attack! motor_state_2")
+                if motor_thread.state == 1:
+                    print("scrounge attack! motor_state_1")
                     write_csv("{},{},{},{}".format(id_tag,"scrounge",time_stamp[0],time_stamp[1]),file_name)
-                    scrounge_count +=1
                 tag_present = 1
             else: 
                                 
@@ -210,7 +214,6 @@ def arrival_check(ser):
 def depart(ser):
     global id_tag
     global tag_present
-    global scrounge_count
     tolerance_limit = 0
     
     while tag_present==1:
@@ -222,7 +225,7 @@ def depart(ser):
             ##print(data)
             if (data == "?1"):
                 tolerance_limit +=1
-                if tolerance_limit >= 3:
+                if tolerance_limit >= 4:
                     print("{} left".format(id_tag))
                     tag_present=0
                     time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
@@ -234,10 +237,9 @@ def depart(ser):
                 time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                 write_csv("{},{},{},{}".format(id_tag,"departed",time_stamp[0],time_stamp[1]),file_name)
                 write_csv("{},{},{},{}".format(data[-10:],"displacement",time_stamp[0],time_stamp[1]),file_name)
-                if motor_thread.state == 1 and scrounge_count < 2:
+                if motor_thread.state == 1:
                     print("scrounge attack! motor_state_1")
                     write_csv("{},{},{},{}".format(data[-10:],"scrounge",time_stamp[0],time_stamp[1]),file_name)
-                    scrounge_count +=1
                 id_tag = data
             
             else:
