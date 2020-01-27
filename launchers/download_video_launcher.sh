@@ -4,5 +4,5 @@
 
 cd ~/raspi_tit_scripts/tower_scripts
 sleep 10
-python3 dl_video_from_pi_to_tower.py&
+python3 -u dl_video_from_pi_to_tower.py >> logs&
 exit 0
