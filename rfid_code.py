@@ -72,7 +72,7 @@ class motorThread(threading.Thread):
                     to_write_list = "{},{},{},{}".format(id_tag,"efficient",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
                     print("solve efficient by {}".format(id_tag))
-                    self.state = 1
+                    self.state = 3
         
             elif(IO.input(24)==True):
                 time.sleep(.2)
@@ -81,7 +81,7 @@ class motorThread(threading.Thread):
                     to_write_list = "{},{},{},{}".format(id_tag,"inefficient",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
                     print("solve inefficient by {}".format(id_tag))
-                    self.state = 1
+                    self.state = 3
 
         elif not tag_present:
             if(IO.input(23)==True):
@@ -91,7 +91,7 @@ class motorThread(threading.Thread):
                     to_write_list = "{},{},{},{}".format(id_tag,"efficient",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
                     print("solve efficient by {}".format(id_tag))
-                    self.state = 1
+                    self.state = 3
         
             elif(IO.input(24)==True):
                 time.sleep(.5)
@@ -100,7 +100,7 @@ class motorThread(threading.Thread):
                     to_write_list = "{},{},{},{}".format(id_tag,"inefficient",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
                     print("solve inefficient by {}".format(id_tag))
-                    self.state = 1
+                    self.state = 3
                     
             
         else:
@@ -108,7 +108,7 @@ class motorThread(threading.Thread):
 
     def one(self):
         if time.time() < self.end_time:
-            #print("waiting for scroungers")
+            print("waiting for scroungers")
             pass
         else:
             print("scrounge stage complete")
@@ -143,7 +143,7 @@ class motorThread(threading.Thread):
     def three(self):
         #this state sets the timer for scrounging, set at 1 second
         print("set time to wait for scroungers")        
-        self.end_time = time.time() + 2
+        self.end_time = time.time() + 5
         self.state = 1
         
     
