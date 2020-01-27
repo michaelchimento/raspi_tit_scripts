@@ -198,11 +198,12 @@ def arrival_check(ser):
                 print("{} arrived".format(id_tag[-10:]))
                 write_csv("{},{},{},{}".format(id_tag,"arrived",time_stamp[0],time_stamp[1]),file_name)
                 if motor_thread.state == 2 and scrounge_count < 2:
-                    print("scrounge attack!")
+                    print("scrounge attack! motor_state_2")
                     write_csv("{},{},{},{}".format(id_tag,"scrounge",time_stamp[0],time_stamp[1]),file_name)
                     scrounge_count +=1
                 tag_present = 1
             else: 
+                                
                 print("ID not valid")
                 pass
 
@@ -234,7 +235,7 @@ def depart(ser):
                 write_csv("{},{},{},{}".format(id_tag,"departed",time_stamp[0],time_stamp[1]),file_name)
                 write_csv("{},{},{},{}".format(data[-10:],"displacement",time_stamp[0],time_stamp[1]),file_name)
                 if motor_thread.state == 1 and scrounge_count < 2:
-                    print("scrounge attack!")
+                    print("scrounge attack! motor_state_1")
                     write_csv("{},{},{},{}".format(data[-10:],"scrounge",time_stamp[0],time_stamp[1]),file_name)
                     scrounge_count +=1
                 id_tag = data
