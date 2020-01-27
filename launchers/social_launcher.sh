@@ -4,5 +4,5 @@
 
 cd /home/pi/raspi_tit_scripts
 sleep 15
-python3 social_photos.py&
+python3 social_photos.py >> logs&
 exit 0
