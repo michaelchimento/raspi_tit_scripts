@@ -144,7 +144,7 @@ class motorThread(threading.Thread):
     def three(self):
         #this state sets the timer for scrounging, set at 1 second
         print("set time to wait for scroungers")        
-        self.end_time = time.time() + 2
+        self.end_time = time.time() + 4
         self.state = 1
         
     
@@ -197,9 +197,10 @@ def arrival_check(ser):
     global tag_present
     while tag_present==0:
         if ser.inWaiting() > 0:
-            id_tag = ser.read_until("\r".encode())[0:-1]
-            id_tag = id_tag.decode("latin-1")
-            if len(id_tag)==10:
+            data = ser.read_until("\r".encode())[0:-1]
+            data = data.decode("latin-1")
+            if len(data)==10:
+                id_tag == data
                 time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                 print("{} arrived".format(id_tag[-10:]))
                 write_csv("{},{},{},{}".format(id_tag,"arrived",time_stamp[0],time_stamp[1]),file_name)
@@ -207,9 +208,8 @@ def arrival_check(ser):
                     print("scrounge attack! motor_state_1")
                     write_csv("{},{},{},{}".format(id_tag,"scrounge",time_stamp[0],time_stamp[1]),file_name)
                 tag_present = 1
-            else: 
-                                
-                print("ID not valid")
+            else:
+                #print("ID not valid")
                 pass
 
 def depart(ser):
@@ -233,15 +233,15 @@ def depart(ser):
                     write_csv("{},{},{},{}".format(id_tag,"departed",time_stamp[0],time_stamp[1]),file_name)
                     id_tag=""
             
-            elif(data[-10:] != id_tag and id_tag[-4:] not in data):
+            elif(len(data)==10 and id_tag[-4:] not in data):
                 print("displacement")
                 time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                 write_csv("{},{},{},{}".format(id_tag,"departed",time_stamp[0],time_stamp[1]),file_name)
-                write_csv("{},{},{},{}".format(data[-10:],"displacement",time_stamp[0],time_stamp[1]),file_name)
+                id_tag = data
+                write_csv("{},{},{},{}".format(id_tag,"displacement",time_stamp[0],time_stamp[1]),file_name)
                 if motor_thread.state == 1:
                     print("scrounge attack! motor_state_1")
                     write_csv("{},{},{},{}".format(data[-10:],"scrounge",time_stamp[0],time_stamp[1]),file_name)
-                id_tag = data
             
             else:
                 tolerance_limit = 0
