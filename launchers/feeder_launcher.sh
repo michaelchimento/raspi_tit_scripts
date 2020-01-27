@@ -4,5 +4,5 @@
 
 cd /home/pi/raspi_tit_scripts
 sleep 15
-python3 feeder_photos.py >> logs &
+python3 feeder_photos.py >> logs&
 exit 0
