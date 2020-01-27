@@ -57,9 +57,10 @@ class motorThread(threading.Thread):
         self.email_flag = 0
         self.state = 0
         if "P10" in name or "P3" in name:
-            self.steps = 450
+            self.steps = 500
         else:
-            self.steps = 350
+            print("normal steps assigned")            
+            self.steps = 400
         self.pull_style = stepper.MICROSTEP
         self.kit = MotorKit()
 
