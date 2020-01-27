@@ -13,6 +13,7 @@ for pi in pi_data_table:
         pass
     else:
         kill_python(pi[1])
+        remove_logs(pi[1])
         remove_pycache(pi[1])
         git_pull(pi[1])
         reboot(pi[1])

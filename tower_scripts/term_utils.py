@@ -112,6 +112,18 @@ def remove_pycache(ipaddress):
         print("removed pycache")       
         print(response)
 
+def remove_logs(ipaddress):
+#clears out all files in apaporis directory
+    command = "ssh pi@{}".format(ipaddress) + " rm raspi_tit_scripts/logs"
+    try:
+        response = terminal(command)
+    except Exception as e:
+        print(e)
+        print("Oops, something's wrong. Issue deleting logs.")
+    else:
+        print("removed log file")       
+        print(response)
+
 #does a fresh install of repository from github
 def install_git(ipaddress):
     
@@ -122,6 +134,7 @@ def install_git(ipaddress):
         print(e)
         print("Oops, something's wrong. See previous output for details.")
     else:
+        print("Git cloned repository")        
         print(response)
 
 #essential to run if a fresh install. make sure launchers are executable
