@@ -56,7 +56,7 @@ class motorThread(threading.Thread):
         self.name = name
         self.email_flag = 0
         self.state = 0
-        if "Puzzle_P10" in name:
+        if "P10" in name or "P3" in name:
             self.steps = 450
         else:
             self.steps = 350
@@ -64,24 +64,45 @@ class motorThread(threading.Thread):
         self.kit = MotorKit()
 
     def zero(self):
+        global tag_present        
         global id_tag
-        if(IO.input(23)==True):
-            time.sleep(.2)
+        if tag_present:
             if(IO.input(23)==True):
-                time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
-                to_write_list = "{},{},{},{}".format(id_tag,"efficient",time_stamp[0],time_stamp[1])
-                write_csv(to_write_list,file_name)
-                #print("solve efficient")
-                self.state = 1
-    
-        elif(IO.input(24)==True):
-            time.sleep(.2)
-            if(IO.input(24)==True):
-                time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
-                to_write_list = "{},{},{},{}".format(id_tag,"inefficient",time_stamp[0],time_stamp[1])
-                write_csv(to_write_list,file_name)
-                #print("solve inefficient")
-                self.state = 1
+                time.sleep(.2)
+                if(IO.input(23)==True):
+                    time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
+                    to_write_list = "{},{},{},{}".format(id_tag,"efficient",time_stamp[0],time_stamp[1])
+                    write_csv(to_write_list,file_name)
+                    #print("solve efficient")
+                    self.state = 1
+        
+            elif(IO.input(24)==True):
+                time.sleep(.2)
+                if(IO.input(24)==True):
+                    time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
+                    to_write_list = "{},{},{},{}".format(id_tag,"inefficient",time_stamp[0],time_stamp[1])
+                    write_csv(to_write_list,file_name)
+                    #print("solve inefficient")
+                    self.state = 1
+        elif not tag_present:
+            if(IO.input(23)==True):
+                time.sleep(.5)
+                if(IO.input(23)==True):
+                    time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
+                    to_write_list = "{},{},{},{}".format(id_tag,"efficient",time_stamp[0],time_stamp[1])
+                    write_csv(to_write_list,file_name)
+                    #print("solve efficient")
+                    self.state = 1
+        
+            elif(IO.input(24)==True):
+                time.sleep(.5)
+                if(IO.input(24)==True):
+                    time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
+                    to_write_list = "{},{},{},{}".format(id_tag,"inefficient",time_stamp[0],time_stamp[1])
+                    write_csv(to_write_list,file_name)
+                    #print("solve inefficient")
+                    self.state = 1
+            
         else:
             self.state = 0
 
