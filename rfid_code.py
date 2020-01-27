@@ -64,7 +64,8 @@ class motorThread(threading.Thread):
         self.kit = MotorKit()
 
     def zero(self):
-        global tag_present        
+        global tag_present
+        global id_tag
         if tag_present:
             if(IO.input(23)==True):
                 time.sleep(.2)
@@ -252,7 +253,7 @@ ser = serial.Serial('/dev/ttyAMA0', baudrate=9600,
                     bytesize=serial.EIGHTBITS
                     )
 mof_read(ser)
-
+sd0_send(ser)
 
 #set up csv
 if not os.path.exists("data/"):
