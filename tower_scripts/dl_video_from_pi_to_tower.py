@@ -29,7 +29,7 @@ for count, pi in enumerate(pi_data_table):  #use this for more than one pi
             print("Error retrieving memory. Set to 100 by default")
             memory_left = 100
 
-        if "NA" in memory:
+        if "NA" in memory_left:
             memory_left = 100
             
         pi_data_table[count].append(int(memory_left))
