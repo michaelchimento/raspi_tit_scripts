@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from all_ipsandnames import pi_data_table
-from term_utils import ping_pi, terminal, kill_python, git_pull, reboot, delete_git
+from term_utils import *
 
 #pi_data_table format is [(pi name1, pi IP1), (pi name2, pi IP2),... etc]
 #print(pi_data_table)
@@ -14,6 +14,7 @@ for pi in pi_data_table:
     else:
         kill_python(pi[1])
         git_pull(pi[1])
+        chmod_launchers(pi[1],pi[0])
         reboot(pi[1])
 		
 

@@ -5,7 +5,7 @@ import datetime as dt
 import os
 from ipsandnames import pi_data_table
 from term_utils import terminal, ping_pi, mem_check
-from mb_backup_function import *
+from backup_function import *
 from operator import itemgetter
 
 

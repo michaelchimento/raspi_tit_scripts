@@ -85,25 +85,9 @@ class motorThread(threading.Thread):
                     self.state = 3
 
         elif not tag_present:
-            if(IO.input(23)==True):
-                time.sleep(.5)
-                if(IO.input(23)==True):
-                    time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
-                    to_write_list = "{},{},{},{}".format(id_tag,"efficient",time_stamp[0],time_stamp[1])
-                    write_csv(to_write_list,file_name)
-                    print("solve efficient by {}".format(id_tag))
-                    self.state = 3
-        
-            elif(IO.input(24)==True):
-                time.sleep(.5)
-                if(IO.input(24)==True):
-                    time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
-                    to_write_list = "{},{},{},{}".format(id_tag,"inefficient",time_stamp[0],time_stamp[1])
-                    write_csv(to_write_list,file_name)
-                    print("solve inefficient by {}".format(id_tag))
-                    self.state = 3
-                    
-            
+            if(IO.input(23)==True or IO.input(24)==True):
+                time.sleep(.3)
+                self.state = 4         
         else:
             self.state = 0
 
@@ -146,6 +130,21 @@ class motorThread(threading.Thread):
         print("set time to wait for scroungers")        
         self.end_time = time.time() + 3
         self.state = 1
+
+    def four(self):
+        if(IO.input(23)==True):
+            time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
+            to_write_list = "{},{},{},{}".format(id_tag,"efficient",time_stamp[0],time_stamp[1])
+            write_csv(to_write_list,file_name)
+            print("solve efficient by {}".format(id_tag))
+            self.state = 3
+
+        elif(IO.input(24)==True):
+            time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
+            to_write_list = "{},{},{},{}".format(id_tag,"inefficient",time_stamp[0],time_stamp[1])
+            write_csv(to_write_list,file_name)
+            print("solve inefficient by {}".format(id_tag))
+            self.state = 3
         
     
     def state_switcher(self, i):
@@ -153,7 +152,8 @@ class motorThread(threading.Thread):
             0:self.zero,
             1:self.one,
             2:self.two,
-            3:self.three
+            3:self.three,
+            4:self.four
             }
         func=switcher.get(i, lambda:"Invalid")
         return func()
@@ -282,10 +282,8 @@ motor_thread.start()
 while True:
     
     if tag_present == 0:
-        #print("tp: {}".format(tag_present))
         arrival_check(ser)
     elif tag_present == 1:
-        #print("tp: {}".format(tag_present))
         depart(ser)
         
 ser.close()
