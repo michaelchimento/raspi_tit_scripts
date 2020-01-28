@@ -4,13 +4,9 @@ import csv
 import datetime as dt
 import os
 from ipsandnames import pi_data_table
-<<<<<<< HEAD
 from term_utils import terminal, ping_pi, mem_check
 from backup_function import *
-=======
-from term_utils import terminal, ping_pi
-from mb_backup_function import *
->>>>>>> a5ce58a4b74648f18847ba6c110889fb4e7213f1
+
 
 #reads from csv that has col1:names, col2:IP address (no user!)
 #pi_data_table format is [(pi name1, pi IP1), (pi name2, pi IP2),... etc]
