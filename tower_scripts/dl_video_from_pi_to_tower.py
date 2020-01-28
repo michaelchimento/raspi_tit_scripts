@@ -4,8 +4,13 @@ import csv
 import datetime as dt
 import os
 from ipsandnames import pi_data_table
+<<<<<<< HEAD
+from term_utils import terminal, ping_pi, mem_check
+from backup_function import *
+=======
 from term_utils import terminal, ping_pi
 from mb_backup_function import *
+>>>>>>> a5ce58a4b74648f18847ba6c110889fb4e7213f1
 
 #reads from csv that has col1:names, col2:IP address (no user!)
 #pi_data_table format is [(pi name1, pi IP1), (pi name2, pi IP2),... etc]
@@ -13,12 +18,17 @@ print("####{} dl_video_from_pi_to_tower.py####".format(dt.datetime.now().strftim
 
 ### MOVE VIDEOS TO TRANSFER FOLDER ON PI
 
-for pi in pi_data_table:  #use this for more than one pi
+for count, pi in enumerate(pi_data_table):  #use this for more than one pi
     print("Transferring videos within Pi for {}".format(pi))
     reachable = ping_pi(pi[1])
     if not reachable:
         print("{} not responding to pings".format(pi[0]))
     else:
+        #add used memory to data_table for sorting later        
+        memory_left = mem_check(pi[1])
+        pi_data_table[count].append(int(memory_left))
+
+     
         copy_from = "APAPORIS/MOVED/"
         copy_to = "APAPORIS/TO_TRANSFER/"
 
@@ -45,9 +55,10 @@ for pi in pi_data_table:  #use this for more than one pi
 
 print("***Finished moving files on pis, now moving from Pi to Tower***")
 
-counter = 1
+
 ### COPY VIDEOS AND CSV TO TOWER/DELETE FROM PI
-for pi in pi_data_table:  #use this for more than one pi
+pi_data_table = sorted(pi_data_table, key=itemgetter(2), reverse=True)
+for count, pi in enumerate(pi_data_table):  #use this for more than one pi
     time_stamp = dt.datetime.now().strftime('%Y-%m-%d_%H')
     target_folder = "{}_{}/".format(pi[0],time_stamp)
     copy_from = "APAPORIS/TO_TRANSFER/"
@@ -103,9 +114,7 @@ for pi in pi_data_table:  #use this for more than one pi
                 print('All files transferred Successfully')
             
 
-            if counter % 4 == 0:
+            if count % 4 == 0:
                 backup_to_server()
-            counter +=1
 
 backup_to_server()
-
