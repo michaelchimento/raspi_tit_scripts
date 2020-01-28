@@ -5,7 +5,7 @@ import datetime as dt
 import os
 from ipsandnames import pi_data_table
 from term_utils import terminal, ping_pi, mem_check
-from backup_function import *
+from mb_backup_function import *
 from operator import itemgetter
 
 
@@ -22,7 +22,16 @@ for count, pi in enumerate(pi_data_table):  #use this for more than one pi
         print("{} not responding to pings".format(pi[0]))
     else:
         #add used memory to data_table for sorting later        
-        memory_left = mem_check(pi[1])
+        try:
+            memory_left = mem_check(pi[1])
+        except Exception as e:
+            print(e)
+            print("Error retrieving memory. Set to 100 by default")
+            memory_left = 100
+
+        if "NA" in memory:
+            memory_left = 100
+            
         pi_data_table[count].append(int(memory_left))
 
      
@@ -108,8 +117,7 @@ for count, pi in enumerate(pi_data_table):  #use this for more than one pi
                 print("error deleting files")
 
             else:    
-                print('All files transferred Successfully')
-            
+                print('All files transferred Successfully')       
 
             if count % 4 == 0:
                 backup_to_server()
