@@ -6,6 +6,7 @@ import os
 from ipsandnames import pi_data_table
 from term_utils import terminal, ping_pi, mem_check
 from backup_function import *
+from operator import itemgetter
 
 
 #reads from csv that has col1:names, col2:IP address (no user!)
