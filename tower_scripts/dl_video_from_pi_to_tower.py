@@ -20,6 +20,8 @@ for count, pi in enumerate(pi_data_table):  #use this for more than one pi
     reachable = ping_pi(pi[1])
     if not reachable:
         print("{} not responding to pings".format(pi[0]))
+        memory_left = 100
+        pi_data_table[count].append(int(memory_left))
     else:
         #add used memory to data_table for sorting later        
         try:
