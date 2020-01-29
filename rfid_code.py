@@ -171,26 +171,6 @@ def write_csv(to_write_list,file_name):
     with open(file_name, "a") as savefile:
         savefile.write(to_write_list+"\n")
 
-def sd0_send(ser):
-    ser.write("SD0\r".encode())
-    print("SD0")
-    time.sleep(2.5)
-    while True:
-        if ser.inWaiting() > 0:
-            data = ser.read_until("\r".encode())[0:-1]
-            print(data)
-            return
-
-def mof_read(ser):
-    ser.write("MOF\r".encode())
-    print("MOF")
-    time.sleep(2.5)
-    while True:
-        if ser.inWaiting() > 0:
-            data = ser.read_until("\r".encode())[0:-1]
-            print(data)
-            return
-
 def arrival_check(ser):
  
     global id_tag
@@ -253,10 +233,30 @@ ser = serial.Serial('/dev/ttyAMA0', baudrate=9600,
                     stopbits=serial.STOPBITS_ONE,  
                     bytesize=serial.EIGHTBITS
                     )
+
+def sd0_send(ser):
+    ser.write("SD0\r".encode())
+    print("SD0")
+    time.sleep(2.5)
+    while True:
+        if ser.inWaiting() > 0:
+            data = ser.read_until("\r".encode())[0:-1]
+            print(data)
+            return
+
+def mof_read(ser):
+    ser.write("MOF\r".encode())
+    print("MOF")
+    time.sleep(2.5)
+    while True:
+        if ser.inWaiting() > 0:
+            data = ser.read_until("\r".encode())[0:-1]
+            print(data)
+            return
+
 sd0_send(ser)
 
 mof_read(ser)
-
 
 #set up csv
 if not os.path.exists("data/"):
@@ -264,7 +264,7 @@ if not os.path.exists("data/"):
 
 #set file_name and timestamp for start of csv
 global file_name
-file_name = "data/{}_RFID_clean.csv".format(comp_name)
+file_name = "data/{}_RFID_grace.csv".format(comp_name)
 time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 if not os.path.isfile(file_name):
