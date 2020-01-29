@@ -2,7 +2,7 @@
 
 import csv
 import socket
-from uuid import getnode as get_mac
+import uuid
 
 def get_ip():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -31,7 +31,7 @@ try:
     name = [key for (key, value) in pi_dict.items() if value == ipaddress][0]
 except IndexError:
     print("network not connected, getting MAC address as name")
-    name = str(get_mac())[-5:]
+    name = print ('_'.join(['{:02x}'.format((uuid.getnode() >> ele) & 0xff) for ele in range(0,8*6,8)][::-1])) 
 
 ###############    ###############
 #Puzzle_P1_C1      #Puzzle_Px_C2
