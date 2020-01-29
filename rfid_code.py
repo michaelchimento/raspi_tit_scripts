@@ -199,12 +199,13 @@ def arrival_check(ser):
         if ser.inWaiting() > 0:
             data = ser.read_until("\r".encode())[0:-1]
             data = data.decode("latin-1")
+            data = data[-10:]
             if len(data)==10:
-                id_tag = data
+                id_tag = data[-10:]
                 time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                 print("{} arrived".format(id_tag[-10:]))
                 write_csv("{},{},{},{}".format(id_tag,"arrived",time_stamp[0],time_stamp[1]),file_name)
-                if motor_thread.state == 1:
+                if motor_thread.state == 1 or motor_thread.state == 2:
                     print("scrounge attack! motor_state_1")
                     write_csv("{},{},{},{}".format(id_tag,"scrounge",time_stamp[0],time_stamp[1]),file_name)
                 tag_present = 1
@@ -223,7 +224,7 @@ def depart(ser):
         if ser.inWaiting() > 0:
             data = ser.read_until("\r".encode())[0:-1]
             data = data.decode("latin-1")
-            ##print(data)
+            data = data[-10:]
             if (data == "?1"):
                 tolerance_limit +=1
                 if tolerance_limit >= 5:
@@ -239,7 +240,7 @@ def depart(ser):
                 write_csv("{},{},{},{}".format(id_tag,"departed",time_stamp[0],time_stamp[1]),file_name)
                 id_tag = data
                 write_csv("{},{},{},{}".format(id_tag,"displacement",time_stamp[0],time_stamp[1]),file_name)
-                if motor_thread.state == 1:
+                if motor_thread.state == 1 or motor_thread.state == 2:
                     print("scrounge attack! motor_state_1")
                     write_csv("{},{},{},{}".format(data[-10:],"scrounge",time_stamp[0],time_stamp[1]),file_name)
             
