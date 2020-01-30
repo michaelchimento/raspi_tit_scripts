@@ -4,13 +4,15 @@ repo for aviary raspi scripts and tests
 
 For installation on Pis:
 run  ```python3 fresh_install_pi.py``` from the tower
+and then run ```python3 write_to_crontab.py``` with desired jobs
 OR
 SSH into pi
 clone repo to home directory
 set chmod +x for files in "launchers" directory
-After either option, add the following to crontab:
+After either option, add the following (or whatever you so desire) to crontab:
 ```bash
 @reboot sh /home/pi/raspi_tit_scripts/launchers/CORRECTVERSION_launcher.sh 2 >> /home/pi/raspi_tit_scripts/tower_scripts/errorlog
+45 06 * * * reboot
 ```
 reboot and profit
 
