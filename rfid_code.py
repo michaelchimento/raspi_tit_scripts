@@ -54,7 +54,7 @@ class motorThread(threading.Thread):
         self.name = name
         self.email_flag = 0
         self.state = 0
-        if ("P10" or "P3" or "P9") in comp_name:
+        if "P10" in comp_name or "P3" in comp_name:
             print("long steps assigned")
             self.steps = 500
         else:
