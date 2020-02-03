@@ -13,7 +13,7 @@ print("####{} backup_function.py####".format(dt.datetime.now().strftime('%Y-%m-%
 def backup_to_server():
     print("####{} backup_function.py####".format(dt.datetime.now().strftime('%Y-%m-%d_%H_%M')))
     ##replace this with appropriate local & remote paths for backup
-    copy_from = "../../TITS/VIDEOS/"
+    copy_from = "~/TITS/VIDEOS/"
     copy_to = "/mnt/Videos_GRETI/field_season_winter_2020/"
 
 
@@ -34,6 +34,7 @@ def backup_to_server():
             print("Error uploading {} to server. Uploading to overflow folder to avoid merge error.".format(video))
             try:            
                 command = 'mv {}{} {}overflow/'.format(copy_from,video,copy_to)
+                print(command)
                 terminal(command)
             except Exception as e:
                 print("A further error has occurred. Manually remove files to save data.")
