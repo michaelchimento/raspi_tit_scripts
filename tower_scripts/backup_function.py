@@ -13,7 +13,7 @@ print("####{} backup_function.py####".format(dt.datetime.now().strftime('%Y-%m-%
 def backup_to_server():
     print("####{} backup_function.py####".format(dt.datetime.now().strftime('%Y-%m-%d_%H_%M')))
     ##replace this with appropriate local & remote paths for backup
-    copy_from = "~/TITS/VIDEOS/"
+    copy_from = "/home/michael/TITS/VIDEOS/"
     copy_to = "/mnt/Videos_GRETI/field_season_winter_2020/"
 
 

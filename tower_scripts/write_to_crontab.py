@@ -13,7 +13,7 @@ for pi in pi_data_table:
     if not reachable:
         pass
     else:
-        command = "echo \"@reboot sh /home/pi/raspi_tit_scripts/launchers/{}_launcher.sh\n03 6 * * * mv APAPORIS/CURRENT/* APAPORIS/TO_TRANSFER/\n45 6 * * * sudo reboot\" | ssh pi@{} \"crontab -\"".format(pi[0][:6].lower(), pi[1])
+        command = "echo \"@reboot sh /home/pi/raspi_tit_scripts/launchers/{}_launcher.sh\n03 6 * * * mv APAPORIS/CURRENT/* APAPORIS/TO_TRANSFER/\" | ssh pi@{} \"crontab -\"".format(pi[0][:6].lower(), pi[1])
         try:
             print(command)
             response = terminal(command)
