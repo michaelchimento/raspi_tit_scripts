@@ -51,16 +51,14 @@ try:
         hour = datetime.now().hour
         if hour >= feeder_start and hour < feeder_end:
             dir_name = make_photos(hour)
-            crop_folder(dir_name)
             shutil.move(dir_name,moved_path)
         else:
             pass
 
 except SigTermException:
     try:
-        crop_folder(dir_name)
         shutil.move(dir_name,moved_path)
     except:
-        print("failed to crop folder and move directory")
+        print("failed to move directory")
     finally:
         sys.exit(0)
