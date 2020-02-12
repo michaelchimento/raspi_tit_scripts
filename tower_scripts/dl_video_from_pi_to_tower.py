@@ -27,7 +27,7 @@ else:
             memory_left = 100
             pi_data_table[count].append(int(memory_left))
         else:
-            #add used memory to data_table for sorting later        
+            #add used memory to data_table for sorting later
             try:
                 memory_left = mem_check(pi[1])
             except Exception as e:
@@ -36,9 +36,8 @@ else:
                 memory_left = 100
             if "NA" in memory_left:
                 memory_left = 100
-                
             pi_data_table[count].append(int(memory_left))
-            
+
             copy_from = "APAPORIS/MOVED/"
             copy_to = "APAPORIS/TO_TRANSFER/"
 
@@ -47,7 +46,7 @@ else:
                 command = "ssh pi@{} ls {} | wc -l".format(pi[1],copy_from)
                 file_count_MOVED = terminal(command)
             except Exception as e:
-                print("Error counting number of files in moved")
+                print("Error while counting number of files in moved")
                 file_count_MOVED = 0
                 print(e)
 

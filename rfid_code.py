@@ -250,15 +250,10 @@ def mof_read(ser):
             print(data)
             return
 
-try:
-    sd0_send(ser)
-except:
-    pass
 
-try:
-    mof_read(ser)
-except:
-    pass
+sd0_send(ser)
+
+mof_read(ser)
 
 #set up csv
 if not os.path.exists("data/"):
@@ -293,5 +288,4 @@ try:
 
 except (SigTermException, KeyboardInterrupt):   
     motor_thread.kit.stepper1.release()   
-    ser.close()
     sys.exit()
