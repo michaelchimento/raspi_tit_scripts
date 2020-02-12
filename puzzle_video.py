@@ -75,6 +75,7 @@ def make_video():
         camera.stop_recording()
         
         os.rename(filepath + filename, moved_path + filename)
+        print(filename)
 
 while True:
     hour = datetime.now().hour

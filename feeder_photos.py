@@ -55,10 +55,10 @@ try:
         else:
             pass
 
-except SigTermException:
+except (SigTermException, KeyboardInterrupt):
     try:
         shutil.move(dir_name,moved_path)
     except:
         print("failed to move directory")
     finally:
-        sys.exit(0)
+        sys.exit()

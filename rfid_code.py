@@ -1,13 +1,9 @@
 #!/usr/bin/python3
 
-import time
-import socket
-import smtplib
-import serial
+import time, socket, smtplib, serial, threading, os
 import datetime as dt
-import threading
 import RPi.GPIO as IO
-import os
+from sigterm_exception import *
 from adafruit_motorkit import MotorKit
 from adafruit_motor import stepper
 from rpi_info import name
@@ -254,9 +250,15 @@ def mof_read(ser):
             print(data)
             return
 
-sd0_send(ser)
+try:
+    sd0_send(ser)
+except:
+    pass
 
-mof_read(ser)
+try:
+    mof_read(ser)
+except:
+    pass
 
 #set up csv
 if not os.path.exists("data/"):
@@ -280,11 +282,16 @@ else:
 motor_thread = motorThread(1, "Motor-Thread")
 motor_thread.start()
 
-while True:
-    
-    if tag_present == 0:
-        arrival_check(ser)
-    elif tag_present == 1:
-        depart(ser)
-        
-ser.close()
+signal.signal(signal.SIGTERM, signal_handler)
+
+try:
+    while True:
+        if tag_present == 0:
+            arrival_check(ser)
+        elif tag_present == 1:
+            depart(ser)
+
+except (SigTermException, KeyboardInterrupt):   
+    motor_thread.kit.stepper1.release()   
+    ser.close()
+    sys.exit()
