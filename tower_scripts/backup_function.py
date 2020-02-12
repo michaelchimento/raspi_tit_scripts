@@ -1,20 +1,20 @@
 #!/usr/bin/python3
 
-import subprocess
-import os
+import subprocess, os, socket
 import numpy as np
 from term_utils import terminal
 import datetime as dt
 
-print("####{} backup_function.py####".format(dt.datetime.now().strftime('%Y-%m-%d_%H_%M')))
-
-
-
 def backup_to_server():
     print("####{} backup_function.py####".format(dt.datetime.now().strftime('%Y-%m-%d_%H_%M')))
     ##replace this with appropriate local & remote paths for backup
-    copy_from = "/home/michael/TITS/VIDEOS/"
-    copy_to = "/mnt/Videos_GRETI/field_season_winter_2020/"
+    if "gustavo" in socket.gethostname():
+        copy_from = "/home/gustavo/TITS/VIDEOS/"
+        copy_to = "/run/user/1001/gvfs/smb-share:server=r-zfssvr01,share=grplucy/Videos_GRETI/field_season_winter_2020/"
+        
+    else:
+        copy_from = "/home/michael/TITS/VIDEOS/"
+        copy_to = "/mnt/Videos_GRETI/field_season_winter_2020/"
 
 
     #Get a list of files in original folder

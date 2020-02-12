@@ -12,7 +12,7 @@ from operator import itemgetter
 print("####{} dl_video_from_pi_to_tower.py####".format(dt.datetime.now().strftime('%Y-%m-%d_%H_%M')))
 
 instances = [pid for pid in psutil.pids() if sys.argv[0] in psutil.Process(pid).cmdline()]
-
+print(instances)
 if len(instances) > 1:
     print("process already running")
     sys.exit()
