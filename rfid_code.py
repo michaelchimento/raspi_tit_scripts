@@ -277,15 +277,11 @@ else:
 motor_thread = motorThread(1, "Motor-Thread")
 motor_thread.start()
 
-signal.signal(signal.SIGTERM, signal_handler)
+#signal.signal(signal.SIGTERM, signal_handler)
 
-try:
-    while True:
-        if tag_present == 0:
-            arrival_check(ser)
-        elif tag_present == 1:
-            depart(ser)
+while True:
+    if tag_present == 0:
+        arrival_check(ser)
+    elif tag_present == 1:
+        depart(ser)
 
-except (SigTermException, KeyboardInterrupt):   
-    motor_thread.kit.stepper1.release()   
-    sys.exit()
