@@ -19,6 +19,10 @@ tag_present=0
 global comp_name
 comp_name = name
 
+def tprint(*args):
+    timestamp = dt.datetime.now().strftime("%b-%d | %H:%M:%S")
+    print(timestamp, *args)
+
 def send_email():
     user = 'greti.lab.updates@gmail.com'
     password = 'greti2019'
@@ -68,7 +72,7 @@ class motorThread(threading.Thread):
                     time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                     to_write_list = "{},{},{},{}".format(id_tag,"efficient",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
-                    print("solve efficient by {}".format(id_tag))
+                    tprint("solve efficient by {}".format(id_tag))
                     self.state = 3
         
             elif(IO.input(24)==True):
@@ -77,7 +81,7 @@ class motorThread(threading.Thread):
                     time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                     to_write_list = "{},{},{},{}".format(id_tag,"inefficient",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
-                    print("solve inefficient by {}".format(id_tag))
+                    tprint("solve inefficient by {}".format(id_tag))
                     self.state = 3
 
         elif not tag_present:
@@ -92,12 +96,12 @@ class motorThread(threading.Thread):
             #print("waiting for scroungers")
             pass
         else:
-            print("scrounge stage complete")
+            tprint("scrounge stage complete")
             self.state = 2
             
     
     def two(self):
-        print("motors moving")
+        tprint("motors moving")
         for x in range(self.steps):
             self.kit.stepper1.onestep(direction=stepper.BACKWARD, style=self.pull_style)
         self.kit.stepper1.release()
@@ -123,7 +127,7 @@ class motorThread(threading.Thread):
             
     def three(self):
         #this state sets the timer for scrounging, set at 3 seconds
-        print("set time to wait for scroungers")        
+        tprint("set time to wait for scroungers")        
         self.end_time = time.time() + 3
         self.state = 1
 
@@ -132,14 +136,14 @@ class motorThread(threading.Thread):
             time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
             to_write_list = "{},{},{},{}".format(id_tag,"efficient",time_stamp[0],time_stamp[1])
             write_csv(to_write_list,file_name)
-            print("solve efficient by {}".format(id_tag))
+            tprint("solve efficient by {}".format(id_tag))
             self.state = 3
 
         elif(IO.input(24)==True):
             time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
             to_write_list = "{},{},{},{}".format(id_tag,"inefficient",time_stamp[0],time_stamp[1])
             write_csv(to_write_list,file_name)
-            print("solve inefficient by {}".format(id_tag))
+            tprint("solve inefficient by {}".format(id_tag))
             self.state = 3
         
     
@@ -179,10 +183,10 @@ def arrival_check(ser):
             if len(data)==10:
                 id_tag = data[-10:]
                 time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
-                print("{} arrived".format(id_tag[-10:]))
+                tprint("{} arrived".format(id_tag))
                 write_csv("{},{},{},{}".format(id_tag,"arrived",time_stamp[0],time_stamp[1]),file_name)
                 if motor_thread.state == 1 or motor_thread.state == 2:
-                    print("scrounge attack! motor_state_1")
+                    tprint("scrounge attack by {}!".format(id_tag))
                     write_csv("{},{},{},{}".format(id_tag,"scrounge",time_stamp[0],time_stamp[1]),file_name)
                 tag_present = 1
             else:
@@ -204,31 +208,25 @@ def depart(ser):
             if (data == "?1"):
                 tolerance_limit +=1
                 if tolerance_limit >= 5:
-                    print("{} left".format(id_tag))
+                    tprint("{} left".format(id_tag))
                     tag_present=0
                     time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                     write_csv("{},{},{},{}".format(id_tag,"departed",time_stamp[0],time_stamp[1]),file_name)
                     id_tag=""
             
-            elif(len(data)==10 and id_tag[-4:] not in data):
-                print("displacement")
+            elif(len(data)==10 and data[-4:] not in id_tag):
+                tprint("displacement by {}".format(data))
                 time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                 write_csv("{},{},{},{}".format(id_tag,"departed",time_stamp[0],time_stamp[1]),file_name)
                 id_tag = data
                 write_csv("{},{},{},{}".format(id_tag,"displacement",time_stamp[0],time_stamp[1]),file_name)
                 if motor_thread.state == 1 or motor_thread.state == 2:
-                    print("scrounge attack! motor_state_1")
+                    tprint("scrounge attack by {}!".format(id_tag))
                     write_csv("{},{},{},{}".format(data[-10:],"scrounge",time_stamp[0],time_stamp[1]),file_name)
             
             else:
                 tolerance_limit = 0
 
-#set up serial and read operating frequency
-ser = serial.Serial('/dev/ttyAMA0', baudrate=9600,
-                    parity=serial.PARITY_NONE,
-                    stopbits=serial.STOPBITS_ONE,  
-                    bytesize=serial.EIGHTBITS
-                    )
 
 def sd0_send(ser):
     ser.write("SD0\r".encode())
@@ -250,38 +248,46 @@ def mof_read(ser):
             print(data)
             return
 
+#set up serial and read operating frequency
+def create_serial_cxn():
+    ser = serial.Serial('/dev/ttyAMA0', baudrate=9600,
+                        parity=serial.PARITY_NONE,
+                        stopbits=serial.STOPBITS_ONE,  
+                        bytesize=serial.EIGHTBITS)
+    return ser
 
-sd0_send(ser)
+if __name__=="__main__":
+    ser = create_serial_cxn()
+    sd0_send(ser)
+    mof_read(ser)
 
-mof_read(ser)
+    #set up csv
+    if not os.path.exists("data/"):
+            os.makedirs("data/")
 
-#set up csv
-if not os.path.exists("data/"):
-        os.makedirs("data/")
+    #set file_name and timestamp for start of csv
+    global file_name
+    file_name = "data/{}_RFID_grace.csv".format(comp_name)
+    time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-#set file_name and timestamp for start of csv
-global file_name
-file_name = "data/{}_RFID_grace.csv".format(comp_name)
-time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    if not os.path.isfile(file_name):
+        with open(file_name, "a") as savefile:
+            header = "ID, Event, YMD, Timestamp\n"
+            savefile.write("#{} start time: {} \n".format(comp_name,time_stamp))
+            savefile.write(header)
+    else:
+        with open(file_name, "a") as savefile: # open data file in write mode
+            savefile.write("#{} start time: {} \n".format(comp_name,time_stamp))
 
-if not os.path.isfile(file_name):
-    with open(file_name, "a") as savefile:
-        header = "ID, Event, YMD, Timestamp\n"
-        savefile.write("#{} start time: {} \n".format(comp_name,time_stamp))
-        savefile.write(header)
-else:
-    with open(file_name, "a") as savefile: # open data file in write mode
-        savefile.write("#{} start time: {} \n".format(comp_name,time_stamp))
+    #begin running motor threads
+    motor_thread = motorThread(1, "Motor-Thread")
+    motor_thread.start()
 
-#begin running motor threads
-motor_thread = motorThread(1, "Motor-Thread")
-motor_thread.start()
+    #signal.signal(signal.SIGTERM, signal_handler)
 
-#signal.signal(signal.SIGTERM, signal_handler)
-
-while True:
-    if tag_present == 0:
-        arrival_check(ser)
-    elif tag_present == 1:
-        depart(ser)
+    while True:
+        if tag_present == 0:
+            arrival_check(ser)
+        elif tag_present == 1:
+            depart(ser)
 
