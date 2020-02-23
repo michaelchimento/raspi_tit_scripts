@@ -16,7 +16,7 @@ camera_shutter_speed = 3500
 camera_framerate = 30
 camera_exposure_mode = 'auto'
 camera_awb_mode = 'tungsten'
-camera_sharpness = 25
+camera_sharpness = 30
 camera_contrast = 25
 feeder_start = 7
 feeder_end = 18
@@ -31,15 +31,15 @@ sensitivity_value = 200
 def set_exposure_shutter(hour):
     if hour < 8:
         camera_exposure_mode = 'auto'
-        camera_shutter_speed = 5000    
+        camera_shutter_speed = 4500    
     elif hour < 10 and hour >=8:
         camera_exposure_mode = 'auto'
-        camera_shutter_speed = 4000
+        camera_shutter_speed = 3500
     elif hour >= 10 and hour < 15:
         camera_exposure_mode = 'auto'
-        camera_shutter_speed = 3000
+        camera_shutter_speed = 2500
     elif hour >= 15 and hour < 19:
         camera_exposure_mode = 'auto'
-        camera_shutter_speed = 4000
+        camera_shutter_speed = 3500
 
     return camera_exposure_mode, camera_shutter_speed
