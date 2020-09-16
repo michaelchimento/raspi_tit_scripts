@@ -8,7 +8,7 @@ IO.setup(24,IO.IN) #GPIO 24 -> IR sensor as input
 while 1:
 
     if(IO.input(23)==True):
-        print("solve efficient")
+        print("solve blue")
     
     if(IO.input(24)==True):
-        print("solve inefficient")
+        print("solve red")
