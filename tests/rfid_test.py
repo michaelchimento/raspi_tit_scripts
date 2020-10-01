@@ -4,7 +4,7 @@ import datetime as dt
 
 #run python -m serial.tools.list_ports in terminal to check serial port name
 
-def mof_read(ser):
+def mof_read(ser):  
     print("enter mof")
     ser.write(b"MOF\r")
     print("MOF")
