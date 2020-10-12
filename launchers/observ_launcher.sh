@@ -4,5 +4,5 @@
 
 cd /home/pi/raspi_tit_scripts
 sleep 15
-python3 observ_photos.py >> logs&
+python3 observ_photos.py >> logs/logs&
 exit 0
