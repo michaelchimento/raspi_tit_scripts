@@ -22,8 +22,8 @@ ensure ```chmod +x``` for files in "launchers" directory
 
 After either option, add the following (or whatever you so desire) to crontab:
 ```bash
-@reboot sh /home/pi/raspi_tit_scripts/launchers/CORRECTVERSION_launcher.sh 2 >> /home/pi/raspi_tit_scripts/tower_scripts/errorlog
-45 06 * * * reboot
+@reboot sh /home/pi/raspi_tit_scripts/launchers/**CORRECTVERSION**_launcher.sh 2 >> /home/pi/raspi_tit_scripts/logs/puzzle_errorlog
+*/20 * * * * sh /home/pi/raspi_tit_scripts/launchers/upload_files_launcher.sh 2 >> /home/pi/raspi_tit_scripts/logs/upload_errorlog
 ```
 make directory structure ```~/APAPORIS/CURRENT ~/APAPORIS/MOVED ~/APAPORIS/TO_TRANSFER```
 
