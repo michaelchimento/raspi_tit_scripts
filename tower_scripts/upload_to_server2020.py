@@ -31,6 +31,6 @@ def backup_to_server():
             except Exception as e:
                 print("A further error has occurred. Manually remove files to save data.")
         else:
-            print("All files backed up")
+            print("{} backed up".format(video))
             
 backup_to_server()
