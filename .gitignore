@@ -1,4 +1,6 @@
-logs
+# exclude everything
+data/*
+logs/*
 # Byte-compiled / optimized / DLL files
 __pycache__/
 */__pycache__/
