@@ -39,4 +39,9 @@ for installation on tower, add the following to crontab:
 00 20 * * * ~/raspi_tit_scripts/launchers/download_video_launcher.sh 2 >> ~/raspi_tit_scripts/tower_scripts/errorlog
 ```
 
+add to fstab, and create .smbcredentials file
+```
+//10.0.16.7/grpLucy /home/pi/mnt cifs x-systemd.automount,credentials=/etc/.smbcredentials,uid=pi,gid=pi,vers=3.0 0 0
+```
+
 To monitor live puzzles, ssh into pi and run ```tail -F <path to repo>/logs```. the python programs are run by launchers with -u flag to leave stdout unbuffered. Use tmux to keep everything in one place.
