@@ -3,7 +3,7 @@
 # launches correct python scripts with directory management
 
 
-cd /home/pi/raspi_tit_scripts/tower_scripts
+cd /home/pi/raspi_tit_scripts
 sleep 10
 mount -a
 sleep 10

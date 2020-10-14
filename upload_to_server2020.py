@@ -2,13 +2,14 @@ import subprocess, os, socket
 import numpy as np
 from term_utils import terminal
 import datetime as dt
+from rpi_info import name
+
+##replace this with appropriate local & remote paths for backup
+copy_from = "/home/pi/APAPORIS/MOVED/"
+copy_to = "/home/pi/mnt/Videos_GRETI/field_season_fall_2020/{}".format(name)
 
 def backup_to_server():
     print("####{} backup_function.py####".format(dt.datetime.now().strftime('%Y-%m-%d_%H_%M')))
-    ##replace this with appropriate local & remote paths for backup
-    copy_from = "/home/pi/APAPORIS/MOVED/"
-    copy_to = "/home/pi/mnt/Videos_GRETI/field_season_fall_2020/"
-    
     #Get a list of files in original folder
     files_from = os.listdir(copy_from)
     #Get a list of files in backup folder
@@ -32,5 +33,8 @@ def backup_to_server():
                 print("A further error has occurred. Manually remove files to save data.")
         else:
             print("{} backed up".format(video))
-            
+
+if not os.path.isdir(copy_to):     
+    os.mkdir(copy_to)
+
 backup_to_server()
