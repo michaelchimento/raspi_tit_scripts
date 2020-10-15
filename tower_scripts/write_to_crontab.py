@@ -22,5 +22,5 @@ for pi in pi_data_table:
         except:
             print("error writing to crontab")
 
-        #reboot(pi[1])
+        reboot(pi[1])
 
