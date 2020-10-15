@@ -1,5 +1,5 @@
 from term_utils import *
-from ipsandnames import pi_data_table
+from all_ipsandnames import pi_data_table
 
 for pi in pi_data_table:
     print("Copying local ssh key to pi @ {}".format(pi))

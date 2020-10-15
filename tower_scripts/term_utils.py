@@ -148,7 +148,7 @@ def chmod_launchers(ipaddress,name):
     elif "Feeder" in name:
         launchername = "feeder_launcher.sh"
         
-    command = "ssh pi@{} chmod +x raspi_tit_scripts/launchers/{}".format(ipaddress,launchername)
+    command = "ssh pi@{} \'chmod +x raspi_tit_scripts/launchers/{};chmod +x raspi_tit_scripts/launchers/upload_files_launcher.sh\'".format(ipaddress,launchername)
     try:
         response = terminal(command)
     except Exception as e:

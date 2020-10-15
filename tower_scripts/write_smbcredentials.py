@@ -13,8 +13,9 @@ for pi in pi_data_table:
     if not reachable:
         pass
     else:
-        #command = "ssh pi@{} set +H && echo -e \"username=mchimento\npassword=***********\ndomain=top.orn.mpg.de\" | sudo tee /etc/.smbcredentials".format(pi[1])
-        command = "ssh pi@{} mkdir /home/pi/mnt; echo -e \"//10.0.16.7/grpLucy /home/pi/mnt cifs x-systemd.automount,credentials=/etc/.smbcredentials,uid=pi,gid=pi,vers=3.0 0 0\" | sudo tee -a /etc/fstab".format(pi[1])
+        #command = "ssh pi@{} \'\'".format(pi[1])
+        #command = "ssh pi@{} mkdir /home/pi/mnt".format(pi[1])
+        command = "ssh pi@{} \'set +H;echo -e \"username=mchimento\npassword=***\ndomain=top.orn.mpg.de\" | sudo tee /etc/.smbcredentials;mkdir /home/pi/mnt; echo -e \"//10.0.16.7/grpLucy /home/pi/mnt cifs x-systemd.automount,credentials=/etc/.smbcredentials,uid=pi,gid=pi,vers=3.0 0 0\" | sudo tee -a /etc/fstab\'".format(pi[1])
         try:
             print(command)
             response = terminal(command)
