@@ -1,6 +1,5 @@
 import subprocess, os, socket
 import numpy as np
-from term_utils import terminal
 import datetime as dt
 from rpi_info import name
 
