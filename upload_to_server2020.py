@@ -4,6 +4,16 @@ from term_utils import terminal
 import datetime as dt
 from rpi_info import name
 
+def terminal(command):
+    try:
+        term_output = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
+    except subprocess.CalledProcessError as e:
+        #uncomment line below for more detailed debugging
+        #print("{}: {}".format(e.cmd,e.output.decode()))
+        raise e
+    else:
+        return term_output.decode()
+
 ##replace this with appropriate local & remote paths for backup
 copy_from = "/home/pi/APAPORIS/MOVED/"
 copy_to = "/home/pi/mnt/Videos_GRETI/field_season_fall_2020/{}".format(name)
@@ -26,7 +36,7 @@ def backup_to_server():
             print(e)
             print("Error uploading {} to server. Uploading to overflow folder to avoid merge error.".format(video))
             try:            
-                command = 'mv {}{} {}overflow/'.format(copy_from,video,copy_to)
+                command = 'mv {}{} {}_overflow/'.format(copy_from,video,copy_to)
                 print(command)
                 terminal(command)
             except Exception as e:
