@@ -36,12 +36,14 @@ def make_photos(hour):
         camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')
         resize_tuple = (int(resize_scale*camera.resolution[0]),int(resize_scale*camera.resolution[1]))
         try:        
+            print("Beginning new photo round")
             for i, filename in enumerate(camera.capture_continuous("{}/{}_".format(dir_name,filenamePrefix)+"{timestamp:%Y-%m-%d-%H-%M-%S-%f}.jpg", resize = resize_tuple)):
                 camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')
+                sleep(1)
                 if i == 599:
                     return dir_name
-        except Exception:
-            print("error during photo capture")
+        except Exception as e:
+            print("Exception during photo capture: {}".format(e))
             return dir_name
 
 signal.signal(signal.SIGTERM, signal_handler)

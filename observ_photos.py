@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import subprocess, socket, os, shutil, time, picamera, signal
+import subprocess, socket, os, shutil, time, picamera, signal, sys
 from io import StringIO
 from datetime import datetime
 from PIL import Image
@@ -48,8 +48,8 @@ def make_photos(hour):
                 camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')
                 if i == 599:
                     return dir_name
-        except Exception:
-            print("error during photo capture")
+        except Exception as e:
+            print("error during photo capture: e".format(e))
             return dir_name
 
 signal.signal(signal.SIGTERM, signal_handler)

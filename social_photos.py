@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import subprocess, socket, os, shutil, time, picamera, signal
+import subprocess, socket, os, shutil, time, picamera, signal, sys
 from io import StringIO
 from datetime import datetime
 from PIL import Image
@@ -45,10 +45,11 @@ def make_photos(hour):
         try:        
             for i, filename in enumerate(camera.capture_continuous("{}/{}_".format(dir_name,filenamePrefix)+"{timestamp:%Y-%m-%d-%H-%M-%S-%f}.jpg")):
                 camera.annotate_text = datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')
+                sleep(1)
                 if i == 599:
                     return dir_name
-        except Exception:
-            print("error during photo capture")
+        except Exception as e:
+            print("Exception during photo capture: {}".format(e))
             return dir_name
 
 signal.signal(signal.SIGTERM, signal_handler)
@@ -58,14 +59,14 @@ try:
         hour = datetime.now().hour
         if hour >= social_start and hour < social_end:
             dir_name = make_photos(hour)
-            crop_folder(dir_name)
+            #crop_folder(dir_name)
             shutil.move(dir_name,moved_path)
         else:
             pass
 
 except (SigTermException, KeyboardInterrupt):
     try:
-        crop_folder(dir_name)
+        #crop_folder(dir_name)
         shutil.move(dir_name,moved_path)
     except:
         print("failed to crop folder and move directory")
