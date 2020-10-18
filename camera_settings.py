@@ -4,12 +4,14 @@ from datetime import datetime
 
 camera_rotation = 0
 camera_resolution = "1080p"
+social_camera_resolution = (3280, 2464)
 camera_color_effects = (128,128)
 focus_zoom = (0.25, 0.25, 0.5, 0.5)
 feeder_zoom = (0, 0, 1, 1)
 observ_zoom = (0, 0, 1, 1)
 social_zoom = (0, 0, 1, 1)
 resize_scale = .7
+feeder_resize_scale = .8
 camera_ISO = 0
 camera_brightness = 40
 camera_shutter_speed = 3500
@@ -20,8 +22,8 @@ camera_sharpness = 30
 camera_contrast = 25
 feeder_start = 7
 feeder_end = 18
-social_start = 11
-social_end = 16
+social_start = 7
+social_end = 18
 puzzle_start = 7
 puzzle_end = 18
 observ_start = 7

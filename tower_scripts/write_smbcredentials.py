@@ -15,7 +15,9 @@ for pi in pi_data_table:
     else:
         #command = "ssh pi@{} \'\'".format(pi[1])
         #command = "ssh pi@{} mkdir /home/pi/mnt".format(pi[1])
-        command = "ssh pi@{} \'set +H;echo -e \"username=mchimento\npassword=***\ndomain=top.orn.mpg.de\" | sudo tee /etc/.smbcredentials;mkdir /home/pi/mnt; echo -e \"//10.0.16.7/grpLucy /home/pi/mnt cifs x-systemd.automount,credentials=/etc/.smbcredentials,uid=pi,gid=pi,vers=3.0 0 0\" | sudo tee -a /etc/fstab\'".format(pi[1])
+        #command = "ssh pi@{} \'set +H;echo -e \"username=mchimento\npassword=***\ndomain=top.orn.mpg.de\" | sudo tee /etc/.smbcredentials;mkdir /home/pi/mnt; echo -e \"//10.0.16.7/grpLucy /home/pi/mnt cifs x-systemd.automount,credentials=/etc/.smbcredentials,uid=pi,gid=pi,vers=3.0 0 0\" | sudo tee -a /etc/fstab\'".format(pi[1])
+        #the command below disables hdmi out. -p to re-enable         
+        command= "ssh pi@{} \"echo \"/usr/bin/tvservice -o\" | sudo tee -a /etc/rc.local; sudo reboot\"".format(pi[1])
         try:
             print(command)
             response = terminal(command)

@@ -28,7 +28,7 @@ def make_photos(hour):
     with picamera.PiCamera() as camera:
         camera.rotation = camera_rotation
         camera.zoom = social_zoom
-        camera.resolution = camera_resolution
+        camera.resolution = social_camera_resolution
         camera.brightness = camera_brightness
         camera.sharpness = camera_sharpness
         camera.contrast = camera_contrast
