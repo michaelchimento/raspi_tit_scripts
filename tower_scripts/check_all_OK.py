@@ -96,6 +96,6 @@ if email_results:
         print("error in check_ok email")
 
 for i in range(len(pi_data_table)):
-    if "NOT" in server_status[i]:
+    if "NOT" in server_status[i] or "Problem" in processes[i]:
         reboot(pi_data_table[i][1])
 
