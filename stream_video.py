@@ -86,7 +86,10 @@ with picamera.PiCamera() as camera:
         camera.resolution = "1080p"
         camera.zoom = focus_zoom
     else:
-        camera.resolution = "720p"
+        if "Social" in name:
+            camera.resolution = social_camera_resolution
+        else:        
+            camera.resolution = camera_resolution
     camera.brightness = camera_brightness
     camera.sharpness = camera_sharpness
     camera.contrast = camera_contrast
