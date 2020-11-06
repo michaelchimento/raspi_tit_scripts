@@ -7,8 +7,21 @@ from sigterm_exception import *
 from rpi_info import name
 IO.setwarnings(False)
 IO.setmode (IO.BCM)
-IO.setup(23,IO.IN) #blue solve
-IO.setup(24,IO.IN) #red solve
+
+if "P3" in name:
+    print("changing blue pin to 26")
+    blue_IR_pin=26
+else:
+    blue_IR_pin=23
+
+if "P8" in name:
+    print("changing red pin to 26")
+    red_IR_pin=26
+else:
+    red_IR_pin=24
+
+IO.setup(blue_IR_pin,IO.IN) #blue solve
+IO.setup(red_IR_pin,IO.IN) #red solve
 
 # Set pin 11 as an output, and define as servo1 as PWM pin
 IO.setup(17,IO.OUT) #BLUE
@@ -83,18 +96,18 @@ class motorThread(threading.Thread):
 
     def zero(self):
         if tag_present:
-            if(IO.input(23)==True):
+            if(IO.input(blue_IR_pin)==True):
                 time.sleep(.2)
-                if(IO.input(23)==True):
+                if(IO.input(blue_IR_pin)==True):
                     time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                     to_write_list = "{},{},{},{}".format(id_tag,"blue",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
                     tprint("solve blue by {}".format(id_tag))
                     self.state = 3
         
-            elif(IO.input(24)==True):
+            elif(IO.input(red_IR_pin)==True):
                 time.sleep(.2)
-                if(IO.input(24)==True):
+                if(IO.input(red_IR_pin)==True):
                     time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
                     to_write_list = "{},{},{},{}".format(id_tag,"red",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
@@ -102,7 +115,7 @@ class motorThread(threading.Thread):
                     self.state = 3
 
         elif not tag_present:
-            if(IO.input(23)==True or IO.input(24)==True):
+            if(IO.input(blue_IR_pin)==True or IO.input(red_IR_pin)==True):
                 time.sleep(.3)
                 self.state = 4         
         else:
@@ -120,13 +133,13 @@ class motorThread(threading.Thread):
     def two(self):
         door_reset()
         
-        if(IO.input(23)==False and IO.input(24)==False):
+        if(IO.input(blue_IR_pin)==False and IO.input(red_IR_pin)==False):
             self.email_flag=0
             self.state = 0
         
-        elif((IO.input(23)==True or IO.input(24)==True) and self.email_flag==0):
+        elif((IO.input(blue_IR_pin)==True or IO.input(red_IR_pin)==True) and self.email_flag==0):
             time.sleep(.5)
-            if((IO.input(23)==True or IO.input(24)==True)):
+            if((IO.input(blue_IR_pin)==True or IO.input(red_IR_pin)==True)):
                 #self.state, self.email_flag = send_email()
                 pass
             else:
@@ -141,16 +154,16 @@ class motorThread(threading.Thread):
         self.state = 1
 
     def four(self):
-        if(IO.input(23)==True):
+        if(IO.input(blue_IR_pin)==True):
             time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
-            to_write_list = "{},{},{},{}".format(id_tag,"efficient",time_stamp[0],time_stamp[1])
+            to_write_list = "{},{},{},{}".format(id_tag,"blue",time_stamp[0],time_stamp[1])
             write_csv(to_write_list,file_name)
             tprint("solve blue by {}".format(id_tag))
             self.state = 3
 
-        elif(IO.input(24)==True):
+        elif(IO.input(red_IR_pin)==True):
             time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
-            to_write_list = "{},{},{},{}".format(id_tag,"inefficient",time_stamp[0],time_stamp[1])
+            to_write_list = "{},{},{},{}".format(id_tag,"red",time_stamp[0],time_stamp[1])
             write_csv(to_write_list,file_name)
             tprint("solve red by {}".format(id_tag))
             self.state = 3

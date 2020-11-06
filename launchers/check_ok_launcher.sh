@@ -4,5 +4,5 @@
 
 cd ~/raspi_tit_scripts/tower_scripts
 sleep 10
-python3 check_all_OK.py&
+python3 -u check_all_OK.py >> ../logs/logs&
 exit 0
