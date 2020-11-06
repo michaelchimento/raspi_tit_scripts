@@ -289,8 +289,9 @@ if __name__=="__main__":
 
     #set file_name and timestamp for start of csv
     global file_name
-    file_name = "data/{}_RFID_fall.csv".format(comp_name)
     time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    time_stamp = dt.datetime.now().strftime('%Y-%m-%d')
+    file_name = "data/{}_{}_RFID_fall.csv".format(comp_name,date_stamp)
 
     if not os.path.isfile(file_name):
         with open(file_name, "a") as savefile:
