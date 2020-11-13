@@ -10,13 +10,13 @@ IO.setmode (IO.BCM)
 
 if "P3" in name:
     print("changing blue pin to 26")
-    blue_IR_pin=26
+    blue_IR_pin=19
 else:
     blue_IR_pin=23
 
 if "P8" in name:
     print("changing red pin to 26")
-    red_IR_pin=26
+    red_IR_pin=19
 else:
     red_IR_pin=24
 
@@ -150,7 +150,7 @@ class motorThread(threading.Thread):
     def three(self):
         #this state sets the timer for scrounging, set at 3 seconds
         tprint("set time to wait for scroungers")        
-        self.end_time = time.time() + 3
+        self.end_time = time.time() + 4
         self.state = 1
 
     def four(self):
