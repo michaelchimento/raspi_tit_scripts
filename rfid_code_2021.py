@@ -48,9 +48,7 @@ def door_reset():
         servo1.ChangeDutyCycle(6+i/5)
         servo2.ChangeDutyCycle(12-i/5)
         time.sleep(0.02)
-    #servo1.ChangeDutyCycle(12)
-    #servo2.ChangeDutyCycle(6)
-    #time.sleep(.3)
+
     servo1.ChangeDutyCycle(6)
     servo2.ChangeDutyCycle(12)
     time.sleep(.3)
@@ -138,7 +136,7 @@ class motorThread(threading.Thread):
             self.state = 0
         
         elif((IO.input(blue_IR_pin)==True or IO.input(red_IR_pin)==True) and self.email_flag==0):
-            time.sleep(.5)
+            time.sleep(10)
             if((IO.input(blue_IR_pin)==True or IO.input(red_IR_pin)==True)):
                 #self.state, self.email_flag = send_email()
                 pass
