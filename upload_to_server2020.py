@@ -17,8 +17,7 @@ def checkIfProcessRunning(processName):
                 return True
         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
             pass
-     print("{} not running.".format(processName))
-     return False;
+    return False
 
 
 def terminal(command):
@@ -66,3 +65,5 @@ if not checkIfProcessRunning("upload_to_server2020.py"):
         os.mkdir(copy_to)
 
     backup_to_server()
+else:
+    print("backup already running")
