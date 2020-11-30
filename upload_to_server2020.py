@@ -10,6 +10,7 @@ def checkIfProcessRunning(processName):
     '''
     #Iterate over the all the running process
     for proc in psutil.process_iter():
+        print(proc.name().lower())
         try:
             # Check if process name contains the given name string.
             if processName.lower() in proc.name().lower():
@@ -60,10 +61,13 @@ def backup_to_server():
         else:
             print("{} backed up".format(video))
 
-if not checkIfProcessRunning("upload_to_server2020.py"):
-    if not os.path.isdir(copy_to):     
-        os.mkdir(copy_to)
+if __name__=="__main__":
+    running = checkIfProcessRunning("upload_to_server2020.py")
+    print(running)
+    if not running:
+        if not os.path.isdir(copy_to):     
+            os.mkdir(copy_to)
 
-    backup_to_server()
-else:
-    print("backup already running")
+        backup_to_server()
+    else:
+        print("backup already running")
