@@ -18,7 +18,7 @@ def checkIfProcessRunning(processName):
         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
             pass
      print("{} not running.".format(processName))
-     return False
+     return False;
 
 
 def terminal(command):
