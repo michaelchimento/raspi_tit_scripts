@@ -13,7 +13,7 @@ def checkIfProcessRunning(processName):
         try:
             # Check if process name contains the given name string.
             if processName.lower() in proc.name().lower():
-                print("{} is already running".format(proc.name().lower())
+                print("{} is already running".format(proc.name().lower()))
                 return True
         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
             pass
