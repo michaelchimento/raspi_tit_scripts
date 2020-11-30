@@ -2,6 +2,24 @@ import subprocess, os, socket
 import numpy as np
 import datetime as dt
 from rpi_info import name
+import psutil
+
+def checkIfProcessRunning(processName):
+    '''
+    Check if there is any running process that contains the given name processName.
+    '''
+    #Iterate over the all the running process
+    for proc in psutil.process_iter():
+        try:
+            # Check if process name contains the given name string.
+            if processName.lower() in proc.name().lower():
+                print("{} is already running".format(proc.name().lower())
+                return True
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            pass
+     print("{} not running.".format(processName))
+     return False
+
 
 def terminal(command):
     try:
@@ -43,7 +61,8 @@ def backup_to_server():
         else:
             print("{} backed up".format(video))
 
-if not os.path.isdir(copy_to):     
-    os.mkdir(copy_to)
+if not checkIfProcessRunning("upload_to_server2020.py"):
+    if not os.path.isdir(copy_to):     
+        os.mkdir(copy_to)
 
-backup_to_server()
+    backup_to_server()
