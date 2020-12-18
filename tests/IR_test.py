@@ -1,14 +1,24 @@
 import RPi.GPIO as IO
 IO.setwarnings(False)
 IO.setmode (IO.BCM)
-IO.setup(23,IO.IN) #GPIO 23 -> IR sensor as input
-IO.setup(24,IO.IN) #GPIO 24 -> IR sensor as input
+if "P3" in name:
+    left_IR_pin=19
+    print("changing left_push pin to {}".format(left_IR_pin)
+else:
+    left_IR_pin=23
+
+if "P8" in name:
+    right_IR_pin=19
+    print("changing right_push pin to {}".format(right_IR_pin)
+
+else:
+    right_IR_pin=24
 
 
 while 1:
 
-    if(IO.input(23)==True):
-        print("solve blue")
+    if(IO.input(left_IR_pin)==True):
+        print("solve left")
     
-    if(IO.input(24)==True):
-        print("solve red")
+    if(IO.input(right_IR_pin)==True):
+        print("solve right")
