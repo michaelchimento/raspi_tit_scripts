@@ -9,14 +9,14 @@ IO.setwarnings(False)
 IO.setmode (IO.BCM)
 
 if "P3" in name:
-    print("changing blue pin to 26")
+    print("changing blue pin to 19")
     blue_IR_pin=19
 else:
     blue_IR_pin=23
 
 if "P8" in name:
-    print("changing red pin to 26")
-    red_IR_pin=19
+    print("changing red pin to 13")
+    red_IR_pin=13
 else:
     red_IR_pin=24
 
