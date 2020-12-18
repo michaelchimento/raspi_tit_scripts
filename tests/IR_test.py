@@ -1,6 +1,9 @@
 import RPi.GPIO as IO
 IO.setwarnings(False)
 IO.setmode (IO.BCM)
+from rpi_info import name
+
+
 if "P3" in name:
     left_IR_pin=19
     print("changing left_push pin to {}".format(left_IR_pin))
