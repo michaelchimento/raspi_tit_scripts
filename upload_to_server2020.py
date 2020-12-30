@@ -2,6 +2,28 @@ import subprocess, os, socket
 import numpy as np
 import datetime as dt
 from rpi_info import name
+import psutil
+
+def checkIfProcessRunning(processName):
+    '''
+    Check if there is any running process that contains the given name processName.
+    '''
+    #Iterate over the all the running process
+    i=0
+    for proc in psutil.process_iter():  
+        try:
+            # Check if process name contains the given name string.
+            if processName.lower() in proc.name().lower():
+                script_name = proc.cmdline()[-1]
+                if "upload_to_server2020.py" in script_name:
+                    i+=1
+                    if i >=2:
+                        print("{} is already running".format(proc.cmdline()[-1].lower()))
+                        return True
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            pass
+    return False
+
 
 def terminal(command):
     try:
@@ -15,7 +37,7 @@ def terminal(command):
 
 ##replace this with appropriate local & remote paths for backup
 copy_from = "/home/pi/APAPORIS/MOVED/"
-copy_to = "/home/pi/mnt/Videos_GRETI/field_season_fall_2020/{}".format(name)
+copy_to = "/home/pi/mnt/Videos_GRETI/field_season_winter_2020/{}".format(name)
 
 def backup_to_server():
     print("####{} backup_function.py####".format(dt.datetime.now().strftime('%Y-%m-%d_%H_%M')))
@@ -43,7 +65,13 @@ def backup_to_server():
         else:
             print("{} backed up".format(video))
 
-if not os.path.isdir(copy_to):     
-    os.mkdir(copy_to)
+if __name__=="__main__":
+    running = checkIfProcessRunning("python")
+    print(running)
+    if not running:
+        if not os.path.isdir(copy_to):     
+            os.mkdir(copy_to)
 
-backup_to_server()
+        backup_to_server()
+    else:
+        print("backup already running")
