@@ -3,7 +3,7 @@
 # launches correct python scripts with directory management
 
 
-cd /home/pi/raspi_tit_scripts
+cd /home/michael/raspi_tit_scripts/tower_scripts
 sleep 10
-python3 -u upload_to_server2020.py > logs/upload_logs&
+python3 -u download_puzzle_data.py > ../logs/download_puzzle_logs&
 exit 0

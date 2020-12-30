@@ -9,7 +9,7 @@ print("####{} get_test_img.py####".format(dt.datetime.now().strftime('%Y-%m-%d_%
 
 #clear out yesterday's photos
 copy_to = "~/TITS/daily_check"
-copy_from = "APAPORIS/MOVED"
+copy_from = "APAPORIS/CURRENT"
 command = 'rm -rf {}/*.jpg'.format(copy_to)
 terminal(command)
 

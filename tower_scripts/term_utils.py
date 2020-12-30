@@ -59,7 +59,7 @@ def current_py_processes(ipaddress):
 #if running, terminates all python scripts
 def kill_python(ipaddress):
     #kill all python processes
-	command = "ssh pi@{} sudo pkill python".format(ipaddress)
+	command = "ssh pi@{} \'pkill -9 python\'".format(ipaddress)
 	try:
 	    response = terminal(command)
 	except Exception:
