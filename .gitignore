@@ -10,7 +10,7 @@ __pycache__/
 */.csv
 # C extensions
 *.so
-
+rpi_info.py
 # Distribution / packaging
 .Python
 build/

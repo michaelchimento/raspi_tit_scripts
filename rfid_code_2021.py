@@ -9,14 +9,14 @@ IO.setwarnings(False)
 IO.setmode (IO.BCM)
 
 if "P3" in name:
-    print("changing blue pin to 26")
-    blue_IR_pin=26
+    print("changing blue pin to 19")
+    blue_IR_pin=19
 else:
     blue_IR_pin=23
 
 if "P8" in name:
-    print("changing red pin to 26")
-    red_IR_pin=26
+    print("changing red pin to 13")
+    red_IR_pin=13
 else:
     red_IR_pin=24
 
@@ -48,9 +48,7 @@ def door_reset():
         servo1.ChangeDutyCycle(6+i/5)
         servo2.ChangeDutyCycle(12-i/5)
         time.sleep(0.02)
-    #servo1.ChangeDutyCycle(12)
-    #servo2.ChangeDutyCycle(6)
-    #time.sleep(.3)
+
     servo1.ChangeDutyCycle(6)
     servo2.ChangeDutyCycle(12)
     time.sleep(.3)
@@ -138,7 +136,7 @@ class motorThread(threading.Thread):
             self.state = 0
         
         elif((IO.input(blue_IR_pin)==True or IO.input(red_IR_pin)==True) and self.email_flag==0):
-            time.sleep(.5)
+            time.sleep(10)
             if((IO.input(blue_IR_pin)==True or IO.input(red_IR_pin)==True)):
                 #self.state, self.email_flag = send_email()
                 pass
@@ -150,7 +148,7 @@ class motorThread(threading.Thread):
     def three(self):
         #this state sets the timer for scrounging, set at 3 seconds
         tprint("set time to wait for scroungers")        
-        self.end_time = time.time() + 3
+        self.end_time = time.time() + 4
         self.state = 1
 
     def four(self):
