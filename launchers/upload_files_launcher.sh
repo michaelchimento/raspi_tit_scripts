@@ -1,9 +1,9 @@
 #!/bin/sh
-# puzzlelauncher.sh
+# upload_files_launcher.sh
 # launches correct python scripts with directory management
 
 
-cd /home/michael/raspi_tit_scripts/tower_scripts
+cd /home/pi/raspi_tit_scripts
 sleep 10
-python3 -u download_puzzle_data.py > ../logs/download_puzzle_logs&
+python3 -u upload_to_server2020.py > logs/upload_logs&
 exit 0
