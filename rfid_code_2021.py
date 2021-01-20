@@ -58,6 +58,10 @@ def door_reset():
 def tprint(*args):
     timestamp = dt.datetime.now().strftime("%b-%d | %H:%M:%S")
     print(timestamp, *args)
+    
+def return_tstamp():
+    tstamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f').split()
+    return tstamp
 
 def send_email():
     user = 'greti.lab.updates@gmail.com'
@@ -97,7 +101,7 @@ class motorThread(threading.Thread):
             if(IO.input(blue_IR_pin)==True):
                 time.sleep(.2)
                 if(IO.input(blue_IR_pin)==True):
-                    time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
+                    time_stamp = return_tstamp()
                     to_write_list = "{},{},{},{}".format(id_tag,"blue",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
                     tprint("solve blue by {}".format(id_tag))
@@ -106,7 +110,7 @@ class motorThread(threading.Thread):
             elif(IO.input(red_IR_pin)==True):
                 time.sleep(.2)
                 if(IO.input(red_IR_pin)==True):
-                    time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
+                    time_stamp = return_tstamp()
                     to_write_list = "{},{},{},{}".format(id_tag,"red",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
                     tprint("solve red by {}".format(id_tag))
@@ -153,14 +157,14 @@ class motorThread(threading.Thread):
 
     def four(self):
         if(IO.input(blue_IR_pin)==True):
-            time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
+            time_stamp = return_tstamp()
             to_write_list = "{},{},{},{}".format(id_tag,"blue",time_stamp[0],time_stamp[1])
             write_csv(to_write_list,file_name)
             tprint("solve blue by {}".format(id_tag))
             self.state = 3
 
         elif(IO.input(red_IR_pin)==True):
-            time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
+            time_stamp = return_tstamp()
             to_write_list = "{},{},{},{}".format(id_tag,"red",time_stamp[0],time_stamp[1])
             write_csv(to_write_list,file_name)
             tprint("solve red by {}".format(id_tag))
@@ -202,7 +206,7 @@ def arrival_check(ser):
             data = data[-10:]
             if len(data)==10:
                 id_tag = data[-10:]
-                time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
+                time_stamp = return_tstamp()
                 tprint("{} arrived".format(id_tag))
                 write_csv("{},{},{},{}".format(id_tag,"arrived",time_stamp[0],time_stamp[1]),file_name)
                 if motor_thread.state == 1 or motor_thread.state == 2:
@@ -230,13 +234,13 @@ def depart(ser):
                 if tolerance_limit >= 5:
                     tprint("{} left".format(id_tag))
                     tag_present=0
-                    time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
+                    time_stamp = return_tstamp()
                     write_csv("{},{},{},{}".format(id_tag,"departed",time_stamp[0],time_stamp[1]),file_name)
                     id_tag=""
             
             elif(len(data)==10 and data[-4:] not in id_tag):
                 tprint("displacement by {}".format(data))
-                time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
+                time_stamp = return_tstamp()
                 write_csv("{},{},{},{}".format(id_tag,"departed",time_stamp[0],time_stamp[1]),file_name)
                 id_tag = data
                 write_csv("{},{},{},{}".format(id_tag,"displacement",time_stamp[0],time_stamp[1]),file_name)
