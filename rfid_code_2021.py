@@ -102,18 +102,18 @@ class motorThread(threading.Thread):
                 time.sleep(.2)
                 if(IO.input(blue_IR_pin)==True):
                     time_stamp = return_tstamp()
-                    to_write_list = "{},{},{},{}".format(id_tag,"blue",time_stamp[0],time_stamp[1])
+                    to_write_list = "{},{},{},{}".format(id_tag,"left",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
-                    tprint("solve blue by {}".format(id_tag))
+                    tprint("solve left by {}".format(id_tag))
                     self.state = 3
         
             elif(IO.input(red_IR_pin)==True):
                 time.sleep(.2)
                 if(IO.input(red_IR_pin)==True):
                     time_stamp = return_tstamp()
-                    to_write_list = "{},{},{},{}".format(id_tag,"red",time_stamp[0],time_stamp[1])
+                    to_write_list = "{},{},{},{}".format(id_tag,"right",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
-                    tprint("solve red by {}".format(id_tag))
+                    tprint("solve right by {}".format(id_tag))
                     self.state = 3
 
         elif not tag_present:
@@ -152,22 +152,22 @@ class motorThread(threading.Thread):
     def three(self):
         #this state sets the timer for scrounging, set at 3 seconds
         tprint("set time to wait for scroungers")        
-        self.end_time = time.time() + 4
+        self.end_time = time.time() + 5
         self.state = 1
 
     def four(self):
         if(IO.input(blue_IR_pin)==True):
             time_stamp = return_tstamp()
-            to_write_list = "{},{},{},{}".format(id_tag,"blue",time_stamp[0],time_stamp[1])
+            to_write_list = "{},{},{},{}".format(id_tag,"left",time_stamp[0],time_stamp[1])
             write_csv(to_write_list,file_name)
-            tprint("solve blue by {}".format(id_tag))
+            tprint("solve left by {}".format(id_tag))
             self.state = 3
 
         elif(IO.input(red_IR_pin)==True):
             time_stamp = return_tstamp()
-            to_write_list = "{},{},{},{}".format(id_tag,"red",time_stamp[0],time_stamp[1])
+            to_write_list = "{},{},{},{}".format(id_tag,"right",time_stamp[0],time_stamp[1])
             write_csv(to_write_list,file_name)
-            tprint("solve red by {}".format(id_tag))
+            tprint("solve right by {}".format(id_tag))
             self.state = 3
         
     
