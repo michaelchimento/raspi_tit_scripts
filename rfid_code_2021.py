@@ -303,7 +303,10 @@ if __name__=="__main__":
     else:
         with open(file_name, "a") as savefile: # open data file in write mode
             savefile.write("#{} start time: {} \n".format(comp_name,time_stamp))
-
+    
+    door_reset()
+    time.sleep(2)
+    
     #begin running motor threads
     motor_thread = motorThread(1, "Motor-Thread")
     motor_thread.start()
