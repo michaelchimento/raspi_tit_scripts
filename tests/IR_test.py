@@ -1,8 +1,12 @@
 import RPi.GPIO as IO
+from rpi_info import name
 IO.setwarnings(False)
 IO.setmode (IO.BCM)
 
-left_IR_pin=23
+if "Puzzle_P4" in name:
+    left_IR_pin=22
+else:
+    left_IR_pin=23
 right_IR_pin=24
 IO.setup(left_IR_pin,IO.IN) #blue solve
 IO.setup(right_IR_pin,IO.IN) #red solve
