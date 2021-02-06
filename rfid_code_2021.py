@@ -12,8 +12,8 @@ if "P3" in name:
     print("changing blue pin to 19")
     blue_IR_pin=19
 elif "P4" in name:
-    print("changing blue pin to 27")
-    blue_IR_pin=27
+    print("changing blue pin to 26")
+    blue_IR_pin=26
 
 else:
     blue_IR_pin=23
