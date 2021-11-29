@@ -9,23 +9,23 @@ IO.setwarnings(False)
 IO.setmode (IO.BCM)
 
 if "P3" in name:
-    print("changing blue pin to 19")
-    blue_IR_pin=19
-elif "P4" in name:
-    print("changing blue pin to 26")
-    blue_IR_pin=26
+    print("changing left pin to 19")
+    left_IR_pin=19
+elif "P1" in name:
+    print("changing left pin to 19")
+    left_IR_pin=19
 
 else:
-    blue_IR_pin=23
+    left_IR_pin=23
 
 if "P8" in name:
     print("changing red pin to 13")
-    red_IR_pin=13
+    right_IR_pin=13
 else:
-    red_IR_pin=24
+    right_IR_pin=24
 
-IO.setup(blue_IR_pin,IO.IN) #blue solve
-IO.setup(red_IR_pin,IO.IN) #red solve
+IO.setup(left_IR_pin,IO.IN) #blue solve
+IO.setup(right_IR_pin,IO.IN) #red solve
 
 # Set pin 11 as an output, and define as servo1 as PWM pin
 IO.setup(17,IO.OUT) #BLUE
@@ -102,18 +102,18 @@ class motorThread(threading.Thread):
 
     def zero(self):
         if tag_present:
-            if(IO.input(blue_IR_pin)==True):
+            if(IO.input(left_IR_pin)==True):
                 time.sleep(.2)
-                if(IO.input(blue_IR_pin)==True):
+                if(IO.input(left_IR_pin)==True):
                     time_stamp = return_tstamp()
                     to_write_list = "{},{},{},{}".format(id_tag,"left",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
                     tprint("solve left by {}".format(id_tag))
                     self.state = 3
         
-            elif(IO.input(red_IR_pin)==True):
+            elif(IO.input(right_IR_pin)==True):
                 time.sleep(.2)
-                if(IO.input(red_IR_pin)==True):
+                if(IO.input(right_IR_pin)==True):
                     time_stamp = return_tstamp()
                     to_write_list = "{},{},{},{}".format(id_tag,"right",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
@@ -121,7 +121,7 @@ class motorThread(threading.Thread):
                     self.state = 3
 
         elif not tag_present:
-            if(IO.input(blue_IR_pin)==True or IO.input(red_IR_pin)==True):
+            if(IO.input(left_IR_pin)==True or IO.input(right_IR_pin)==True):
                 time.sleep(.3)
                 self.state = 4         
         else:
@@ -139,13 +139,13 @@ class motorThread(threading.Thread):
     def two(self):
         door_reset()
         
-        if(IO.input(blue_IR_pin)==False and IO.input(red_IR_pin)==False):
+        if(IO.input(left_IR_pin)==False and IO.input(right_IR_pin)==False):
             self.email_flag=0
             self.state = 0
         
-        elif((IO.input(blue_IR_pin)==True or IO.input(red_IR_pin)==True) and self.email_flag==0):
+        elif((IO.input(left_IR_pin)==True or IO.input(right_IR_pin)==True) and self.email_flag==0):
             time.sleep(10)
-            if((IO.input(blue_IR_pin)==True or IO.input(red_IR_pin)==True)):
+            if((IO.input(left_IR_pin)==True or IO.input(right_IR_pin)==True)):
                 #self.state, self.email_flag = send_email()
                 pass
             else:
@@ -156,18 +156,18 @@ class motorThread(threading.Thread):
     def three(self):
         #this state sets the timer for scrounging, set at 3 seconds
         tprint("set time to wait for scroungers")        
-        self.end_time = time.time() + 4
+        self.end_time = time.time() + 5
         self.state = 1
 
     def four(self):
-        if(IO.input(blue_IR_pin)==True):
+        if(IO.input(left_IR_pin)==True):
             time_stamp = return_tstamp()
             to_write_list = "{},{},{},{}".format(id_tag,"left",time_stamp[0],time_stamp[1])
             write_csv(to_write_list,file_name)
             tprint("solve left by {}".format(id_tag))
             self.state = 3
 
-        elif(IO.input(red_IR_pin)==True):
+        elif(IO.input(right_IR_pin)==True):
             time_stamp = return_tstamp()
             to_write_list = "{},{},{},{}".format(id_tag,"right",time_stamp[0],time_stamp[1])
             write_csv(to_write_list,file_name)
@@ -322,4 +322,3 @@ if __name__=="__main__":
             arrival_check(ser)
         elif tag_present == 1:
             depart(ser)
-
