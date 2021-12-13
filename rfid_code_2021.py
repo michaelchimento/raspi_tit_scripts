@@ -8,17 +8,17 @@ from rpi_info import name
 IO.setwarnings(False)
 IO.setmode (IO.BCM)
 
-if "P3" in name:
+if "P3_" in name:
     print("changing left pin to 19")
     left_IR_pin=19
-elif "P1" in name:
+elif "P1_" in name:
     print("changing left pin to 19")
     left_IR_pin=19
 
 else:
     left_IR_pin=23
 
-if "P8" in name:
+if "P8_" in name:
     print("changing red pin to 13")
     right_IR_pin=13
 else:
