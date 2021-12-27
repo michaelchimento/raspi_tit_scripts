@@ -9,7 +9,7 @@ from term_utils import ping_pi, terminal, kill_python, reboot, take_test_img
 print("####{} download_puzzle_data.py####".format(dt.datetime.now().strftime('%Y-%m-%d_%H_%M')))
 
 #clear out yesterday's photos
-destination = "~/ownCloud/data_analysis/exp2_immigration/data/puzzle_data"
+destination = "~/ownCloud/data_analysis/exp_immigration_2022/data/puzzle_data"
 source = "~/raspi_tit_scripts/data/*"
 
 for pi in pi_data_table:

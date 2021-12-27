@@ -37,7 +37,7 @@ def terminal(command):
 
 ##replace this with appropriate local & remote paths for backup
 copy_from = "/home/pi/APAPORIS/MOVED/"
-copy_to = "/home/pi/mnt/Videos_GRETI/field_season_winter_2020/{}".format(name)
+copy_to = "/home/pi/mnt/Videos_GRETI/field_season_winter_2022/{}".format(name)
 
 def backup_to_server():
     print("####{} backup_function.py####".format(dt.datetime.now().strftime('%Y-%m-%d_%H_%M')))
