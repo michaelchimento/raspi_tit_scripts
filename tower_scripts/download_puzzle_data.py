@@ -34,7 +34,7 @@ for pi in pi_data_table:
 
 env_pis = [["EnvInfoD4","10.76.0.52"],["EnvInfoC1","10.76.0.53"],["EnvInfoD3","10.76.0.54"],["EnvInfoG10","10.76.0.57"]]
 
-destination = "~/TITS/env_data"
+destination = "~/TITS/env_data_winter"
 source = "~/env_info_code/data/*"
 
 for pi in env_pis:

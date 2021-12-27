@@ -4,7 +4,6 @@ from all_ipsandnames import pi_data_table
 from term_utils import *
 
 #pi_data_table format is [(pi name1, pi IP1), (pi name2, pi IP2),... etc]
-#print(pi_data_table)
 
 for pi in pi_data_table:
     print("Updating scripts from Github in {}".format(pi))

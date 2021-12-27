@@ -23,7 +23,7 @@ def python_process_check():
         else:
             py_processes = current_py_processes(pi[1])
             if not py_processes:
-                statement= "NA"
+                statement= "Problem: no python processes running."
             else:
                 if "Puzzle" in pi[0] and len(py_processes.split("\n")) >= 3:
                     statement = "Puzzle rfid and video running"
