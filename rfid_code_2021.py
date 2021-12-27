@@ -8,20 +8,24 @@ from rpi_info import name
 IO.setwarnings(False)
 IO.setmode (IO.BCM)
 
-if "P3" in name:
-    print("changing blue pin to 19")
-    blue_IR_pin=19
-else:
-    blue_IR_pin=23
+if "P3_" in name:
+    print("changing left pin to 19")
+    left_IR_pin=19
+elif "P1_" in name:
+    print("changing left pin to 19")
+    left_IR_pin=19
 
-if "P8" in name:
+else:
+    left_IR_pin=23
+
+if "P8_" in name:
     print("changing red pin to 13")
-    red_IR_pin=13
+    right_IR_pin=13
 else:
-    red_IR_pin=24
+    right_IR_pin=24
 
-IO.setup(blue_IR_pin,IO.IN) #blue solve
-IO.setup(red_IR_pin,IO.IN) #red solve
+IO.setup(left_IR_pin,IO.IN) #blue solve
+IO.setup(right_IR_pin,IO.IN) #red solve
 
 # Set pin 11 as an output, and define as servo1 as PWM pin
 IO.setup(17,IO.OUT) #BLUE
@@ -58,6 +62,10 @@ def door_reset():
 def tprint(*args):
     timestamp = dt.datetime.now().strftime("%b-%d | %H:%M:%S")
     print(timestamp, *args)
+    
+def return_tstamp():
+    tstamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f').split()
+    return tstamp
 
 def send_email():
     user = 'greti.lab.updates@gmail.com'
@@ -94,26 +102,26 @@ class motorThread(threading.Thread):
 
     def zero(self):
         if tag_present:
-            if(IO.input(blue_IR_pin)==True):
+            if(IO.input(left_IR_pin)==True):
                 time.sleep(.2)
-                if(IO.input(blue_IR_pin)==True):
-                    time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
-                    to_write_list = "{},{},{},{}".format(id_tag,"blue",time_stamp[0],time_stamp[1])
+                if(IO.input(left_IR_pin)==True):
+                    time_stamp = return_tstamp()
+                    to_write_list = "{},{},{},{}".format(id_tag,"left",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
-                    tprint("solve blue by {}".format(id_tag))
+                    tprint("solve left by {}".format(id_tag))
                     self.state = 3
         
-            elif(IO.input(red_IR_pin)==True):
+            elif(IO.input(right_IR_pin)==True):
                 time.sleep(.2)
-                if(IO.input(red_IR_pin)==True):
-                    time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
-                    to_write_list = "{},{},{},{}".format(id_tag,"red",time_stamp[0],time_stamp[1])
+                if(IO.input(right_IR_pin)==True):
+                    time_stamp = return_tstamp()
+                    to_write_list = "{},{},{},{}".format(id_tag,"right",time_stamp[0],time_stamp[1])
                     write_csv(to_write_list,file_name)
-                    tprint("solve red by {}".format(id_tag))
+                    tprint("solve right by {}".format(id_tag))
                     self.state = 3
 
         elif not tag_present:
-            if(IO.input(blue_IR_pin)==True or IO.input(red_IR_pin)==True):
+            if(IO.input(left_IR_pin)==True or IO.input(right_IR_pin)==True):
                 time.sleep(.3)
                 self.state = 4         
         else:
@@ -131,13 +139,13 @@ class motorThread(threading.Thread):
     def two(self):
         door_reset()
         
-        if(IO.input(blue_IR_pin)==False and IO.input(red_IR_pin)==False):
+        if(IO.input(left_IR_pin)==False and IO.input(right_IR_pin)==False):
             self.email_flag=0
             self.state = 0
         
-        elif((IO.input(blue_IR_pin)==True or IO.input(red_IR_pin)==True) and self.email_flag==0):
+        elif((IO.input(left_IR_pin)==True or IO.input(right_IR_pin)==True) and self.email_flag==0):
             time.sleep(10)
-            if((IO.input(blue_IR_pin)==True or IO.input(red_IR_pin)==True)):
+            if((IO.input(left_IR_pin)==True or IO.input(right_IR_pin)==True)):
                 #self.state, self.email_flag = send_email()
                 pass
             else:
@@ -148,22 +156,22 @@ class motorThread(threading.Thread):
     def three(self):
         #this state sets the timer for scrounging, set at 3 seconds
         tprint("set time to wait for scroungers")        
-        self.end_time = time.time() + 4
+        self.end_time = time.time() + 5
         self.state = 1
 
     def four(self):
-        if(IO.input(blue_IR_pin)==True):
-            time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
-            to_write_list = "{},{},{},{}".format(id_tag,"blue",time_stamp[0],time_stamp[1])
+        if(IO.input(left_IR_pin)==True):
+            time_stamp = return_tstamp()
+            to_write_list = "{},{},{},{}".format(id_tag,"left",time_stamp[0],time_stamp[1])
             write_csv(to_write_list,file_name)
-            tprint("solve blue by {}".format(id_tag))
+            tprint("solve left by {}".format(id_tag))
             self.state = 3
 
-        elif(IO.input(red_IR_pin)==True):
-            time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
-            to_write_list = "{},{},{},{}".format(id_tag,"red",time_stamp[0],time_stamp[1])
+        elif(IO.input(right_IR_pin)==True):
+            time_stamp = return_tstamp()
+            to_write_list = "{},{},{},{}".format(id_tag,"right",time_stamp[0],time_stamp[1])
             write_csv(to_write_list,file_name)
-            tprint("solve red by {}".format(id_tag))
+            tprint("solve right by {}".format(id_tag))
             self.state = 3
         
     
@@ -202,7 +210,7 @@ def arrival_check(ser):
             data = data[-10:]
             if len(data)==10:
                 id_tag = data[-10:]
-                time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
+                time_stamp = return_tstamp()
                 tprint("{} arrived".format(id_tag))
                 write_csv("{},{},{},{}".format(id_tag,"arrived",time_stamp[0],time_stamp[1]),file_name)
                 if motor_thread.state == 1 or motor_thread.state == 2:
@@ -230,13 +238,13 @@ def depart(ser):
                 if tolerance_limit >= 5:
                     tprint("{} left".format(id_tag))
                     tag_present=0
-                    time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
+                    time_stamp = return_tstamp()
                     write_csv("{},{},{},{}".format(id_tag,"departed",time_stamp[0],time_stamp[1]),file_name)
                     id_tag=""
             
             elif(len(data)==10 and data[-4:] not in id_tag):
                 tprint("displacement by {}".format(data))
-                time_stamp = dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S').split()
+                time_stamp = return_tstamp()
                 write_csv("{},{},{},{}".format(id_tag,"departed",time_stamp[0],time_stamp[1]),file_name)
                 id_tag = data
                 write_csv("{},{},{},{}".format(id_tag,"displacement",time_stamp[0],time_stamp[1]),file_name)
@@ -299,7 +307,10 @@ if __name__=="__main__":
     else:
         with open(file_name, "a") as savefile: # open data file in write mode
             savefile.write("#{} start time: {} \n".format(comp_name,time_stamp))
-
+    
+    door_reset()
+    time.sleep(2)
+    
     #begin running motor threads
     motor_thread = motorThread(1, "Motor-Thread")
     motor_thread.start()
@@ -311,4 +322,3 @@ if __name__=="__main__":
             arrival_check(ser)
         elif tag_present == 1:
             depart(ser)
-

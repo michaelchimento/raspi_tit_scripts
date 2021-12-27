@@ -21,27 +21,27 @@ camera_awb_mode = 'tungsten'
 camera_sharpness = 30
 camera_contrast = 25
 feeder_start = 7
-feeder_end = 18
+feeder_end = 17
 social_start = 7
-social_end = 18
+social_end = 17
 puzzle_start = 7
 puzzle_end = 18
 observ_start = 7
-observ_end = 18
+observ_end = 17
 sensitivity_value = 200
 
 def set_exposure_shutter(hour):
     if hour < 8:
         camera_exposure_mode = 'auto'
-        camera_shutter_speed = 4500    
-    elif hour < 10 and hour >=8:
-        camera_exposure_mode = 'auto'
-        camera_shutter_speed = 3800
-    elif hour >= 10 and hour < 16:
-        camera_exposure_mode = 'auto'
-        camera_shutter_speed = 3000
-    elif hour >= 16 and hour < 19:
+        camera_shutter_speed = 5000    
+    elif hour >=8 and hour < 10:
         camera_exposure_mode = 'auto'
         camera_shutter_speed = 4500
+    elif hour >= 10 and hour < 16:
+        camera_exposure_mode = 'auto'
+        camera_shutter_speed = 2800
+    elif hour >= 16 and hour < 19:
+        camera_exposure_mode = 'auto'
+        camera_shutter_speed = 5000
 
     return camera_exposure_mode, camera_shutter_speed

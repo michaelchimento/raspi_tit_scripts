@@ -32,25 +32,3 @@ for pi in pi_data_table:
         pass
 
 
-env_pis = [["EnvInfoD4","10.76.0.52"],["EnvInfoC1","10.76.0.53"],["EnvInfoD3","10.76.0.54"],["EnvInfoG10","10.76.0.57"]]
-
-destination = "~/TITS/env_data_winter"
-source = "~/env_info_code/data/*"
-
-for pi in env_pis:
-    print("downloading env data {}".format(pi))
-    reachable = ping_pi(pi[1])
-    if not reachable:
-        pass
-    else:
-        try:
-            copy_to= "{}/{}".format(destination,pi[0])
-            command = 'rsync -a --exclude \'*.md\' pi@{}:{} {}'.format(pi[1], source, copy_to)
-            print(command)
-            terminal(command)
-        except Exception as e:
-            print("Error moving files: {}".format(e))                
-            pass
-
-
-
