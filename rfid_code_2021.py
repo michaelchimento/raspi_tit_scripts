@@ -19,8 +19,8 @@ else:
     left_IR_pin=23
 
 if "P8_" in name:
-    print("changing red pin to 13")
-    right_IR_pin=13
+    print("changing red pin to 6")
+    right_IR_pin=6
 else:
     right_IR_pin=24
 
