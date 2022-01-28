@@ -154,9 +154,9 @@ class motorThread(threading.Thread):
             self.state=2
             
     def three(self):
-        #this state sets the timer for scrounging, set at 3 seconds
+        #this state sets the timer for scrounging
         tprint("set time to wait for scroungers")        
-        self.end_time = time.time() + 5
+        self.end_time = time.time() + 3
         self.state = 1
 
     def four(self):
