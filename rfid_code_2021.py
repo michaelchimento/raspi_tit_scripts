@@ -19,8 +19,8 @@ else:
     left_IR_pin=23
 
 if "P8_" in name:
-    print("changing red pin to 13")
-    right_IR_pin=13
+    print("changing red pin to 6")
+    right_IR_pin=6
 else:
     right_IR_pin=24
 
@@ -154,9 +154,9 @@ class motorThread(threading.Thread):
             self.state=2
             
     def three(self):
-        #this state sets the timer for scrounging, set at 3 seconds
+        #this state sets the timer for scrounging
         tprint("set time to wait for scroungers")        
-        self.end_time = time.time() + 5
+        self.end_time = time.time() + 3
         self.state = 1
 
     def four(self):
