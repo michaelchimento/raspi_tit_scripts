@@ -48,8 +48,8 @@ try:
     while True:
         hour = datetime.now().hour
         if hour >= feeder_start and hour < feeder_end:
-            dir_name = make_video(hour)
-            shutil.move(dir_name,moved_path)
+            make_video(hour)
+            #shutil.move(dir_name,moved_path)
         else:
             pass
 
