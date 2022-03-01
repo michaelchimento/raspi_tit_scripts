@@ -22,7 +22,7 @@ def make_video(hour):
     with picamera.PiCamera() as camera:
         #change these values in camera_settings on github and push to all pis for quick universal changes
         camera.rotation = camera_rotation
-        camera.resolution = camera_resolution
+        camera.resolution = social_camera_resolution
         camera.brightness = camera_brightness
         camera.sharpness = camera_sharpness
         camera.contrast = camera_contrast
